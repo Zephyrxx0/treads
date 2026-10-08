@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DNEN07N35QGC0XSX38QB2S",
+  "session_id": "757c7bed-45dd-4d8d-a62a-71d6bc6a436c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T11:47:50.682032208Z",
+  "branch": "phase-4-voice-narration-routing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/ROADMAP.md",
+    ".planning/STATE.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "b77361c1e674",
+  "checkpoint_transcript_start": 527,
+  "transcript_lines_at_start": 527,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T11:47:50.623311735Z",
+    "agent_lines": 26,
+    "agent_removed": 26,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 26,
+    "total_lines_changed": 52,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
