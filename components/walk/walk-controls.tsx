@@ -6,16 +6,44 @@ import { Square, Camera } from 'lucide-react';
 export interface WalkControlsProps {
   onEndWalk: () => void;
   onCameraClick?: () => void;
+  onPhotoSelected?: (file: File) => void;
   disabled?: boolean;
+}
+
+export interface WalkControlsHandle {
+  triggerCapture: () => void;
 }
 
 const HOLD_DURATION_MS = 1500;
 
-export function WalkControls({
-  onEndWalk,
-  onCameraClick,
-  disabled = false,
-}: WalkControlsProps) {
+export const WalkControls = React.forwardRef<WalkControlsHandle, WalkControlsProps>(
+  function WalkControls(
+    { onEndWalk, onCameraClick, onPhotoSelected, disabled = false },
+    ref
+  ) {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    React.useImperativeHandle(ref, () => ({
+      triggerCapture: () => {
+        fileInputRef.current?.click();
+      },
+    }));
+
+    const handleCameraClick = () => {
+      if (onPhotoSelected) {
+        fileInputRef.current?.click();
+      } else if (onCameraClick) {
+        onCameraClick();
+      }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        onPhotoSelected?.(file);
+        e.target.value = '';
+      }
+    };
   const [holdProgress, setHoldProgress] = useState<number>(0);
   const [isHolding, setIsHolding] = useState<boolean>(false);
 
@@ -90,10 +118,21 @@ export function WalkControls({
   return (
     <div className="absolute bottom-8 inset-x-0 z-30 flex items-center justify-center gap-6 px-4 pointer-events-none select-none">
       <div className="pointer-events-auto flex items-center gap-5 p-2 rounded-full bg-background/85 backdrop-blur-md border border-border/70 shadow-xl">
-        {/* Camera Capture Trigger (Scaffold for Phase 3) */}
+        {/* Hidden Camera Input with environment capture */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          tabIndex={-1}
+          onChange={handleFileChange}
+        />
+
+        {/* Camera Capture Trigger */}
         <button
           type="button"
-          onClick={onCameraClick}
+          onClick={handleCameraClick}
           aria-label="Capture specimen"
           className="flex items-center justify-center w-14 h-14 rounded-full bg-muted/80 hover:bg-muted text-foreground border border-border/60 transition-transform active:scale-95 shadow-sm cursor-pointer"
         >
@@ -155,5 +194,6 @@ export function WalkControls({
       </div>
     </div>
   );
-}
+});
+WalkControls.displayName = 'WalkControls';
 

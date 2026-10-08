@@ -352,3 +352,4 @@ export function scrubSafetyViolations(text: string): boolean {
 
 **Research date:** 2026-10-08  
 **Valid until:** 2026-11-08  
+

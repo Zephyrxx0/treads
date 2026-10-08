@@ -13,11 +13,14 @@ import { useConsent } from '@/hooks/use-consent';
 import { useGeolocation, CurrentPosition } from '@/hooks/use-geolocation';
 import { useActiveWalk } from '@/hooks/use-active-walk';
 import { WalkHud } from '@/components/walk/walk-hud';
-import { WalkControls } from '@/components/walk/walk-controls';
+import { WalkControls, WalkControlsHandle } from '@/components/walk/walk-controls';
+import { CameraCaptureSheet } from '@/components/walk/camera-capture-sheet';
 import { WalkSummarySheet } from '@/components/walk/walk-summary-sheet';
 import { WalkDiscardDialog } from '@/components/walk/walk-discard-dialog';
 import type { WalkMapRef } from '@/components/map/walk-map';
 import { TrackPoint } from '@/lib/geo';
+import { processCapturedImage } from '@/lib/camera';
+import { db, Entry } from '@/lib/db';
 
 // Dynamically import WalkMap to prevent SSR "window is not defined" errors
 const WalkMap = dynamic(() => import('@/components/map/walk-map').then((mod) => mod.WalkMap), {
@@ -76,6 +79,68 @@ export default function WalkPage() {
     enabled: true, // Keep geolocation active so pre-walk shows user's location
     onNewTrackPoint: handleNewTrackPoint,
   });
+
+  // Camera capture state (Phase 3)
+  const walkControlsRef = useRef<WalkControlsHandle | null>(null);
+  const [isCaptureSheetOpen, setIsCaptureSheetOpen] = useState<boolean>(false);
+  const [isProcessingPhoto, setIsProcessingPhoto] = useState<boolean>(false);
+  const [capturedPhoto, setCapturedPhoto] = useState<{
+    photoBlob: Blob;
+    thumbnailBlob: Blob;
+  } | null>(null);
+
+  // Photo capture trigger & EXIF-stripping handler
+  const handlePhotoSelected = useCallback(async (file: File) => {
+    setIsProcessingPhoto(true);
+    setIsCaptureSheetOpen(true);
+    try {
+      const { photoBlob, thumbnailBlob } = await processCapturedImage(file);
+      setCapturedPhoto({ photoBlob, thumbnailBlob });
+    } catch (err) {
+      console.error('Failed to process captured image:', err);
+      setIsCaptureSheetOpen(false);
+    } finally {
+      setIsProcessingPhoto(false);
+    }
+  }, []);
+
+  // Retake photo action
+  const handleRetakePhoto = useCallback(() => {
+    setCapturedPhoto(null);
+    setIsCaptureSheetOpen(false);
+    setTimeout(() => {
+      walkControlsRef.current?.triggerCapture();
+    }, 150);
+  }, []);
+
+  // Use Photo & Save to Dexie (Draft Entry)
+  const handleIdentifyPhoto = useCallback(
+    async (photoBlob: Blob, thumbnailBlob: Blob) => {
+      if (!activeWalk) return;
+      try {
+        const entryId = crypto.randomUUID();
+        const newEntry: Entry = {
+          id: entryId,
+          walkId: activeWalk.id,
+          createdAt: Date.now(),
+          timestamp: Date.now(),
+          photo: photoBlob,
+          thumbnail: thumbnailBlob,
+          lat: currentPosition?.lat ?? 0,
+          lng: currentPosition?.lng ?? 0,
+          accuracy: currentPosition?.accuracy ?? 0,
+          status: 'saved',
+          candidates: [],
+          verified: false,
+        };
+        await db.entries.add(newEntry);
+        setIsCaptureSheetOpen(false);
+      } catch (err) {
+        console.error('Failed to save specimen entry:', err);
+      }
+    },
+    [activeWalk, currentPosition]
+  );
 
   // Auto-resume camera fly-to latest fix (per D-04)
   const hasHandledResumeFlyRef = useRef<boolean>(false);
@@ -220,10 +285,9 @@ export default function WalkPage() {
       {/* Active Walk Bottom Action Dock (per D-01, D-13) */}
       {isActive && (
         <WalkControls
+          ref={walkControlsRef}
           onEndWalk={handleEndWalkAttempt}
-          onCameraClick={() => {
-            // Scaffold placeholder for Phase 3 Camera
-          }}
+          onPhotoSelected={handlePhotoSelected}
         />
       )}
 
@@ -292,6 +356,17 @@ export default function WalkPage() {
         onOpenChange={setIsDiscardDialogOpen}
         onConfirmDiscard={handleConfirmDiscard}
         onSaveAnyway={handleSaveAnyway}
+      />
+
+      {/* Specimen Photo Capture Preview Sheet (Phase 3) */}
+      <CameraCaptureSheet
+        open={isCaptureSheetOpen}
+        onOpenChange={setIsCaptureSheetOpen}
+        photoBlob={capturedPhoto?.photoBlob ?? null}
+        thumbnailBlob={capturedPhoto?.thumbnailBlob ?? null}
+        isProcessing={isProcessingPhoto}
+        onRetake={handleRetakePhoto}
+        onIdentify={handleIdentifyPhoto}
       />
     </div>
   );

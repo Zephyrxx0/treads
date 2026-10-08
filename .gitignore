@@ -19,3 +19,4 @@ dist/
 
 # Typescript
 next-env.d.ts
+*.tsbuildinfo

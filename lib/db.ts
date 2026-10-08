@@ -30,6 +30,7 @@ export interface Entry {
   createdAt: number;
   timestamp: number;
   photo: Blob | string;
+  thumbnail?: Blob | string;
   lat: number;
   lng: number;
   accuracy: number;
