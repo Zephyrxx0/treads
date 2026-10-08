@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DZQFZFFYSBGDKJZBG7ENMB",
+  "session_id": "32ff1c26-42a6-4cc6-b9e7-39355b902a0a",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T14:47:26.082696516Z",
+  "branch": "phase-6-polish-eval-submission",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-02-SUMMARY.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-UAT.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-VERIFICATION.md",
+    "FIELD-VERIFICATION.md",
+    "README.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "20e0a03dbfff",
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T14:47:26.08121178Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 5,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/06-polish-consent-gate-evaluation-submission/06-02-SUMMARY.md": 1,
+        ".planning/phases/06-polish-consent-gate-evaluation-submission/06-UAT.md": 1,
+        ".planning/phases/06-polish-consent-gate-evaluation-submission/06-VERIFICATION.md": 1,
+        "FIELD-VERIFICATION.md": 1,
+        "README.md": 1
+      }
+    }
+  ]
+}
