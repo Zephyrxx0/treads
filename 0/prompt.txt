@@ -1,0 +1,17 @@
+/caveman ultra
+
+---
+
+/gsd-discuss-phase 1
+
+---
+
+update nextjs version : Next.js 16.4 : Cache Components , New agent features,Lazy dynamic imports, React 19.3 in docs
+
+---
+
+/gsd-plan-phase 1
+
+---
+
+/gsd-execute-phase 1
