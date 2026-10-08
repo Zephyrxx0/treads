@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DJMQ0QF5BXM7CFEFP3YG9Z",
+  "strategy": "manual-commit",
+  "branch": "phase-3-photo-capture-ai",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/api/facts/route.ts",
+    "app/entry/[id]/page.tsx",
+    "app/walk/page.tsx",
+    "components/entry/fact-card.tsx",
+    "components/map/walk-map.tsx",
+    "components/ui/popover.tsx",
+    "components/walk/walk-hud.tsx",
+    "components/walk/walk-summary-sheet.tsx",
+    "lib/facts-safety.ts",
+    "lib/wikipedia.ts",
+    "scripts/test-facts-scrubber.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
