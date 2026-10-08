@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4D1XMHC48N905VDF4QAZJZ4",
+  "session_id": "dadb89b9-0302-494c-adf4-4eb2ccfb641b",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T06:06:31.285391618Z",
+  "branch": "phase-1-foundation-spikes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "lib/rate-limit.ts",
+    "scripts/test-rate-limit.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "ef401dc55d39",
+  "checkpoint_transcript_start": 309,
+  "transcript_lines_at_start": 309,
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T06:06:31.218183342Z",
+    "agent_lines": 321,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 321,
+    "total_lines_changed": 321,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
