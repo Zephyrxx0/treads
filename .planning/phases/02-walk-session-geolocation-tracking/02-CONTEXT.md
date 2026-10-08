@@ -101,3 +101,4 @@ None — discussion stayed within Phase 2 scope.
 
 *Phase: 2-Walk Session & Geolocation Tracking*
 *Context gathered: 2026-10-08*
+

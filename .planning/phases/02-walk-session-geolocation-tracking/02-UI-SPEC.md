@@ -139,3 +139,4 @@ Applicable state considerations resolved across Phase 2 surfaces:
 - [x] Dimension 6 Registry Safety: PASS — Official shadcn components only; no third-party registries.
 
 **Approval:** approved 2026-10-08
+
