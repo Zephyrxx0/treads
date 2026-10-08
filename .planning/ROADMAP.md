@@ -8,7 +8,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 
 ## Phases
 
-- [ ] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes.
+- [x] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes. (completed 2026-10-08)
 - [ ] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles.
 - [ ] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards.
 - [ ] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes.
@@ -32,20 +32,25 @@ Treads is built through 6 phased increments from foundation to release, strictly
   4. MapLibre GL successfully loads OpenFreeMap vector style in a test container without API keys.
   5. Isolated `/eval` route harness is scaffolded for benchmark fixtures.  
 
-**Plans**: 3 plans  
+**Plans**: 3/3 plans executed  
 
 Plans:
+
+- [x] 01-01-PLAN.md
+- [x] 01-02-PLAN.md
+- [x] 01-03-PLAN.md
+
 **Wave 1**
 
-- [ ] 01-01: Next.js 16.4 + React 19.3 scaffold, Tailwind v4, shadcn Base UI setup, and Tangerin Dream theme tokens in `globals.css`.
+- [x] 01-01: Next.js 16.4 + React 19.3 scaffold, Tailwind v4, shadcn Base UI setup, and Tangerin Dream theme tokens in `globals.css`.
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02: Dexie.js database schema implementation (`db.ts`), settings store, and in-memory dual-mode rate limiter.
+- [x] 01-02: Dexie.js database schema implementation (`db.ts`), settings store, and in-memory dual-mode rate limiter.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 01-03: Day 1 verification spikes: Google AI Studio candidate generation, MapLibre OpenFreeMap style loading, and `/eval` harness shell.
+- [x] 01-03: Day 1 verification spikes: Google AI Studio candidate generation, MapLibre OpenFreeMap style loading, and `/eval` harness shell.
 
 ---
 
@@ -164,7 +169,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation, Theme & Day 1 Verification Spikes | 0/3 | Not started | - |
+| 1. Foundation, Theme & Day 1 Verification Spikes | 4/3 | Complete    | 2026-10-08 |
 | 2. Walk Session & Geolocation Tracking | 0/2 | Not started | - |
 | 3. Photo Capture & AI Identification Pipeline | 0/3 | Not started | - |
 | 4. Voice Notes, Narration & Loop Routing | 0/2 | Not started | - |

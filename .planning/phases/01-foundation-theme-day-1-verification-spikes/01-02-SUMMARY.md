@@ -64,3 +64,4 @@
 - `npx tsx scripts/test-db.ts`: Verified 5 Dexie tables, UUID primary keys, secondary indexes, seed data population, and table clearing.
 - `npx tsx scripts/test-permissions.ts`: Confirmed non-blocking graceful fallbacks for camera, location, and microphone APIs in non-browser/SSR environments.
 - `npx tsx scripts/test-rate-limit.ts`: Confirmed token bucket rate limiter decrements 30 requests to `identify`, denies request 31, isolates IP and endpoint quotas, and attaches rate limit headers.
+

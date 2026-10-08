@@ -11,10 +11,10 @@ Requirements committed for the 5-day hackathon release. Each requirement is test
 
 ### Consent & Privacy
 
-- [ ] **CONS-01**: First run displays a full-screen consent modal explaining data handling (photos to AI, audio to ElevenLabs, coarse coords to server, journal stays on device).
-- [ ] **CONS-02**: Consent acceptance stores a timestamped version number in IndexedDB, gating access to all walk and capture features.
-- [ ] **CONS-03**: App requests `navigator.storage.persist()` on consent acceptance and reports persistence status in `/settings`.
-- [ ] **CONS-04**: Permissions (camera, mic, location) are requested just-in-time at point of use with non-blocking inline fallback messaging if denied.
+- [x] **CONS-01**: First run displays a full-screen consent modal explaining data handling (photos to AI, audio to ElevenLabs, coarse coords to server, journal stays on device).
+- [x] **CONS-02**: Consent acceptance stores a timestamped version number in IndexedDB, gating access to all walk and capture features.
+- [x] **CONS-03**: App requests `navigator.storage.persist()` on consent acceptance and reports persistence status in `/settings`.
+- [x] **CONS-04**: Permissions (camera, mic, location) are requested just-in-time at point of use with non-blocking inline fallback messaging if denied.
 
 ### Walk Lifecycle & Tracking
 
@@ -74,16 +74,16 @@ Requirements committed for the 5-day hackathon release. Each requirement is test
 
 ### Design System, Motion & Sound
 
-- [ ] **DSGN-01**: All UI components implement the Tangerin Dream color palette, typography tokens, and border radii using shadcn Base UI.
-- [ ] **DSGN-02**: Motion animations honor `prefers-reduced-motion` with simple opacity fades and pause when the browser tab is hidden.
+- [x] **DSGN-01**: All UI components implement the Tangerin Dream color palette, typography tokens, and border radii using shadcn Base UI.
+- [x] **DSGN-02**: Motion animations honor `prefers-reduced-motion` with simple opacity fades and pause when the browser tab is hidden.
 - [ ] **DSGN-03**: Fact card headers and landing tagline feature progressive Tegaki handwriting reveals with web font fallbacks.
 - [ ] **DSGN-04**: Synthesized Web Audio chimes (Cuelume) provide soft feedback on capture and hunt completion (toggle in `/settings`, off by default).
 - [ ] **DSGN-05**: Native `navigator.vibrate` haptic pulses trigger on capture and confirmation.
 
 ### Infrastructure & Developer Tools
 
-- [ ] **RATE-01**: Server routes enforce IP token bucket rate limiting with in-memory dev mode and Upstash Redis production mode.
-- [ ] **EVAL-01**: Isolated `app/(dev)/eval` developer route executes batch benchmarks on 30 test fixtures, scoring accuracy (≥70%) and refusal rates (≥90%).
+- [x] **RATE-01**: Server routes enforce IP token bucket rate limiting with in-memory dev mode and Upstash Redis production mode.
+- [x] **EVAL-01**: Isolated `app/(dev)/eval` developer route executes batch benchmarks on 30 test fixtures, scoring accuracy (≥70%) and refusal rates (≥90%).
 
 ---
 
@@ -128,6 +128,7 @@ Requirements committed for the 5-day hackathon release. Each requirement is test
 | EXPT-01, SETT-01 | Phase 5 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 33 total
 - Mapped to phases: 33
 - Unmapped: 0 ✓
@@ -135,4 +136,3 @@ Requirements committed for the 5-day hackathon release. Each requirement is test
 ---
 *Requirements defined: 8 October 2026*  
 *Last updated: 8 October 2026 after initial definition*
-
