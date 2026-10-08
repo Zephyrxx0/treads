@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DSK34A8J044APJA6AGBY3D",
+  "strategy": "manual-commit",
+  "branch": "phase-6-polish-eval-submission",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-CONTEXT.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-DISCUSSION-LOG.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
