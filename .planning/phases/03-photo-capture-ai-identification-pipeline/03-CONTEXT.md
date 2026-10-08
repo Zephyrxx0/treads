@@ -104,3 +104,4 @@ None — discussion stayed within Phase 3 scope.
 
 *Phase: 3-Photo Capture & AI Identification Pipeline*
 *Context gathered: 2026-10-08*
+
