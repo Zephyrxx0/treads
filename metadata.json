@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DFAGB8B1WJFA610PRPW5JG",
+  "strategy": "manual-commit",
+  "branch": "phase-2-walk-tracking",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/02-walk-session-geolocation-tracking/02-01-SUMMARY.md",
+    "hooks/use-active-walk.ts",
+    "hooks/use-geolocation.ts",
+    "lib/geo.ts",
+    "scripts/test-active-walk.ts",
+    "scripts/test-geolocation-filter.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
