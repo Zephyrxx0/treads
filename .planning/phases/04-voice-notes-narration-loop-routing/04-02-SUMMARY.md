@@ -40,3 +40,4 @@
    - Verified SHA-256 hash determinism, 400 error handling, fallback signals, and rate limit headers for `/api/speak`.
    - Verified synthetic loop geometry, closed loop verification, 400 validation, and `/api/route` payload structure.
    - Verified zero TypeScript compilation errors with `pnpm exec tsc --noEmit`.
+

@@ -64,3 +64,4 @@ export function calculateLoopDistance(coordinates: [number, number][]): number {
   }
   return totalDistance;
 }
+

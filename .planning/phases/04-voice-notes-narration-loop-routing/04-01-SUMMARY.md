@@ -35,3 +35,4 @@
    - Verified 400 rejection on missing audio payloads.
    - Verified 200 response with structured transcript and language code.
    - Verified rate limit headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`).
+
