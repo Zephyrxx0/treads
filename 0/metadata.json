@@ -1,0 +1,58 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DNSDZWRYDQXMKBCM5A4CYR",
+  "session_id": "757c7bed-45dd-4d8d-a62a-71d6bc6a436c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T11:53:44.095126676Z",
+  "branch": "phase-4-voice-narration-routing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-UAT.md",
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-VERIFICATION.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "694d987c29e1",
+  "checkpoint_transcript_start": 545,
+  "transcript_lines_at_start": 545,
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T11:53:44.034883722Z",
+    "agent_lines": 260,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 260,
+    "total_lines_changed": 260,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 14,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/04-voice-notes-narration-loop-routing/04-01-SUMMARY.md": 1,
+        ".planning/phases/04-voice-notes-narration-loop-routing/04-02-SUMMARY.md": 1,
+        "app/api/route/route.ts": 1,
+        "app/api/speak/route.ts": 1,
+        "app/api/transcribe/route.ts": 1,
+        "components/route/route-preview-sheet.tsx": 1,
+        "components/speech/fact-audio-player.tsx": 1,
+        "components/voice/voice-waveform.tsx": 1,
+        "lib/audio.ts": 1,
+        "lib/route.ts": 1,
+        "lib/speech.ts": 1,
+        "scripts/test-route-loop.ts": 1,
+        "scripts/test-speak-route.ts": 1,
+        "scripts/test-transcribe-route.ts": 1
+      }
+    }
+  ]
+}
