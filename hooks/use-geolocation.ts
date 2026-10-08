@@ -189,3 +189,4 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
     requestCurrentPosition,
   };
 }
+

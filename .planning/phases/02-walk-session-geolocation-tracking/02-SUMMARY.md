@@ -43,3 +43,4 @@ Phase 2 established the core outdoor tracking engine for Treads, providing full 
 - `pnpm tsx scripts/test-geolocation-filter.ts`: 100% passed
 - `pnpm tsx scripts/test-active-walk.ts`: 100% passed
 - `pnpm build`: Next.js 16.4 production build succeeded with exit code 0
+

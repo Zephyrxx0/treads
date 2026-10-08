@@ -109,3 +109,4 @@ assert.strictEqual(calculateTrailBounds([]), null);
 console.log('✓ Trail bounding box computation verified.');
 
 console.log('--- ALL GEOLOCATION TESTS PASSED ---');
+

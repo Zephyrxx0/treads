@@ -46,3 +46,4 @@
 - `pnpm tsx scripts/test-geolocation-filter.ts` — PASSED
 - `pnpm tsx scripts/test-active-walk.ts` — PASSED
 - `pnpm build` — PASSED (all static and dynamic routes compiled cleanly)
+

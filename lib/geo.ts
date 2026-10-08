@@ -142,3 +142,4 @@ export function calculateTrailBounds(
     [maxLng, maxLat],
   ];
 }
+

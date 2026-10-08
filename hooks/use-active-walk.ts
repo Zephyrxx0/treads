@@ -220,3 +220,4 @@ export function useActiveWalk(): UseActiveWalkReturn {
     discardWalk,
   };
 }
+

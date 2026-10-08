@@ -347,3 +347,4 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
     </div>
   );
 });
+
