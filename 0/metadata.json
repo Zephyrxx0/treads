@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DQ4V0C67HDT0HK55BY7SZF",
+  "session_id": "9535c299-a2a7-4867-a152-75f0efdcd412",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T12:17:27.501750489Z",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    ".planning/phases/05-collection-journal-export/05-01-PLAN.md",
+    ".planning/phases/05-collection-journal-export/05-02-PLAN.md",
+    ".planning/phases/05-collection-journal-export/05-RESEARCH.md",
+    ".planning/phases/05-collection-journal-export/05-VALIDATION.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "d4492c86f809",
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T12:17:27.439962103Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 814,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 814,
+    "total_lines_changed": 814,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 1,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/05-collection-journal-export/05-UI-SPEC.md": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DQ4V0C67HDT0HK55BY7SZF",
+  "strategy": "manual-commit",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/05-collection-journal-export/05-01-PLAN.md",
+    ".planning/phases/05-collection-journal-export/05-02-PLAN.md",
+    ".planning/phases/05-collection-journal-export/05-RESEARCH.md",
+    ".planning/phases/05-collection-journal-export/05-VALIDATION.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
