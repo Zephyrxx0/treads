@@ -10,7 +10,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 
 - [x] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes. (completed 2026-10-08)
 - [x] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles. (completed 2026-10-08)
-- [ ] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards.
+- [x] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards. (completed 2026-10-08)
 - [ ] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes.
 - [ ] **Phase 5: Collection, Journal & Export** - Deterministic daily species hunt, Life List categorization on `/collection`, timeline heatmap, and Obsidian-compatible ZIP export.
 - [ ] **Phase 6: Polish, Consent Gate, Evaluation & Submission** - Full-screen consent modal, Tegaki handwriting animations, Cuelume audio chimes, `/eval` batch benchmark runner, and outdoor verification.
@@ -88,13 +88,13 @@ Plans:
   4. User confirmation triggers `/api/facts` to extract Wikipedia lead sentences, generating fact cards with exact citation numbers and zero edibility/medicinal claims.
   5. Entry detail view (`/entry/[id]`) renders photo, confirmed label, fact card, and attribution link.  
 
-**Plans**: 3 plans  
-
+**Plans**: 3/3 plans executed  
+ 
 Plans:
 
-- [ ] 03-01: Camera capture button, HTML5 Canvas re-rasterizer, and Dexie entry storage with local thumbnail generation.
-- [ ] 03-02: `/api/identify` route with Vercel AI SDK (Gemma / Gemini Flash fallback) and Wikipedia Action API taxon verification.
-- [ ] 03-03: `/api/facts` route with deep lead section extraction, citation validation, edibility scrubbing regex, and entry detail UI.
+- [x] 03-01: Camera capture button, HTML5 Canvas re-rasterizer, and Dexie entry storage with local thumbnail generation.
+- [x] 03-02: `/api/identify` route with Vercel AI SDK (Gemma / Gemini Flash fallback) and Wikipedia Action API taxon verification.
+- [x] 03-03: `/api/facts` route with deep lead section extraction, citation validation, edibility scrubbing regex, and entry detail UI.
 
 ---
 
