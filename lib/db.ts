@@ -13,6 +13,7 @@ export interface Walk {
     timestamp: number;
   }>;
   distance: number; // in meters
+  title?: string;
 }
 
 export interface Candidate {

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Compass, Footprints, Sparkles, SlidersHorizontal, SunMedium } from 'lucide-react';
+import { Compass, Footprints, Sparkles, SlidersHorizontal, SunMedium, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -55,6 +55,25 @@ export default function HomePage() {
 
           <div className="flex items-center gap-2">
             <Link
+              href="/collection"
+              className="text-xs font-semibold px-2.5 py-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              Life List
+            </Link>
+            <Link
+              href="/journal"
+              className="text-xs font-semibold px-2.5 py-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              Journal
+            </Link>
+            <Link
+              href="/settings"
+              aria-label="Settings"
+              className="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+            </Link>
+            <Link
               href="/walk"
               className={cn(
                 buttonVariants({ variant: 'default', size: 'sm' }),
@@ -64,9 +83,6 @@ export default function HomePage() {
               <Footprints className="h-3.5 w-3.5 mr-1" />
               Start Walk
             </Link>
-            <Badge variant="outline" className="hidden sm:inline-flex">
-              Tangerin Dream
-            </Badge>
             <ThemeToggle />
           </div>
         </div>
@@ -177,6 +193,63 @@ export default function HomePage() {
             </div>
           </div>
         </MotionView>
+
+        {/* Expedition Navigation Hub */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Link href="/collection" className="group focus:outline-none">
+            <Card className="p-5 border border-border bg-card group-hover:border-[#F35C2B]/50 group-hover:shadow-md transition-all">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F35C2B]/10 text-[#F35C2B] flex items-center justify-center shrink-0">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-sans font-bold text-base text-foreground group-hover:text-[#F35C2B] transition-colors">
+                    Life List
+                  </h3>
+                  <p className="font-serif text-xs text-muted-foreground mt-0.5">
+                    Cataloged species & daily hunt
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/journal" className="group focus:outline-none">
+            <Card className="p-5 border border-border bg-card group-hover:border-[#F35C2B]/50 group-hover:shadow-md transition-all">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F35C2B]/10 text-[#F35C2B] flex items-center justify-center shrink-0">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-sans font-bold text-base text-foreground group-hover:text-[#F35C2B] transition-colors">
+                    Field Journal
+                  </h3>
+                  <p className="font-serif text-xs text-muted-foreground mt-0.5">
+                    Trail replay & 12-week heatmap
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/settings" className="group focus:outline-none">
+            <Card className="p-5 border border-border bg-card group-hover:border-[#F35C2B]/50 group-hover:shadow-md transition-all">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F35C2B]/10 text-[#F35C2B] flex items-center justify-center shrink-0">
+                  <SlidersHorizontal className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-sans font-bold text-base text-foreground group-hover:text-[#F35C2B] transition-colors">
+                    Settings & Vault
+                  </h3>
+                  <p className="font-serif text-xs text-muted-foreground mt-0.5">
+                    Obsidian export & data control
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+        </div>
 
         {/* Component Showcase Grid */}
         <div className="grid gap-6 md:grid-cols-2">

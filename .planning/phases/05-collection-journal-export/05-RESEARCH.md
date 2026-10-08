@@ -246,3 +246,4 @@ Nyquist validation plan for Phase 5 verification:
    - Verify `/settings` "Delete All Data" requires typing "DELETE" and completely empties all Dexie tables.
 4. **Obsidian Import Verification:**
    - Inspect markdown output for valid YAML frontmatter delimiters (`---`), proper wiki-link formatting (`[[...]]`), and embedded media syntax (`![[...]]`).
+

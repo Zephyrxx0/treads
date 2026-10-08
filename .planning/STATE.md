@@ -1,19 +1,19 @@
 ---
 gsd_state_version: 1.0
-current_phase: 04
-current_phase_name: Voice Notes, Narration & Loop Routing
+current_phase: 05
+current_phase_name: Collection, Journal & Export
 status: completed
-stopped_at: Phase 5 plans created
-last_updated: "2026-10-08T12:17:28.188Z"
+stopped_at: Phase 5 executed and verified
+last_updated: "2026-10-08T18:02:30.000Z"
 last_activity: 2026-10-08
-last_activity_desc: Phase 04 execution completed (All 2 plans executed and verified)
-state_head: 67a067665fce46e6c2320f7ceac4970a4f661713
+last_activity_desc: Phase 05 execution completed (All 2 plans executed and verified)
+state_head: HEAD
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 12
-  completed_plans: 10
-  percent: 67
+  completed_plans: 12
+  percent: 83
 ---
 
 # Project State
@@ -23,22 +23,22 @@ progress:
 See: [.planning/PROJECT.md](file:///.planning/PROJECT.md) (updated 2026-10-08)
 
 **Core value:** Get from launch to first organism capture in two taps, delivering fast, honest, Wikipedia-grounded identification that stays entirely private on the user's phone.  
-**Current focus:** Phase 04 completed — ready for Phase 05 (Collection, Journal & Export)
+**Current focus:** Phase 05 completed — ready for Phase 06 (Polish, PWA & Production Readiness)
 
 ## Current Position
 
-Phase: 04 (Voice Notes, Narration & Loop Routing) — COMPLETED
+Phase: 05 (Collection, Journal & Export) — COMPLETED
 Plan: 2 of 2 completed
-Status: Phase 04 complete
-Last activity: 2026-10-08 — Phase 04 execution completed (Voice recording with live waveform, Scribe STT, fact card TTS narration with SHA-256 speech cache, ORS pedestrian loop discovery, dashed MapLibre guidelines, off-route HUD guidance, audio note trail pins, and summary notes reel)
+Status: Phase 05 complete
+Last activity: 2026-10-08 — Phase 05 execution completed (Life list with daily species hunt challenge, celebratory stamp dialog, Dexie reactive taxon filters, 12-week activity heatmap, past walk timeline, MapLibre route replay with editable title and safe deletion, client-side Obsidian Naturalist Vault ZIP archive generation, and settings page with two-step Danger Zone reset modal)
 
-Progress: [██████████] 100% (Phase 4)
+Progress: [██████████] 100% (Phase 5)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: - min
 - Total execution time: 0.0 hours
 
@@ -50,7 +50,7 @@ Progress: [██████████] 100% (Phase 4)
 | 2. Walk & GPS | 2/2 | 2 | - |
 | 3. Photo & AI | 3/3 | 3 | - |
 | 4. Voice & Route | 2/2 | 2 | - |
-| 5. Collection & Export | 0/2 | - | - |
+| 5. Collection & Export | 2/2 | 2 | - |
 | 6. Polish & Eval | 0/2 | - | - |
 
 **Recent Trend:**
