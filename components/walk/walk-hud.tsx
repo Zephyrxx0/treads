@@ -6,6 +6,8 @@ import { GpsSignalStatus } from '@/hooks/use-geolocation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, AlertTriangle, CheckCircle2, Loader2, Navigation2, X } from 'lucide-react';
+import type { HuntProgress } from '@/lib/hunt';
+import { DailyHuntHudPill } from '@/components/hunt/daily-hunt-hud-pill';
 
 export interface WalkHudProps {
   durationSeconds: number;
@@ -19,6 +21,7 @@ export interface WalkHudProps {
   onSpecimenCountClick?: () => void;
   isOffRoute?: boolean;
   onClearRoute?: () => void;
+  huntProgress?: HuntProgress | null;
 }
 
 export function WalkHud({
@@ -33,11 +36,14 @@ export function WalkHud({
   onSpecimenCountClick,
   isOffRoute = false,
   onClearRoute,
+  huntProgress,
 }: WalkHudProps) {
   return (
     <div className="absolute top-4 inset-x-0 z-30 flex flex-col items-center gap-2 px-4 pointer-events-none">
       {/* Top Notification Row */}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {/* Daily Species Hunt Compact Pill (per D-04, HUNT-01) */}
+        {huntProgress && <DailyHuntHudPill progress={huntProgress} />}
         {/* Off-Route HUD Chip (per D-15, ROUT-01, UI-SPEC) */}
         {isOffRoute && (
           <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-amber-500/40 shadow-md text-xs font-medium text-foreground animate-in fade-in slide-in-from-top-2 duration-300">

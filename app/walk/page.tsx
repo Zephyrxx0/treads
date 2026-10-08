@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ArrowLeft, Compass, Play } from 'lucide-react';
+import { getDailyHunt, evaluateHuntProgress } from '@/lib/hunt';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -79,6 +80,16 @@ export default function WalkPage() {
     },
     [walkId]
   ) || [];
+
+  // Live Daily Species Hunt progress for today (per HUNT-01, D-04)
+  const allConfirmedEntries = useLiveQuery(
+    () => db.entries.where('status').equals('confirmed').toArray()
+  ) || [];
+  const dailyHunt = useMemo(() => getDailyHunt(), []);
+  const huntProgress = useMemo(
+    () => evaluateHuntProgress(dailyHunt, allConfirmedEntries),
+    [dailyHunt, allConfirmedEntries]
+  );
 
   // Pre-walk suggested pedestrian loop preview coordinates
   const [previewRouteLine, setPreviewRouteLine] = useState<[number, number][] | null>(null);
@@ -453,6 +464,7 @@ export default function WalkPage() {
           specimenCount={identifiedSpecimensCount}
           isOffRoute={isOffRoute}
           onClearRoute={clearRouteLine}
+          huntProgress={huntProgress}
         />
       )}
 
