@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4D2AXTTJMY0BGTJ1JPJ3HT2",
+  "session_id": "dadb89b9-0302-494c-adf4-4eb2ccfb641b",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T06:13:46.449049552Z",
+  "branch": "phase-1-foundation-spikes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(dev)/spike/page.tsx",
+    "app/api/spike/ai/route.ts",
+    "app/api/spike/map/route.ts",
+    "app/api/spike/speech/route.ts",
+    "components/ai/spike-ai-runner.tsx",
+    "components/map/spike-map.tsx",
+    "components/speech/spike-speech-runner.tsx",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "225e4947c804",
+  "checkpoint_transcript_start": 309,
+  "transcript_lines_at_start": 309,
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T06:13:46.406348995Z",
+    "agent_lines": 1510,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1510,
+    "total_lines_changed": 1510,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 15,
+      "user_lines_removed": 9,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/STATE.md": 9,
+        ".planning/milestone.lock": 6
+      },
+      "user_removed_per_file": {
+        ".planning/STATE.md": 9
+      }
+    }
+  ]
+}

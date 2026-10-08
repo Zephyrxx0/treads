@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4D2AXTTJMY0BGTJ1JPJ3HT2",
+  "strategy": "manual-commit",
+  "branch": "phase-1-foundation-spikes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(dev)/spike/page.tsx",
+    "app/api/spike/ai/route.ts",
+    "app/api/spike/map/route.ts",
+    "app/api/spike/speech/route.ts",
+    "components/ai/spike-ai-runner.tsx",
+    "components/map/spike-map.tsx",
+    "components/speech/spike-speech-runner.tsx",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
