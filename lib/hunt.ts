@@ -234,3 +234,4 @@ export function evaluateHuntProgress(hunt: DailyHunt, entries: Entry[]): HuntPro
     matchingEntryIds,
   };
 }
+

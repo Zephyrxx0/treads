@@ -237,3 +237,4 @@ export function ActivityHeatmap({ walks, entries, className }: ActivityHeatmapPr
     </Card>
   );
 }
+

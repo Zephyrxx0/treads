@@ -137,3 +137,4 @@ export function WalkCard({ walk, entries, notes, className }: WalkCardProps) {
     </Link>
   );
 }
+

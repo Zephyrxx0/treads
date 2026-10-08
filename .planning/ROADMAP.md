@@ -12,7 +12,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 - [x] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles. (completed 2026-10-08)
 - [x] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards. (completed 2026-10-08)
 - [x] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes. (completed 2026-10-08)
-- [ ] **Phase 5: Collection, Journal & Export** - Deterministic daily species hunt, Life List categorization on `/collection`, timeline heatmap, and Obsidian-compatible ZIP export.
+- [x] **Phase 5: Collection, Journal & Export** - Deterministic daily species hunt, Life List categorization on `/collection`, timeline heatmap, and Obsidian-compatible ZIP export. (completed 2026-10-08)
 - [ ] **Phase 6: Polish, Consent Gate, Evaluation & Submission** - Full-screen consent modal, Tegaki handwriting animations, Cuelume audio chimes, `/eval` batch benchmark runner, and outdoor verification.
 
 ---
@@ -131,12 +131,12 @@ Plans:
   3. `/journal` renders previous walks grouped by date with statistics and activity heatmap.
   4. Export button generates a downloadable ZIP containing structured Markdown files, images, and full database JSON dump.  
 
-**Plans**: 2 plans  
+**Plans**: 2/2 plans executed  
 
 Plans:
 
-- [ ] 05-01: `/collection` page with daily species hunt rules engine, life list taxon grouping, and completion animation.
-- [ ] 05-02: `/journal` timeline with heatmap, walk detail page (`/journal/[walkId]`), and JSZip Obsidian export generator.
+- [x] 05-01: `/collection` page with daily species hunt rules engine, life list taxon grouping, and completion animation.
+- [x] 05-02: `/journal` timeline with heatmap, walk detail page (`/journal/[walkId]`), and JSZip Obsidian export generator.
 
 ---
 

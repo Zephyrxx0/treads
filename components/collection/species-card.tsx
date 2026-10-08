@@ -147,3 +147,4 @@ export function SpeciesCard({ species, className }: SpeciesCardProps) {
     </Link>
   );
 }
+

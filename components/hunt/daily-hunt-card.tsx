@@ -191,3 +191,4 @@ export function DailyHuntCard({ progress, className }: DailyHuntCardProps) {
     </>
   );
 }
+

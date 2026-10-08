@@ -584,3 +584,4 @@ export default function WalkDetailPage({
     </div>
   );
 }
+
