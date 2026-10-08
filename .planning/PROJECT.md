@@ -55,7 +55,7 @@ Get from launch to first organism capture in two taps, delivering fast, honest, 
 
 ## Constraints
 
-- **Tech Stack**: Next.js App Router, React 19, Tailwind CSS, shadcn (Base UI), Dexie (IndexedDB), MapLibre GL
+- **Tech Stack**: Next.js 16.4 (App Router, Cache Components, Agent features, Lazy dynamic imports), React 19.3, Tailwind CSS, shadcn (Base UI), Dexie (IndexedDB), MapLibre GL
 - **AI Backend**: Google AI Studio API key (`GOOGLE_GENERATIVE_AI_API_KEY`)
 - **Speech**: ElevenLabs Creator plan for Scribe batch STT and TTS, with browser Web Speech API fallback
 - **Maps & Tiles**: OpenFreeMap (free tiles) and OpenRouteService (2,000 req/day cap)
@@ -65,7 +65,7 @@ Get from launch to first organism capture in two taps, delivering fast, honest, 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Next.js App Router + React 19 | Cutting-edge framework with Cache Components and performance | — Pending |
+| Next.js 16.4 App Router + React 19.3 | Cutting-edge framework with Cache Components, agent features, lazy dynamic imports, and performance | — Pending |
 | Tangerin Dream theme only | Single, cohesive aesthetic for nature walk field journal | — Pending |
 | Canvas EXIF stripping client-side | Privacy protection & payload reduction (~150KB) | — Pending |
 | Gemini Flash vision fallback for Gemma | Guarantees multimodal JSON identification if Gemma vision is limited | — Pending |

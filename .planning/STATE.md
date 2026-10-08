@@ -63,7 +63,7 @@ Progress: [░░░░░░░░░░] 0%
 
 Decisions logged in [PROJECT.md](file:///.planning/PROJECT.md) and [DECISIONS.md](file:///DECISIONS.md).
 
-- [Init]: Next.js 15 App Router + React 19 + Tailwind v4 + Tangerin Dream theme tokens
+- [Init]: Next.js 16.4 (App Router, Cache Components, Agent features, Lazy dynamic imports) + React 19.3 + Tailwind v4 + Tangerin Dream theme tokens
 - [Init]: Client-side Canvas EXIF & GPS stripping before Dexie storage & AI upload
 - [Init]: Gemini 2.0 Flash fallback for Gemma vision candidate identification
 - [Init]: Deep Wikipedia Action API lead extract with numbered sentence citations

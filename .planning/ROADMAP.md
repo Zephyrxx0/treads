@@ -2,13 +2,13 @@
 
 ## Overview
 
-Treads is built through 6 phased increments from foundation to release, strictly aligned with the 5-day hackathon window. Beginning with Next.js/React 19 scaffolding, Tangerin Dream design tokens, and Day 1 AI/Map spikes, the journey proceeds through mobile-resilient walk tracking, camera capture with client-side Canvas EXIF stripping, Wikipedia-grounded Gemma identification, voice notes with Web Speech fallbacks, life list collection, Obsidian-compatible export, and outdoor evaluation testing.
+Treads is built through 6 phased increments from foundation to release, strictly aligned with the 5-day hackathon window. Beginning with Next.js 16.4 (Cache Components, new agent features, lazy dynamic imports) and React 19.3 scaffolding, Tangerin Dream design tokens, and Day 1 AI/Map spikes, the journey proceeds through mobile-resilient walk tracking, camera capture with client-side Canvas EXIF stripping, Wikipedia-grounded Gemma identification, voice notes with Web Speech fallbacks, life list collection, Obsidian-compatible export, and outdoor evaluation testing.
 
 ---
 
 ## Phases
 
-- [ ] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 15, React 19, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes.
+- [ ] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes.
 - [ ] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles.
 - [ ] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards.
 - [ ] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes.
@@ -24,7 +24,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 **Depends on**: Nothing (first phase)  
 **Requirements**: CONS-01, CONS-02, CONS-03, CONS-04, DSGN-01, DSGN-02, RATE-01, EVAL-01  
 **Success Criteria**:
-  1. Next.js app builds cleanly with React 19, Tailwind CSS v4, and Tangerin Dream theme variables.
+  1. Next.js app builds cleanly with Next.js 16.4, React 19.3, Tailwind CSS v4, and Tangerin Dream theme variables.
   2. Dexie IndexedDB initializes tables (`walks`, `entries`, `notes`, `speechCache`, `settings`) with live query hooks.
   3. Google AI Studio spike confirms structured candidate extraction and Gemini Flash fallback connectivity.
   4. MapLibre GL successfully loads OpenFreeMap vector style in a test container without API keys.
@@ -32,7 +32,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 **Plans**: 3 plans  
 
 Plans:
-- [ ] 01-01: Next.js 15 + React 19 scaffold, Tailwind v4, shadcn Base UI setup, and Tangerin Dream theme tokens in `globals.css`.
+- [ ] 01-01: Next.js 16.4 + React 19.3 scaffold, Tailwind v4, shadcn Base UI setup, and Tangerin Dream theme tokens in `globals.css`.
 - [ ] 01-02: Dexie.js database schema implementation (`db.ts`), settings store, and in-memory dual-mode rate limiter.
 - [ ] 01-03: Day 1 verification spikes: Google AI Studio candidate generation, MapLibre OpenFreeMap style loading, and `/eval` harness shell.
 

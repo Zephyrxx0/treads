@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Phase 1 establishes the core Next.js 15, React 19, and Tailwind CSS v4 application shell with Tangerin Dream design tokens, shadcn (Base UI) component suite, offline-first Dexie.js database schema (`db.ts`), in-memory dual-mode rate limiter, and executes Day 1 verification spikes (Google AI Studio Gemma candidate extraction with Gemini Flash fallback, MapLibre GL OpenFreeMap tile rendering, and `/eval` harness dashboard shell).
+Phase 1 establishes the core Next.js 16.4 (App Router, Cache Components, Agent features, Lazy dynamic imports), React 19.3, and Tailwind CSS v4 application shell with Tangerin Dream design tokens, shadcn (Base UI) component suite, offline-first Dexie.js database schema (`db.ts`), in-memory dual-mode rate limiter, and executes Day 1 verification spikes (Google AI Studio Gemma candidate extraction with Gemini Flash fallback, MapLibre GL OpenFreeMap tile rendering, and `/eval` harness dashboard shell).
 
 </domain>
 
@@ -58,7 +58,7 @@ Phase 1 establishes the core Next.js 15, React 19, and Tailwind CSS v4 applicati
 - Architectural specifications and component registry documented in `DECISIONS.md`.
 
 ### Established Patterns
-- Next.js App Router with React 19 and Tailwind CSS v4.
+- Next.js 16.4 App Router (Cache Components, Agent features, Lazy dynamic imports) with React 19.3 and Tailwind CSS v4.
 - shadcn component registry backed by `@base-ui-components/react`.
 - Dexie.js for client-side persistence with live query hooks (`dexie-react-hooks`).
 

@@ -23,7 +23,7 @@ The primary technical risks identified—Android mobile browser tab freezing, GP
 
 See detailed specification in [.planning/research/STACK.md](file:///.planning/research/STACK.md).
 
-- **App Framework & Runtime**: Next.js 15 (App Router, canary) with React 19, TypeScript (`strict: true`), and `pnpm`.
+- **App Framework & Runtime**: Next.js 16.4 (App Router, Cache Components, new agent features, lazy dynamic imports) with React 19.3, TypeScript (`strict: true`), and `pnpm`.
 - **UI & Design System**: Tailwind CSS v4 with Tangerin Dream CSS custom property tokens, shadcn UI components backed by `@base-ui-components/react`, Lucide icons, and `motion/react`. Progressive Tegaki handwriting reveals with web font fallback.
 - **Local Storage**: Dexie.js (`dexie`, `dexie-react-hooks`) for IndexedDB with `storage.persist()` and live queries.
 - **Maps & Geolocation**: MapLibre GL with OpenFreeMap vector tiles (`liberty` style) and OpenRouteService pedestrian routing.
@@ -87,7 +87,7 @@ See full analysis in [.planning/research/PITFALLS.md](file:///.planning/research
 Suggested 5-day / 6-phase execution structure aligned with [PRD.md](file:///home/zeph/Code/treads/PRD.md#L140-L147):
 
 ### Phase 1: Foundation, Theme & Day 1 Verification Spikes
-- **Rationale**: Validates foundational gates before building product logic: Next.js + React 19 + shadcn Base UI + Tangerin Dream theme, Dexie database initialization, Google AI Studio vision/structured output spike, MapLibre OpenFreeMap spike, and speech fallback spike.
+- **Rationale**: Validates foundational gates before building product logic: Next.js 16.4 + React 19.3 + shadcn Base UI + Tangerin Dream theme, Dexie database initialization, Google AI Studio vision/structured output spike, MapLibre OpenFreeMap spike, and speech fallback spike.
 - **Delivers**: Project scaffolding, theme tokens, database schemas, and passing Day 1 verification tests.
 - **Avoids**: Late discovery of Gemma vision limitations or MapLibre styling errors.
 
@@ -122,7 +122,7 @@ Suggested 5-day / 6-phase execution structure aligned with [PRD.md](file:///home
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | Modern Next.js + React 19 + Dexie + MapLibre + Vercel AI SDK stack fully verified |
+| Stack | HIGH | Modern Next.js 16.4 + React 19.3 + Dexie + MapLibre + Vercel AI SDK stack fully verified |
 | Features | HIGH | Clear MoSCoW boundaries aligned with solo 5-day hackathon timeline |
 | Architecture | HIGH | Zero-server IndexedDB model eliminates backend infrastructure fragility |
 | Pitfalls | HIGH | Deeply researched mobile web browser constraints and safety mitigations |
@@ -134,7 +134,7 @@ Suggested 5-day / 6-phase execution structure aligned with [PRD.md](file:///home
 ## Sources
 
 ### Primary (HIGH confidence)
-- Next.js 15 App Router & React 19 Documentation
+- Next.js 16.4 App Router & React 19.3 Documentation
 - Vercel AI SDK Core & `@ai-sdk/google` Specification
 - Dexie.js 4.0 IndexedDB API & `storage.persist()` W3C Standard
 - MapLibre GL JS Documentation & OpenFreeMap Tiles Style Specification

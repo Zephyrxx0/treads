@@ -12,8 +12,8 @@
 
 | Technology | Version | Purpose | Why Recommended |
 |------------|---------|---------|-----------------|
-| **Next.js (App Router)** | `15.x` (`canary`) | Fullstack web application framework, edge & node route handlers, React Server Components (RSC) | Industry benchmark for React-based production web apps. App Router provides zero-bundle-cost server components for marketing pages, isolated API route handlers (`/api/identify`, `/api/facts`, `/api/transcribe`, `/api/speak`, `/api/route`) protecting API keys, and built-in optimization pipelines. |
-| **React** | `19.0.0` (`19.x`) | UI runtime and component architecture | First-class Actions, `use()` hook for promise and context unwrapping, automatic compiler optimizations, and seamless integration with Next.js 15 App Router. |
+| **Next.js (App Router)** | `16.4` | Fullstack web application framework with Cache Components, new agent features, lazy dynamic imports, edge & node route handlers, React Server Components (RSC) | Industry benchmark for React-based production web apps. Next.js 16.4 introduces Cache Components, new agent integration features, lazy dynamic imports, zero-bundle-cost server components for marketing pages, and isolated API route handlers (`/api/identify`, `/api/facts`, `/api/transcribe`, `/api/speak`, `/api/route`) protecting API keys. |
+| **React** | `19.3.0` (`19.3.x`) | UI runtime and component architecture | First-class Actions, `use()` hook for promise and context unwrapping, automatic compiler optimizations, and seamless integration with Next.js 16.4 App Router. |
 | **Tailwind CSS** | `^4.0.0` (or `^3.4.17` with `@tailwindcss/postcss`) | Utility-first CSS engine and styling architecture | Eliminates style overhead; zero runtime style compilation. Integrates directly with CSS custom properties for theme token binding. |
 | **shadcn UI (Base UI preset)** | `@base-ui-components/react` (`^1.0.0-alpha.x`) | Headless, accessible UI component primitives | Replaces Radix UI with Base UI (MUI/Floating UI collaboration) under the shadcn CLI generator pattern. Components are copied directly into the codebase (`components/ui/`), providing complete styling freedom without locked external package dependencies. |
 | **Tangerin Dream Theme** | CSS Tokens (TweakCN spec `cmoiegs7i000004l3h5in1zey`) | Warm, organic earthy color palette & typography tokens | Cohesive visual identity specifically fitted to outdoor nature walks (warm amber/tangerine accents, earthy slate neutrals, natural contrast). Pure CSS variables in `:root` and `.dark` blocks with zero runtime overhead. |
@@ -58,8 +58,8 @@
 ## Installation
 
 ```bash
-# Core Next.js, React 19, and Styling
-pnpm add next@canary react@rc react-dom@rc
+# Core Next.js 16.4, React 19.3, and Styling
+pnpm add next@16.4 react@19.3 react-dom@19.3
 pnpm add tailwindcss @tailwindcss/postcss postcss clsx tailwind-merge class-variance-authority
 
 # UI Primitives, Animation & Icons
@@ -154,9 +154,9 @@ pnpm add -D typescript @types/node @types/react @types/react-dom @types/maplibre
 
 | Package A | Compatible With | Notes |
 |-----------|-----------------|-------|
-| `next@15.x` (`canary`) | `react@19.x`, `react-dom@19.x` | Next.js 15 requires React 19. Ensure async route handler params (`const { id } = await params`) are awaited to adhere to Next.js 15 breaking changes. |
+| `next@16.4` | `react@19.3.x`, `react-dom@19.3.x` | Next.js 16.4 leverages React 19.3. Supports Cache Components, agent features, lazy dynamic imports, and async route params. |
 | `maplibre-gl@^5.1.0` | Next.js App Router | `maplibre-gl` references `window` and WebGL contexts during module initialization. It MUST be imported dynamically (`next/dynamic` with `ssr: false`) or initialized inside a client-side `useEffect` hook. |
-| `@base-ui-components/react` | `react@19.x` | Base UI components are designed without legacy React context patterns, providing seamless compatibility with React 19 compiler and server components. |
+| `@base-ui-components/react` | `react@19.3.x` | Base UI components are designed without legacy React context patterns, providing seamless compatibility with React 19 compiler and server components. |
 | `dexie@^4.0.10` | Browser IndexedDB | IndexedDB is unavailable on Node.js/SSR environments. All Dexie operations must be confined to client components (`'use client'`) or guarded by `typeof window !== 'undefined'`. |
 | `@ai-sdk/google@^1.1.x` | `ai@^4.1.x` | Ensure Vercel AI SDK version 4.x is installed; version 3.x uses deprecated streaming patterns and incompatible provider APIs. |
 | `tailwindcss@^4.0.0` | PostCSS / `@tailwindcss/postcss` | Tailwind v4 uses CSS-first configuration (`@theme` in CSS). If using Tailwind v3, ensure standard `tailwind.config.ts` matches Tangerin Dream CSS variable names. |

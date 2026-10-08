@@ -16,7 +16,7 @@ Treads is built as a **Client-First, Privacy-Centric Progressive Web Application
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │                                CLIENT / BROWSER RUNTIME                                │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
-│  PRESENTATION LAYER (Next.js 15+ App Router, React 19, Tangerin Dream Theme)          │
+│  PRESENTATION LAYER (Next.js 16.4 App Router, React 19.3, Tangerin Dream Theme)       │
 │  ┌───────────────────┐  ┌───────────────────┐  ┌──────────────────┐  ┌───────────────┐ │
 │  │ /walk (Map/Cam)   │  │ /journal (History)│  │ /collection(Hunt)│  │ /entry/[id]   │ │
 │  └─────────┬─────────┘  └─────────┬─────────┘  └────────┬─────────┘  └───────┬───────┘ │
