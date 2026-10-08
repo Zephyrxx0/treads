@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-current_phase: 05
-current_phase_name: Collection, Journal & Export
-status: completed
-stopped_at: Phase 6 context gathered
-last_updated: "2026-10-08T13:00:16.700Z"
+current_phase: 6
+current_phase_name: polish-consent-gate-evaluation-submission
+status: executing
+stopped_at: Phase 6 UI-SPEC approved
+last_updated: "2026-10-08T13:13:56.040Z"
 last_activity: 2026-10-08
 last_activity_desc: Phase 05 execution completed (All 2 plans executed and verified)
-state_head: 6f2329621e044348b952d12eb6f6ba06d0b7725d
+state_head: a1e56807ccd7f5359c7744e90e596ec6613b21cd
 progress:
   total_phases: 6
   completed_phases: 5
-  total_plans: 12
+  total_plans: 14
   completed_plans: 12
   percent: 83
 ---
@@ -27,9 +27,9 @@ See: [.planning/PROJECT.md](file:///.planning/PROJECT.md) (updated 2026-10-08)
 
 ## Current Position
 
-Phase: 05 (Collection, Journal & Export) — COMPLETED
+Phase: 6 (polish-consent-gate-evaluation-submission) — READY TO EXECUTE
 Plan: 2 of 2 completed
-Status: Phase 05 complete
+Status: Ready to execute
 Last activity: 2026-10-08 — Phase 05 execution completed (Life list with daily species hunt challenge, celebratory stamp dialog, Dexie reactive taxon filters, 12-week activity heatmap, past walk timeline, MapLibre route replay with editable title and safe deletion, client-side Obsidian Naturalist Vault ZIP archive generation, and settings page with two-step Danger Zone reset modal)
 
 Progress: [██████████] 100% (Phase 5)
@@ -85,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-10-08T13:00:16.662Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-polish-consent-gate-evaluation-submission/06-CONTEXT.md
+Last session: 2026-10-08T13:10:23.196Z
+Stopped at: Phase 6 UI-SPEC approved
+Resume file: .planning/phases/06-polish-consent-gate-evaluation-submission/06-UI-SPEC.md

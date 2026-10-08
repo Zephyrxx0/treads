@@ -156,8 +156,12 @@ Plans:
 **Plans**: 2 plans  
 
 Plans:
+**Wave 1**
 
 - [ ] 06-01: Global consent modal gate (`components/consent-modal.tsx`), Tegaki stroke animation component, and Cuelume sound synthesis helper.
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 06-02: Benchmark evaluation runner (`app/(dev)/eval`), 30-fixture test set, end-to-end verification audit, and production build checks.
 
 ---
