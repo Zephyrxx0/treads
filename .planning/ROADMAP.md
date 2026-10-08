@@ -70,8 +70,8 @@ Plans:
 
 Plans:
 
-- [ ] 02-01: Geolocation tracking hook (`useGeolocation`) with Kalman/displacement filtering and Dexie walk write-through (`useActiveWalk`).
-- [ ] 02-02: MapLibre GL interactive map component with OpenFreeMap tiles, user position marker, polyline trail, and walk start/stop controls.
+- [ ] 02-01-PLAN.md — Geolocation noise filter, distance engine & Dexie walk session store
+- [ ] 02-02-PLAN.md — MapLibre GL trail map, outdoor HUD, and walk lifecycle interface
 
 ---
 
