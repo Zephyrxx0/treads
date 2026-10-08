@@ -3,6 +3,7 @@ import { Amaranth, Noto_Serif, Caveat } from 'next/font/google';
 import './globals.css';
 import { ConsentModal } from '@/components/consent/consent-modal';
 import { ThemeSync } from '@/components/theme/theme-sync';
+import { Agentation } from 'agentation';
 
 const amaranth = Amaranth({
   weight: ['400', '700'],
@@ -58,6 +59,9 @@ export default function RootLayout({
         <ThemeSync />
         <ConsentModal />
         {children}
+        {process.env.NODE_ENV === 'development' && (
+          <Agentation endpoint="http://localhost:4747" />
+        )}
       </body>
     </html>
   );
