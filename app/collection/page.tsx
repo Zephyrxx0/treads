@@ -174,7 +174,7 @@ export default function CollectionPage() {
               href="/walk"
               className={cn(
                 buttonVariants({ variant: 'default', size: 'sm' }),
-                'bg-[#F35C2B] text-white hover:bg-[#F35C2B]/90 font-medium shadow-sm'
+                'bg-primary text-primary-foreground hover:bg-primary/90 font-medium shadow-sm'
               )}
             >
               <Footprints className="h-3.5 w-3.5 mr-1.5" />
