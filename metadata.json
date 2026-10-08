@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4D1APC934CVE2FSWCC5ZTZP",
+  "strategy": "manual-commit",
+  "branch": "phase-1-foundation-spikes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/page.tsx",
+    "components.json",
+    "components/motion/motion-view.tsx",
+    "components/ui/badge.tsx",
+    "components/ui/button.tsx",
+    "components/ui/card.tsx",
+    "components/ui/dialog.tsx",
+    "components/ui/progress.tsx",
+    "components/ui/sheet.tsx",
+    "components/ui/theme-toggle.tsx",
+    "hooks/use-reduced-motion.ts",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
