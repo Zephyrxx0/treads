@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4D2HVE6D45G689Q0FG8MJD6",
+  "strategy": "manual-commit",
+  "branch": "phase-1-foundation-spikes",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/(dev)/eval/page.tsx",
+    "app/api/eval/run/route.ts",
+    "components/eval/eval-metrics.tsx",
+    "components/eval/fixture-card.tsx",
+    "public/eval-fixtures/fixtures.json",
+    "public/eval-fixtures/images/acer-rubrum.svg",
+    "public/eval-fixtures/images/apis-mellifera.svg",
+    "public/eval-fixtures/images/bellis-perennis.svg",
+    "public/eval-fixtures/images/bombus-terrestris.svg",
+    "public/eval-fixtures/images/coccinella-septempunctata.svg",
+    "public/eval-fixtures/images/coffee-mug.svg",
+    "public/eval-fixtures/images/columba-livia.svg",
+    "public/eval-fixtures/images/commuter-bicycle.svg",
+    "public/eval-fixtures/images/corvus-brachyrhynchos.svg",
+    "public/eval-fixtures/images/cyanocitta-cristata.svg",
+    "public/eval-fixtures/images/danaus-plexippus.svg",
+    "public/eval-fixtures/images/hedera-helix.svg",
+    "public/eval-fixtures/images/helianthus-annuus.svg",
+    "public/eval-fixtures/images/human-hand.svg",
+    "public/eval-fixtures/images/human-portrait.svg",
+    "public/eval-fixtures/images/musca-domestica.svg",
+    "public/eval-fixtures/images/parus-major.svg",
+    "public/eval-fixtures/images/passer-domesticus.svg",
+    "public/eval-fixtures/images/person-walking.svg",
+    "public/eval-fixtures/images/pinus-strobus.svg",
+    "public/eval-fixtures/images/plantago-major.svg",
+    "public/eval-fixtures/images/quercus-alba.svg",
+    "public/eval-fixtures/images/rosa-canina.svg",
+    "public/eval-fixtures/images/selfie-outdoors.svg",
+    "public/eval-fixtures/images/smartphone-screen.svg",
+    "public/eval-fixtures/images/taraxacum-officinale.svg",
+    "public/eval-fixtures/images/trifolium-repens.svg",
+    "public/eval-fixtures/images/turdus-migratorius.svg",
+    "public/eval-fixtures/images/vanessa-atalanta.svg",
+    "public/eval-fixtures/images/wooden-bench.svg",
+    "scripts/generate-eval-fixtures.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
