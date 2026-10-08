@@ -217,57 +217,25 @@
   },
   {
     "id": "fix-09",
-    "name": "Dog Rose",
-    "category": "plant",
-    "expectedScientificName": "Rosa canina",
-    "expectedCommonName": "Dog Rose",
-    "expectRefusal": false,
-    "description": "Climbing wild rose shrub with curved prickles, pale pink to white five-petaled blossoms, and red hips.",
-    "imagePath": "/eval-fixtures/images/rosa-canina.svg",
-    "kind": "flower",
-    "mockCandidates": [
-      {
-        "scientificName": "Rosa canina",
-        "commonName": "Dog Rose",
-        "kind": "flower",
-        "confidence": "Likely",
-        "wikipediaTitle": "Rosa canina"
-      },
-      {
-        "scientificName": "Rosa sp.",
-        "commonName": "Related Dog Rose",
-        "kind": "flower",
-        "confidence": "Possible",
-        "wikipediaTitle": "Rosa"
-      }
-    ]
+    "name": "Reusable water bottle",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Reusable water bottle",
+    "expectRefusal": true,
+    "description": "Stainless steel insulated water bottle with plastic screw cap resting on a picnic table.",
+    "imagePath": "/eval-fixtures/images/water-bottle.svg",
+    "kind": "object"
   },
   {
     "id": "fix-10",
-    "name": "Common Ivy",
-    "category": "plant",
-    "expectedScientificName": "Hedera helix",
-    "expectedCommonName": "Common Ivy",
-    "expectRefusal": false,
-    "description": "Evergreen climbing vine with glossy, palmately 3-5 lobed dark green leaves with pale veins.",
-    "imagePath": "/eval-fixtures/images/hedera-helix.svg",
-    "kind": "plant",
-    "mockCandidates": [
-      {
-        "scientificName": "Hedera helix",
-        "commonName": "Common Ivy",
-        "kind": "plant",
-        "confidence": "Likely",
-        "wikipediaTitle": "Hedera helix"
-      },
-      {
-        "scientificName": "Hedera sp.",
-        "commonName": "Related Common Ivy",
-        "kind": "plant",
-        "confidence": "Possible",
-        "wikipediaTitle": "Hedera"
-      }
-    ]
+    "name": "Asphalt pavement",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Asphalt pavement",
+    "expectRefusal": true,
+    "description": "Cracked black asphalt roadway surface with painted yellow lane dividing line.",
+    "imagePath": "/eval-fixtures/images/asphalt-pavement.svg",
+    "kind": "object"
   },
   {
     "id": "fix-11",

@@ -81,3 +81,4 @@ export function TegakiText({
     </Component>
   );
 }
+

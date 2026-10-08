@@ -158,11 +158,11 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 06-01: Global consent modal gate (`components/consent-modal.tsx`), Tegaki stroke animation component, and Cuelume sound synthesis helper.
+- [x] 06-01: Global consent modal gate (`components/consent-modal.tsx`), Tegaki stroke animation component, and Cuelume sound synthesis helper.
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 06-02: Benchmark evaluation runner (`app/(dev)/eval`), 30-fixture test set, end-to-end verification audit, and production build checks.
+- [x] 06-02: Benchmark evaluation runner (`app/(dev)/eval`), 30-fixture test set, end-to-end verification audit, and production build checks.
 
 ---
 
@@ -177,5 +177,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Walk Session & Geolocation Tracking | 2/2 | Complete    | 2026-10-08 |
 | 3. Photo Capture & AI Identification Pipeline | 3/3 | Complete    | 2026-10-08 |
 | 4. Voice Notes, Narration & Loop Routing | 2/2 | Complete    | 2026-10-08 |
-| 5. Collection, Journal & Export | 0/2 | Not started | - |
-| 6. Polish, Consent Gate, Evaluation & Submission | 0/2 | Not started | - |
+| 5. Collection, Journal & Export | 2/2 | Complete    | 2026-10-08 |
+| 6. Polish, Consent Gate, Evaluation & Submission | 2/2 | Complete    | 2026-10-08 |

@@ -52,3 +52,4 @@ export async function triggerHuntWinHaptic(): Promise<void> {
     // Swallow vibration errors
   }
 }
+
