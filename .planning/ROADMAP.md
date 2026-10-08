@@ -139,3 +139,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 4. Voice Notes, Narration & Loop Routing | 0/2 | Not started | - |
 | 5. Collection, Journal & Export | 0/2 | Not started | - |
 | 6. Polish, Consent Gate, Evaluation & Submission | 0/2 | Not started | - |
+
