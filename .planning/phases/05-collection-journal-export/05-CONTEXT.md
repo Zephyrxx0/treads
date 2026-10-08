@@ -114,3 +114,4 @@ Phase 5 delivers the Life List collection interface (`/collection`), the daily s
 
 *Phase: 5-Collection, Journal & Export*
 *Context gathered: 2026-10-08*
+
