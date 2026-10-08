@@ -1,0 +1,61 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DR6DBX0N0K29DR24ZQGZKD",
+  "session_id": "9535c299-a2a7-4867-a152-75f0efdcd412",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T12:35:48.023173805Z",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/ROADMAP.md",
+    ".planning/phases/05-collection-journal-export/05-UAT.md",
+    ".planning/phases/05-collection-journal-export/05-VERIFICATION.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "c39f5e332510",
+  "checkpoint_transcript_start": 379,
+  "transcript_lines_at_start": 379,
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T12:35:47.947093177Z",
+    "agent_lines": 283,
+    "agent_removed": 4,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 283,
+    "total_lines_changed": 287,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 16,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/05-collection-journal-export/05-01-SUMMARY.md": 1,
+        ".planning/phases/05-collection-journal-export/05-02-SUMMARY.md": 1,
+        "app/collection/page.tsx": 1,
+        "app/journal/[walkId]/page.tsx": 1,
+        "app/journal/page.tsx": 1,
+        "app/settings/page.tsx": 1,
+        "components/collection/collection-filter-bar.tsx": 1,
+        "components/collection/species-card.tsx": 1,
+        "components/hunt/daily-hunt-card.tsx": 1,
+        "components/hunt/daily-hunt-celebration-dialog.tsx": 1,
+        "components/journal/activity-heatmap.tsx": 1,
+        "components/journal/walk-card.tsx": 1,
+        "components/ui/input.tsx": 1,
+        "lib/hunt.ts": 1,
+        "scripts/test-export-engine.ts": 1,
+        "scripts/test-hunt-engine.ts": 1
+      }
+    }
+  ]
+}
