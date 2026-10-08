@@ -15,12 +15,14 @@ import { useActiveWalk } from '@/hooks/use-active-walk';
 import { WalkHud } from '@/components/walk/walk-hud';
 import { WalkControls, WalkControlsHandle } from '@/components/walk/walk-controls';
 import { CameraCaptureSheet } from '@/components/walk/camera-capture-sheet';
+import { CandidatePickerSheet } from '@/components/walk/candidate-picker-sheet';
+import { IdentificationRefusalCard } from '@/components/walk/identification-refusal-card';
 import { WalkSummarySheet } from '@/components/walk/walk-summary-sheet';
 import { WalkDiscardDialog } from '@/components/walk/walk-discard-dialog';
 import type { WalkMapRef } from '@/components/map/walk-map';
 import { TrackPoint } from '@/lib/geo';
-import { processCapturedImage } from '@/lib/camera';
-import { db, Entry } from '@/lib/db';
+import { processCapturedImage, blobToBase64 } from '@/lib/camera';
+import { db, Entry, Candidate } from '@/lib/db';
 
 // Dynamically import WalkMap to prevent SSR "window is not defined" errors
 const WalkMap = dynamic(() => import('@/components/map/walk-map').then((mod) => mod.WalkMap), {
@@ -80,14 +82,20 @@ export default function WalkPage() {
     onNewTrackPoint: handleNewTrackPoint,
   });
 
-  // Camera capture state (Phase 3)
+  // Camera capture & identification state (Phase 3)
   const walkControlsRef = useRef<WalkControlsHandle | null>(null);
   const [isCaptureSheetOpen, setIsCaptureSheetOpen] = useState<boolean>(false);
   const [isProcessingPhoto, setIsProcessingPhoto] = useState<boolean>(false);
+  const [isIdentifying, setIsIdentifying] = useState<boolean>(false);
   const [capturedPhoto, setCapturedPhoto] = useState<{
     photoBlob: Blob;
     thumbnailBlob: Blob;
   } | null>(null);
+  const [activeEntryId, setActiveEntryId] = useState<string | null>(null);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [isCandidateSheetOpen, setIsCandidateSheetOpen] = useState<boolean>(false);
+  const [isRefusalCardOpen, setIsRefusalCardOpen] = useState<boolean>(false);
+  const [refusalReason, setRefusalReason] = useState<string>('');
 
   // Photo capture trigger & EXIF-stripping handler
   const handlePhotoSelected = useCallback(async (file: File) => {
@@ -104,7 +112,7 @@ export default function WalkPage() {
     }
   }, []);
 
-  // Retake photo action
+  // Retake photo action from capture sheet
   const handleRetakePhoto = useCallback(() => {
     setCapturedPhoto(null);
     setIsCaptureSheetOpen(false);
@@ -113,12 +121,15 @@ export default function WalkPage() {
     }, 150);
   }, []);
 
-  // Use Photo & Save to Dexie (Draft Entry)
+  // Use Photo, Save Draft to Dexie, and trigger /api/identify
   const handleIdentifyPhoto = useCallback(
     async (photoBlob: Blob, thumbnailBlob: Blob) => {
       if (!activeWalk) return;
+      const entryId = crypto.randomUUID();
+      setActiveEntryId(entryId);
+
       try {
-        const entryId = crypto.randomUUID();
+        // 1. Optimistic draft save to Dexie
         const newEntry: Entry = {
           id: entryId,
           walkId: activeWalk.id,
@@ -135,12 +146,100 @@ export default function WalkPage() {
         };
         await db.entries.add(newEntry);
         setIsCaptureSheetOpen(false);
+
+        // 2. Multimodal AI identification call
+        setIsIdentifying(true);
+        const base64 = await blobToBase64(photoBlob);
+        const res = await fetch('/api/identify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            image: base64,
+            month: new Date().getMonth() + 1,
+            lat: currentPosition?.lat,
+            lng: currentPosition?.lng,
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error(`Identify API responded with HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // 3. Handle Refusal vs Candidate Selection
+        if (!data.isLivingOrganism) {
+          await db.entries.update(entryId, { status: 'unidentified' });
+          setRefusalReason(data.refusalReason || '');
+          setIsRefusalCardOpen(true);
+        } else {
+          const returnedCandidates: Candidate[] = (data.candidates || []).map((c: any) => ({
+            scientificName: c.scientificName,
+            commonName: c.commonName,
+            kind: c.kind,
+            confidence: c.confidence,
+            wikipediaTitle: c.wikipediaTitle,
+            verified: Boolean(c.verified),
+          }));
+
+          await db.entries.update(entryId, {
+            candidates: returnedCandidates,
+          });
+          setCandidates(returnedCandidates);
+          setIsCandidateSheetOpen(true);
+        }
       } catch (err) {
-        console.error('Failed to save specimen entry:', err);
+        console.error('Failed to identify organism:', err);
+        // Note: Draft remains saved in Dexie with status 'saved'
+      } finally {
+        setIsIdentifying(false);
       }
     },
     [activeWalk, currentPosition]
   );
+
+  // Candidate confirmed by user tap
+  const handleConfirmCandidate = useCallback(
+    async (candidate: Candidate) => {
+      if (!activeEntryId) return;
+      try {
+        await db.entries.update(activeEntryId, {
+          confirmed: candidate,
+          status: 'identified',
+          verified: candidate.verified ?? false,
+        });
+        setIsCandidateSheetOpen(false);
+      } catch (err) {
+        console.error('Failed to confirm candidate in Dexie:', err);
+      }
+    },
+    [activeEntryId]
+  );
+
+  // Fallback: User saves observation as Unidentified Note
+  const handleSaveUnidentified = useCallback(async () => {
+    if (!activeEntryId) return;
+    try {
+      await db.entries.update(activeEntryId, {
+        status: 'unidentified',
+      });
+      setIsCandidateSheetOpen(false);
+      setIsRefusalCardOpen(false);
+    } catch (err) {
+      console.error('Failed to update entry as unidentified:', err);
+    }
+  }, [activeEntryId]);
+
+  // Retake photo action from candidate drawer or refusal modal
+  const handleRetakeFromCandidateOrRefusal = useCallback(() => {
+    setCapturedPhoto(null);
+    setCandidates([]);
+    setIsCandidateSheetOpen(false);
+    setIsRefusalCardOpen(false);
+    setTimeout(() => {
+      walkControlsRef.current?.triggerCapture();
+    }, 150);
+  }, []);
 
   // Auto-resume camera fly-to latest fix (per D-04)
   const hasHandledResumeFlyRef = useRef<boolean>(false);
@@ -364,9 +463,28 @@ export default function WalkPage() {
         onOpenChange={setIsCaptureSheetOpen}
         photoBlob={capturedPhoto?.photoBlob ?? null}
         thumbnailBlob={capturedPhoto?.thumbnailBlob ?? null}
-        isProcessing={isProcessingPhoto}
+        isProcessing={isProcessingPhoto || isIdentifying}
         onRetake={handleRetakePhoto}
         onIdentify={handleIdentifyPhoto}
+      />
+
+      {/* Candidate Species Picker Drawer (Phase 3) */}
+      <CandidatePickerSheet
+        open={isCandidateSheetOpen}
+        onOpenChange={setIsCandidateSheetOpen}
+        candidates={candidates}
+        onConfirmCandidate={handleConfirmCandidate}
+        onSaveUnidentified={handleSaveUnidentified}
+        onRetake={handleRetakeFromCandidateOrRefusal}
+      />
+
+      {/* Educational Refusal Card for Inanimate Objects & Humans (Phase 3) */}
+      <IdentificationRefusalCard
+        open={isRefusalCardOpen}
+        onOpenChange={setIsRefusalCardOpen}
+        refusalReason={refusalReason}
+        onRetake={handleRetakeFromCandidateOrRefusal}
+        onSaveUnidentified={handleSaveUnidentified}
       />
     </div>
   );
