@@ -100,3 +100,4 @@ This document defines the standardized manual verification protocol for real-wor
 | 6 | Voice Note | Canvas waveform, transcription, TTS audio replay | [ ] |
 | 7 | Journal & Life List | Heatmap calendar, taxonomic groupings, offline IndexedDB | [ ] |
 | 8 | Obsidian Vault Export | Clean Markdown YAML notes, images, backup JSON | [ ] |
+
