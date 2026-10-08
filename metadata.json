@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DTV6J0C7R7R148KAN52WQG",
+  "strategy": "manual-commit",
+  "branch": "phase-6-polish-eval-submission",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-01-SUMMARY.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-CONTEXT.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-DISCUSSION-LOG.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-UI-SPEC.md",
+    "app/entry/[id]/page.tsx",
+    "app/globals.css",
+    "app/layout.tsx",
+    "app/page.tsx",
+    "components/hunt/daily-hunt-celebration-dialog.tsx",
+    "components/motion/tegaki-text.tsx",
+    "components/walk/candidate-picker-sheet.tsx",
+    "hooks/use-consent.ts",
+    "lib/audio/cuelume.ts",
+    "lib/haptics.ts",
+    "scripts/test-cuelume-haptics.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
