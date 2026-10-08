@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DXAKF8DQ8VSVZH4EG1M2CV",
+  "strategy": "manual-commit",
+  "branch": "phase-6-polish-eval-submission",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "app/layout.tsx",
+    "package.json",
+    "pnpm-lock.yaml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}

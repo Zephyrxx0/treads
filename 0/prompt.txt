@@ -1,0 +1,33 @@
+/gsd-discuss-phase 6
+
+---
+
+/gsd-plan-phase 6
+
+---
+
+/gsd-ui-phase 6
+
+---
+
+/gsd-plan-phase 6
+
+---
+
+/gsd-execute-phase 6
+
+---
+
+/gsd-verify-work 6, automated testing, write verification doc after
+
+---
+
+write verfication.md
+
+---
+
+/agentation add agentation to the project
+
+---
+
+/agentation add agentation to the project
