@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState, use } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, CheckCircle2, Compass, MapPin } from 'lucide-react';
-import { db, Entry } from '@/lib/db';
+import { ArrowLeft, Calendar, CheckCircle2, Compass, MapPin, Mic, Play, Pause } from 'lucide-react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, Entry, Note } from '@/lib/db';
 import { FactCard, FactData } from '@/components/entry/fact-card';
+import { VoiceRecorderSheet } from '@/components/voice/voice-recorder-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -22,6 +24,40 @@ export default function EntryDetailPage({
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isFetchingFacts, setIsFetchingFacts] = useState<boolean>(false);
+  const [isVoiceSheetOpen, setIsVoiceSheetOpen] = useState<boolean>(false);
+  const [activePlayingNoteId, setActivePlayingNoteId] = useState<string | null>(null);
+  const audioPlayerRef = React.useRef<HTMLAudioElement | null>(null);
+
+  const entryNotes = useLiveQuery(
+    async () => db.notes.where('entryId').equals(id).toArray(),
+    [id]
+  ) || [];
+
+  const handlePlayNote = (note: Note) => {
+    if (!note.audio) return;
+    if (activePlayingNoteId === note.id) {
+      audioPlayerRef.current?.pause();
+      setActivePlayingNoteId(null);
+      return;
+    }
+
+    if (audioPlayerRef.current) {
+      audioPlayerRef.current.pause();
+    }
+
+    let url: string;
+    if (note.audio instanceof Blob) {
+      url = URL.createObjectURL(note.audio);
+    } else {
+      url = note.audio;
+    }
+
+    const audio = new Audio(url);
+    audioPlayerRef.current = audio;
+    audio.onended = () => setActivePlayingNoteId(null);
+    audio.play().catch(console.warn);
+    setActivePlayingNoteId(note.id);
+  };
 
   // Load entry from Dexie
   useEffect(() => {
@@ -254,7 +290,91 @@ export default function EntryDetailPage({
           factsData={entry.facts}
           speciesName={commonName}
         />
+
+        {/* Field Voice Notes Section (Phase 4, per VOIC-01, D-01) */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-foreground font-sans">
+              Field Observations
+            </h2>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setIsVoiceSheetOpen(true)}
+              className="gap-1.5 text-xs border-primary/40 text-primary hover:bg-primary/10"
+            >
+              <Mic className="w-3.5 h-3.5" />
+              Add Voice Note
+            </Button>
+          </div>
+
+          {entryNotes.length > 0 ? (
+            <div className="space-y-2.5">
+              {entryNotes.map((note) => (
+                <div
+                  key={note.id}
+                  className="p-3.5 rounded-2xl bg-muted/40 border border-border/60 space-y-2 text-sm"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {new Date(note.createdAt).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                    {note.duration ? (
+                      <Badge variant="secondary" className="text-[10px] font-mono px-2 py-0.5">
+                        {note.duration}s
+                      </Badge>
+                    ) : null}
+                  </div>
+
+                  <p className="text-foreground leading-relaxed">
+                    {note.transcript}
+                  </p>
+
+                  {note.audio && (
+                    <div className="pt-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handlePlayNote(note)}
+                        className="h-8 gap-1.5 text-xs text-primary bg-primary/5 hover:bg-primary/10 px-2.5 rounded-lg"
+                      >
+                        {activePlayingNoteId === note.id ? (
+                          <>
+                            <Pause className="w-3.5 h-3.5" />
+                            Pause Audio
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-3.5 h-3.5" />
+                            Play Audio
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="p-4 rounded-2xl border border-dashed border-border/80 text-center space-y-1">
+              <p className="text-xs text-muted-foreground">
+                No voice notes recorded for this find yet.
+              </p>
+            </div>
+          )}
+        </div>
       </main>
+
+      {/* Voice Recorder Bottom Sheet */}
+      <VoiceRecorderSheet
+        open={isVoiceSheetOpen}
+        onOpenChange={setIsVoiceSheetOpen}
+        walkId={entry.walkId}
+        entryId={id}
+      />
     </div>
   );
 }

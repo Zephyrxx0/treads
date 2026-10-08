@@ -19,6 +19,7 @@ import { CandidatePickerSheet } from '@/components/walk/candidate-picker-sheet';
 import { IdentificationRefusalCard } from '@/components/walk/identification-refusal-card';
 import { WalkSummarySheet } from '@/components/walk/walk-summary-sheet';
 import { WalkDiscardDialog } from '@/components/walk/walk-discard-dialog';
+import { VoiceRecorderSheet } from '@/components/voice/voice-recorder-sheet';
 import type { WalkMapRef } from '@/components/map/walk-map';
 import { TrackPoint } from '@/lib/geo';
 import { useRouter } from 'next/navigation';
@@ -76,6 +77,7 @@ export default function WalkPage() {
   } | null>(null);
   const [isSummaryOpen, setIsSummaryOpen] = useState<boolean>(false);
   const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState<boolean>(false);
+  const [isVoiceSheetOpen, setIsVoiceSheetOpen] = useState<boolean>(false);
 
   // New track point callback from useGeolocation
   const handleNewTrackPoint = useCallback(
@@ -404,6 +406,7 @@ export default function WalkPage() {
           ref={walkControlsRef}
           onEndWalk={handleEndWalkAttempt}
           onPhotoSelected={handlePhotoSelected}
+          onMicClick={() => setIsVoiceSheetOpen(true)}
         />
       )}
 
@@ -503,6 +506,13 @@ export default function WalkPage() {
         refusalReason={refusalReason}
         onRetake={handleRetakeFromCandidateOrRefusal}
         onSaveUnidentified={handleSaveUnidentified}
+      />
+
+      {/* Field Voice Note Recorder Bottom Sheet (Phase 4, per VOIC-01, D-01) */}
+      <VoiceRecorderSheet
+        open={isVoiceSheetOpen}
+        onOpenChange={setIsVoiceSheetOpen}
+        walkId={walkId}
       />
     </div>
   );

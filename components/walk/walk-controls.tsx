@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Square, Camera } from 'lucide-react';
+import { Square, Camera, Mic } from 'lucide-react';
 
 export interface WalkControlsProps {
   onEndWalk: () => void;
   onCameraClick?: () => void;
   onPhotoSelected?: (file: File) => void;
+  onMicClick?: () => void;
   disabled?: boolean;
 }
 
@@ -18,7 +19,7 @@ const HOLD_DURATION_MS = 1500;
 
 export const WalkControls = React.forwardRef<WalkControlsHandle, WalkControlsProps>(
   function WalkControls(
-    { onEndWalk, onCameraClick, onPhotoSelected, disabled = false },
+    { onEndWalk, onCameraClick, onPhotoSelected, onMicClick, disabled = false },
     ref
   ) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -137,6 +138,16 @@ export const WalkControls = React.forwardRef<WalkControlsHandle, WalkControlsPro
           className="flex items-center justify-center w-14 h-14 rounded-full bg-muted/80 hover:bg-muted text-foreground border border-border/60 transition-transform active:scale-95 shadow-sm cursor-pointer"
         >
           <Camera className="w-6 h-6 text-[#F35C2B]" />
+        </button>
+
+        {/* Voice Note Trigger */}
+        <button
+          type="button"
+          onClick={onMicClick}
+          aria-label="Record voice note"
+          className="flex items-center justify-center w-14 h-14 rounded-full bg-muted/80 hover:bg-muted text-foreground border border-border/60 transition-transform active:scale-95 shadow-sm cursor-pointer"
+        >
+          <Mic className="w-6 h-6 text-[#F35C2B]" />
         </button>
 
         {/* Hold-to-Confirm "End Walk" Action (per D-13) */}
