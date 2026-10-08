@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DJ8WRXA7PMD39HR5PBVACG",
+  "session_id": "da883bbe-4374-4300-a7fa-21624a260ff4",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T10:52:17.928594204Z",
+  "branch": "phase-3-photo-capture-ai",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/03-photo-capture-ai-identification-pipeline/03-02-SUMMARY.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "7239dd935f67",
+  "checkpoint_transcript_start": 392,
+  "transcript_lines_at_start": 392,
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T10:52:17.859566605Z",
+    "agent_lines": 26,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 26,
+    "total_lines_changed": 26,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DJ8WRXA7PMD39HR5PBVACG",
+  "strategy": "manual-commit",
+  "branch": "phase-3-photo-capture-ai",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/03-photo-capture-ai-identification-pipeline/03-02-SUMMARY.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ]
+}
