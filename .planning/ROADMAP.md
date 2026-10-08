@@ -9,7 +9,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 ## Phases
 
 - [x] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes. (completed 2026-10-08)
-- [ ] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles.
+- [x] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles. (completed 2026-10-08)
 - [ ] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards.
 - [ ] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes.
 - [ ] **Phase 5: Collection, Journal & Export** - Deterministic daily species hunt, Life List categorization on `/collection`, timeline heatmap, and Obsidian-compatible ZIP export.
@@ -66,12 +66,12 @@ Plans:
   3. Geolocation stream rejects readings with accuracy > 35m or displacement < 5m, rendering a smooth polyline trail.
   4. Ending a walk saves total duration, approximate distance, and displays the summary card.  
 
-**Plans**: 2 plans  
+**Plans**: 2/2 plans executed  
 
 Plans:
 
-- [ ] 02-01-PLAN.md — Geolocation noise filter, distance engine & Dexie walk session store
-- [ ] 02-02-PLAN.md — MapLibre GL trail map, outdoor HUD, and walk lifecycle interface
+- [x] 02-01-PLAN.md — Geolocation noise filter, distance engine & Dexie walk session store
+- [x] 02-02-PLAN.md — MapLibre GL trail map, outdoor HUD, and walk lifecycle interface
 
 ---
 
