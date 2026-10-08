@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DR0F4M03AS101WY3GSKSCN",
+  "session_id": "9535c299-a2a7-4867-a152-75f0efdcd412",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T12:32:33.317983766Z",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/STATE.md",
+    ".planning/phases/05-collection-journal-export/05-01-SUMMARY.md",
+    ".planning/phases/05-collection-journal-export/05-02-SUMMARY.md",
+    "app/journal/[walkId]/page.tsx",
+    "app/journal/page.tsx",
+    "app/page.tsx",
+    "app/settings/page.tsx",
+    "components/journal/activity-heatmap.tsx",
+    "components/journal/walk-card.tsx",
+    "components/ui/input.tsx",
+    "lib/db.ts",
+    "lib/export.ts",
+    "scripts/test-export-engine.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "a8e00ae19d07",
+  "checkpoint_transcript_start": 267,
+  "transcript_lines_at_start": 267,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T12:32:33.250318057Z",
+    "agent_lines": 2321,
+    "agent_removed": 20,
+    "human_added": 102,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2423,
+    "total_lines_changed": 2443,
+    "agent_percentage": 95.8248055669259,
+    "metric_version": 2
+  }
+}
