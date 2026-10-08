@@ -11,7 +11,7 @@ Treads is built through 6 phased increments from foundation to release, strictly
 - [x] **Phase 1: Foundation, Theme & Day 1 Verification Spikes** - Next.js 16.4, React 19.3, shadcn Base UI, Tangerin Dream theme tokens, Dexie database initialization, and Day 1 API spikes. (completed 2026-10-08)
 - [x] **Phase 2: Walk Session & Geolocation Tracking** - Active walk lifecycle with auto-resume, GPS noise filtering, and MapLibre GL trail mapping with OpenFreeMap tiles. (completed 2026-10-08)
 - [x] **Phase 3: Photo Capture & AI Identification Pipeline** - Native camera capture, 1024px canvas EXIF stripping, `/api/identify` with Gemma/Gemini Flash, Wikipedia taxon verification, and grounded fact cards. (completed 2026-10-08)
-- [ ] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes.
+- [x] **Phase 4: Voice Notes, Narration & Loop Routing** - Hold/tap voice recorder with live waveform, ElevenLabs Scribe STT with Web Speech fallback, TTS narration, and ORS pedestrian loop routes. (completed 2026-10-08)
 - [ ] **Phase 5: Collection, Journal & Export** - Deterministic daily species hunt, Life List categorization on `/collection`, timeline heatmap, and Obsidian-compatible ZIP export.
 - [ ] **Phase 6: Polish, Consent Gate, Evaluation & Submission** - Full-screen consent modal, Tegaki handwriting animations, Cuelume audio chimes, `/eval` batch benchmark runner, and outdoor verification.
 
@@ -110,12 +110,12 @@ Plans:
   3. Fact cards feature a working "Listen" button calling TTS with text-hash caching in IndexedDB.
   4. "Suggest a loop" fetches a 1–3km walking loop from OpenRouteService or gracefully informs the user without blocking free-form walking.  
 
-**Plans**: 2 plans  
+**Plans**: 2/2 plans executed  
 
 Plans:
 
-- [ ] 04-01: Audio recording component with Web Audio `AnalyserNode` live waveform, `/api/transcribe` Scribe handler, and Web Speech API fallback.
-- [ ] 04-02: Fact card "Listen" TTS player with Dexie speech cache, and `/api/route` OpenRouteService round-trip loop generator.
+- [x] 04-01: Audio recording component with Web Audio `AnalyserNode` live waveform, `/api/transcribe` Scribe handler, and Web Speech API fallback.
+- [x] 04-02: Fact card "Listen" TTS player with Dexie speech cache, and `/api/route` OpenRouteService round-trip loop generator.
 
 ---
 
@@ -169,9 +169,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation, Theme & Day 1 Verification Spikes | 4/3 | Complete    | 2026-10-08 |
-| 2. Walk Session & Geolocation Tracking | 0/2 | Not started | - |
-| 3. Photo Capture & AI Identification Pipeline | 0/3 | Not started | - |
-| 4. Voice Notes, Narration & Loop Routing | 0/2 | Not started | - |
+| 1. Foundation, Theme & Day 1 Verification Spikes | 3/3 | Complete    | 2026-10-08 |
+| 2. Walk Session & Geolocation Tracking | 2/2 | Complete    | 2026-10-08 |
+| 3. Photo Capture & AI Identification Pipeline | 3/3 | Complete    | 2026-10-08 |
+| 4. Voice Notes, Narration & Loop Routing | 2/2 | Complete    | 2026-10-08 |
 | 5. Collection, Journal & Export | 0/2 | Not started | - |
 | 6. Polish, Consent Gate, Evaluation & Submission | 0/2 | Not started | - |

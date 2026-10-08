@@ -1,19 +1,19 @@
 ---
 gsd_state_version: 1.0
-current_phase: 03
-current_phase_name: Photo Capture & AI Identification Pipeline
+current_phase: 04
+current_phase_name: Voice Notes, Narration & Loop Routing
 status: completed
-stopped_at: Phase 4 plans created
-last_updated: "2026-10-08T11:27:35.987Z"
+stopped_at: Phase 4 executed and verified
+last_updated: "2026-10-08T11:46:00.000Z"
 last_activity: 2026-10-08
-last_activity_desc: Phase 03 execution completed (All 3 plans executed and verified)
-state_head: 5caf693e20bd5bba383b7eb37692b1ee90bc9321
+last_activity_desc: Phase 04 execution completed (All 2 plans executed and verified)
+state_head: 0dc411f
 progress:
   total_phases: 6
-  completed_phases: 3
-  total_plans: 10
-  completed_plans: 8
-  percent: 50
+  completed_phases: 4
+  total_plans: 12
+  completed_plans: 10
+  percent: 67
 ---
 
 # Project State
@@ -23,22 +23,22 @@ progress:
 See: [.planning/PROJECT.md](file:///.planning/PROJECT.md) (updated 2026-10-08)
 
 **Core value:** Get from launch to first organism capture in two taps, delivering fast, honest, Wikipedia-grounded identification that stays entirely private on the user's phone.  
-**Current focus:** Phase 03 completed — ready for Phase 04 (Voice Notes, Narration & Loop Routing)
+**Current focus:** Phase 04 completed — ready for Phase 05 (Collection, Journal & Export)
 
 ## Current Position
 
-Phase: 03 (Photo Capture & AI Identification Pipeline) — COMPLETED
-Plan: 3 of 3 completed
-Status: Phase 03 complete
-Last activity: 2026-10-08 — Phase 03 execution completed (Camera capture, EXIF stripping, /api/identify, Wikipedia taxon verification, grounded fact cards, and /entry/[id] page)
+Phase: 04 (Voice Notes, Narration & Loop Routing) — COMPLETED
+Plan: 2 of 2 completed
+Status: Phase 04 complete
+Last activity: 2026-10-08 — Phase 04 execution completed (Voice recording with live waveform, Scribe STT, fact card TTS narration with SHA-256 speech cache, ORS pedestrian loop discovery, dashed MapLibre guidelines, off-route HUD guidance, audio note trail pins, and summary notes reel)
 
-Progress: [██████████] 100% (Phase 3)
+Progress: [██████████] 100% (Phase 4)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 8
+- Total plans completed: 10
 - Average duration: - min
 - Total execution time: 0.0 hours
 
@@ -49,7 +49,7 @@ Progress: [██████████] 100% (Phase 3)
 | 1. Foundation | 3/3 | 3 | - |
 | 2. Walk & GPS | 2/2 | 2 | - |
 | 3. Photo & AI | 3/3 | 3 | - |
-| 4. Voice & Route | 0/2 | - | - |
+| 4. Voice & Route | 2/2 | 2 | - |
 | 5. Collection & Export | 0/2 | - | - |
 | 6. Polish & Eval | 0/2 | - | - |
 
