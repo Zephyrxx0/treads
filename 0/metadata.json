@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DE97RSQ8C3J48CJDYM9RZ6",
+  "session_id": "8f19e585-48eb-4902-aa35-7833a15cd350",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T09:42:33.482144595Z",
+  "branch": "phase-2-walk-tracking",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    ".planning/phases/02-walk-session-geolocation-tracking/02-UI-SPEC.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "96e637da0845",
+  "checkpoint_transcript_start": 106,
+  "transcript_lines_at_start": 106,
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T09:42:33.459284761Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 141,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 141,
+    "total_lines_changed": 141,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/02-walk-session-geolocation-tracking/02-CONTEXT.md": 1,
+        ".planning/phases/02-walk-session-geolocation-tracking/02-DISCUSSION-LOG.md": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 0
+    }
+  ]
+}

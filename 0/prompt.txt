@@ -1,0 +1,5 @@
+/gsd-plan-phase 2
+
+---
+
+/gsd-ui-phase 2, what UI elements and components are we discuss
