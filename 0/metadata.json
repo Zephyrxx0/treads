@@ -1,0 +1,17 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DPQZ3HJFS81EKWNSMF0CKX",
+  "session_id": "9535c299-a2a7-4867-a152-75f0efdcd412",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T12:10:25.181236292Z",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 2,
+  "save_step_count": 1,
+  "files_touched": [],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "990c92bf845a",
+  "session_metrics": {
+    "turn_count": 2
+  }
+}
