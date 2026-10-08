@@ -1,0 +1,20 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DFR8V2FEC056MZZ9M3B7S9",
+  "strategy": "manual-commit",
+  "branch": "phase-2-walk-tracking",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/ROADMAP.md",
+    ".planning/STATE.md",
+    ".planning/phases/02-walk-session-geolocation-tracking/02-SUMMARY.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DFR8V2FEC056MZZ9M3B7S9",
+  "session_id": "8f19e585-48eb-4902-aa35-7833a15cd350",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T10:08:15.941129789Z",
+  "branch": "phase-2-walk-tracking",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    ".planning/ROADMAP.md",
+    ".planning/STATE.md",
+    ".planning/phases/02-walk-session-geolocation-tracking/02-SUMMARY.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "ef7696d550fe",
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T10:08:15.876956825Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 44,
+    "human_modified": 23,
+    "human_removed": 0,
+    "total_committed": 44,
+    "total_lines_changed": 67,
+    "agent_percentage": 0,
+    "metric_version": 2
+  }
+}
