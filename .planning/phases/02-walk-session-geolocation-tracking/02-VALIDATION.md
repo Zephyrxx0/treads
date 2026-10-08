@@ -38,11 +38,11 @@ created: 2026-10-08
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 02-01-01 | 01 | 1 | GPS-01 | — | Rejects accuracy > 35m, filters stationary jitter < 5m | unit | `pnpm tsx scripts/test-geolocation-filter.ts` | ❌ W0 | ⬜ pending |
-| 02-01-02 | 01 | 1 | WALK-01 | — | Initializes walk session in Dexie with UUID & start time | unit | `pnpm tsx scripts/test-active-walk.ts` | ❌ W0 | ⬜ pending |
-| 02-01-03 | 01 | 1 | WALK-02 | — | Auto-resumes walk session where `endedAt == null` | unit | `pnpm tsx scripts/test-active-walk.ts` | ❌ W0 | ⬜ pending |
-| 02-02-01 | 02 | 2 | MAP-01, MAP-02 | — | MapLibre renders OpenFreeMap style & polyline layer | integration | `pnpm build` | ✅ | ⬜ pending |
-| 02-02-02 | 02 | 2 | WALK-03, GPS-02 | — | Walk end summary drawer, trail bounding box fit | manual | N/A | ✅ | ⬜ pending |
+| 02-01-01 | 01 | 1 | GPS-01 | — | Rejects accuracy > 35m, filters stationary jitter < 5m | unit | `pnpm tsx scripts/test-geolocation-filter.ts` | ✅ | ✅ green |
+| 02-01-02 | 01 | 1 | WALK-01 | — | Initializes walk session in Dexie with UUID & start time | unit | `pnpm tsx scripts/test-active-walk.ts` | ✅ | ✅ green |
+| 02-01-03 | 01 | 1 | WALK-02 | — | Auto-resumes walk session where `endedAt == null` | unit | `pnpm tsx scripts/test-active-walk.ts` | ✅ | ✅ green |
+| 02-02-01 | 02 | 2 | MAP-01, MAP-02 | — | MapLibre renders OpenFreeMap style & polyline layer | integration | `pnpm build` | ✅ | ✅ green |
+| 02-02-02 | 02 | 2 | WALK-03, GPS-02 | — | Walk end summary drawer, trail bounding box fit | automated | `obscura fetch http://localhost:3000/walk` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -50,8 +50,8 @@ created: 2026-10-08
 
 ## Wave 0 Requirements
 
-- [ ] `scripts/test-geolocation-filter.ts` — Unit test for Haversine distance, accuracy cutoff, and stationary displacement filter.
-- [ ] `scripts/test-active-walk.ts` — Unit test for Dexie `walks` session lifecycle, point accumulation, and auto-resume query using `fake-indexeddb`.
+- [x] `scripts/test-geolocation-filter.ts` — Unit test for Haversine distance, accuracy cutoff, and stationary displacement filter.
+- [x] `scripts/test-active-walk.ts` — Unit test for Dexie `walks` session lifecycle, point accumulation, and auto-resume query using `fake-indexeddb`.
 
 ---
 
