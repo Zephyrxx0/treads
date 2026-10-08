@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  --background: #feefdd;
+  --foreground: #201e1f;
+  --card: #fff6eb;
+  --card-foreground: #201e1f;
+  --popover: #fff6eb;
+  --popover-foreground: #201e1f;
+  --primary: #ff4000;
+  --primary-foreground: #feefdd;
+  --secondary: #faaa8d;
+  --secondary-foreground: #201e1f;
+  --muted: #f8dcc8;
+  --muted-foreground: #6f4f43;
+  --accent: #faaa8d;
+  --accent-foreground: #201e1f;
+  --destructive: #ff4000;
+  --destructive-foreground: #feefdd;
+  --border: #efd0ba;
+  --input: #fff6eb;
+  --ring: #ff4000;
+  --chart-1: #ff4000;
+  --chart-2: #faaa8d;
+  --chart-3: #201e1f;
+  --chart-4: #ff7a3d;
+  --chart-5: #f8c6ae;
+  --sidebar: #fff4e7;
+  --sidebar-foreground: #201e1f;
+  --sidebar-primary: #ff4000;
+  --sidebar-primary-foreground: #feefdd;
+  --sidebar-accent: #f8dcc8;
+  --sidebar-accent-foreground: #201e1f;
+  --sidebar-border: #efd0ba;
+  --sidebar-ring: #ff4000;
+  --font-sans: "Amaranth", ui-sans-serif, sans-serif, system-ui;
+  --font-serif: "Noto Serif", ui-serif, serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --radius: 0.5rem;
+  --shadow-color: #201e1f;
+  --shadow-opacity: 0.08;
+  --shadow-blur: 12px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+}
+
+.dark {
+  --background: #201e1f;
+  --foreground: #feefdd;
+  --card: #2a2728;
+  --card-foreground: #feefdd;
+  --popover: #2a2728;
+  --popover-foreground: #feefdd;
+  --primary: #ff4000;
+  --primary-foreground: #feefdd;
+  --secondary: #faaa8d;
+  --secondary-foreground: #201e1f;
+  --muted: #393334;
+  --muted-foreground: #d9bba5;
+  --accent: #faaa8d;
+  --accent-foreground: #201e1f;
+  --destructive: #ff4000;
+  --destructive-foreground: #feefdd;
+  --border: #443b3a;
+  --input: #2a2728;
+  --ring: #ff4000;
+  --chart-1: #ff4000;
+  --chart-2: #faaa8d;
+  --chart-3: #feefdd;
+  --chart-4: #ff7a3d;
+  --chart-5: #f8c6ae;
+  --sidebar: #1b191a;
+  --sidebar-foreground: #feefdd;
+  --sidebar-primary: #ff4000;
+  --sidebar-primary-foreground: #feefdd;
+  --sidebar-accent: #393334;
+  --sidebar-accent-foreground: #feefdd;
+  --sidebar-border: #443b3a;
+  --sidebar-ring: #ff4000;
+  --font-sans: "Amaranth", ui-sans-serif, sans-serif, system-ui;
+  --font-serif: "Noto Serif", ui-serif, serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --radius: 0.5rem;
+  --shadow-color: #000000;
+  --shadow-opacity: 0.3;
+  --shadow-blur: 14px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}

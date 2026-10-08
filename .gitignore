@@ -1,2 +1,21 @@
 DECISIONS.md
 PRD.md
+.agents/hooks.json
+.entire/.gitignore
+.entire/settings.json
+.opencode/plugins/entire.ts
+
+# Next.js & Node
+node_modules/
+.next/
+out/
+build/
+dist/
+.DS_Store
+*.pem
+
+# Environment
+.env*.local
+
+# Typescript
+next-env.d.ts
