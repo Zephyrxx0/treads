@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState, useCallback, useImperativeHandle, f
 import type { Map as MapLibreMap, Marker as MapLibreMarker, GeoJSONSource } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { calculateTrailBounds } from '@/lib/geo';
+import { Entry } from '@/lib/db';
 import { Navigation, Plus, Minus, Compass } from 'lucide-react';
 
 export interface WalkMapProps {
@@ -14,9 +15,11 @@ export interface WalkMapProps {
     accuracy?: number;
   } | null;
   trackPoints: Array<{ lat: number; lng: number }>;
+  specimenEntries?: Entry[];
   isWalkActive?: boolean;
   className?: string;
   onFollowChange?: (isFollowing: boolean) => void;
+  onSpecimenClick?: (entry: Entry) => void;
 }
 
 export interface WalkMapRef {
@@ -29,15 +32,18 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
   {
     userPosition,
     trackPoints,
+    specimenEntries = [],
     isWalkActive = false,
     className = '',
     onFollowChange,
+    onSpecimenClick,
   },
   ref
 ) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const userMarkerRef = useRef<MapLibreMarker | null>(null);
+  const specimenMarkersRef = useRef<MapLibreMarker[]>([]);
   const markerElRef = useRef<HTMLDivElement | null>(null);
   const headingConeElRef = useRef<HTMLDivElement | null>(null);
 
@@ -281,6 +287,77 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
       });
     }
   }, [trackPoints, mapLoaded]);
+
+  // Sync specimen thumbnail pins on the trail (per D-13)
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current) return;
+
+    // Clear previous specimen markers
+    specimenMarkersRef.current.forEach((m) => m.remove());
+    specimenMarkersRef.current = [];
+
+    if (!specimenEntries || specimenEntries.length === 0) return;
+
+    import('maplibre-gl').then((mod) => {
+      const maplibregl = (mod as any).default || mod;
+      if (!mapRef.current) return;
+
+      specimenEntries.forEach((entry) => {
+        if (!entry.lat || !entry.lng) return;
+
+        const el = document.createElement('div');
+        el.className =
+          'treads-specimen-pin relative flex items-center justify-center w-9 h-9 rounded-full bg-card border-2 shadow-lg cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95 overflow-hidden';
+
+        // Color code taxon ring based on kind (per D-13)
+        const kind = entry.confirmed?.kind || 'plant';
+        if (kind === 'tree' || kind === 'plant' || kind === 'flower') {
+          el.className += ' border-emerald-500';
+        } else if (kind === 'bird') {
+          el.className += ' border-sky-500';
+        } else if (kind === 'insect') {
+          el.className += ' border-[#F35C2B]';
+        } else if (kind === 'fungus') {
+          el.className += ' border-amber-500';
+        } else {
+          el.className += ' border-purple-500';
+        }
+
+        const source = entry.thumbnail || entry.photo;
+        let thumbSrc = '';
+        if (source instanceof Blob) {
+          thumbSrc = URL.createObjectURL(source);
+        } else if (typeof source === 'string') {
+          thumbSrc = source;
+        }
+
+        if (thumbSrc) {
+          const img = document.createElement('img');
+          img.src = thumbSrc;
+          img.alt = entry.confirmed?.commonName || 'Specimen';
+          img.className = 'w-full h-full object-cover select-none pointer-events-none';
+          el.appendChild(img);
+        } else {
+          const icon = document.createElement('span');
+          icon.className = 'text-xs select-none pointer-events-none';
+          icon.textContent =
+            kind === 'bird' ? '🐦' : kind === 'insect' ? '🦋' : kind === 'fungus' ? '🍄' : '🌱';
+          el.appendChild(icon);
+        }
+
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          onSpecimenClick?.(entry);
+        });
+
+        const marker = new maplibregl.Marker({ element: el, anchor: 'center' })
+          .setLngLat([entry.lng, entry.lat])
+          .addTo(mapRef.current);
+
+        specimenMarkersRef.current.push(marker);
+      });
+    });
+  }, [specimenEntries, mapLoaded, onSpecimenClick]);
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-background ${className}`}>

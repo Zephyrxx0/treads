@@ -15,6 +15,8 @@ export interface WalkHudProps {
   onRequestLocation?: () => void;
   isResumed?: boolean;
   onDismissResumed?: () => void;
+  specimenCount?: number;
+  onSpecimenCountClick?: () => void;
 }
 
 export function WalkHud({
@@ -25,26 +27,48 @@ export function WalkHud({
   onRequestLocation,
   isResumed = false,
   onDismissResumed,
+  specimenCount = 0,
+  onSpecimenCountClick,
 }: WalkHudProps) {
   return (
     <div className="absolute top-4 inset-x-0 z-30 flex flex-col items-center gap-2 px-4 pointer-events-none">
-      {/* Auto-resumed Toast Pill (per D-04) */}
-      {isResumed && (
-        <div className="pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-[#F35C2B]/40 shadow-md text-xs font-medium text-foreground animate-in fade-in slide-in-from-top-2 duration-300">
-          <Navigation2 className="w-3.5 h-3.5 text-[#F35C2B] fill-current" />
-          <span>Active walk resumed</span>
-          {onDismissResumed && (
-            <button
-              type="button"
-              onClick={onDismissResumed}
-              aria-label="Dismiss notice"
-              className="ml-1 p-0.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          )}
-        </div>
-      )}
+      {/* Top Notification Row */}
+      <div className="flex items-center gap-2">
+        {/* Auto-resumed Toast Pill (per D-04) */}
+        {isResumed && (
+          <div className="pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-[#F35C2B]/40 shadow-md text-xs font-medium text-foreground animate-in fade-in slide-in-from-top-2 duration-300">
+            <Navigation2 className="w-3.5 h-3.5 text-[#F35C2B] fill-current" />
+            <span>Active walk resumed</span>
+            {onDismissResumed && (
+              <button
+                type="button"
+                onClick={onDismissResumed}
+                aria-label="Dismiss notice"
+                className="ml-1 p-0.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Specimen Counter Pill (per D-14) */}
+        {specimenCount > 0 && (
+          <button
+            type="button"
+            onClick={onSpecimenCountClick}
+            className="pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-emerald-500/30 shadow-md text-xs font-medium text-foreground hover:bg-background transition-colors cursor-pointer animate-in fade-in slide-in-from-top-2 duration-300"
+          >
+            <span>🌱</span>
+            <span className="font-semibold text-emerald-600 dark:text-emerald-400 font-mono">
+              {specimenCount}
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              {specimenCount === 1 ? 'find' : 'finds'}
+            </span>
+          </button>
+        )}
+      </div>
 
       {/* Permission Denied Top Alert Banner (per D-08) */}
       {gpsStatus === 'denied' && (

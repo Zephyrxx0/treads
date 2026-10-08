@@ -15,12 +15,15 @@ import { Clock, MapPin, Gauge, Leaf, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
+import { Entry } from '@/lib/db';
+
 export interface WalkSummarySheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   durationSeconds: number;
   distanceMeters: number;
   speciesCount?: number;
+  specimens?: Entry[];
   onDone: () => void;
   onViewJournal?: () => void;
 }
@@ -31,6 +34,7 @@ export function WalkSummarySheet({
   durationSeconds,
   distanceMeters,
   speciesCount = 0,
+  specimens = [],
   onDone,
   onViewJournal,
 }: WalkSummarySheetProps) {
@@ -110,6 +114,20 @@ export function WalkSummarySheet({
           </div>
         </div>
 
+        {/* Visual Species Reel (per D-16) */}
+        {specimens.length > 0 && (
+          <div className="py-2 space-y-2">
+            <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono">
+              Specimens Logged Today
+            </span>
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
+              {specimens.map((specimen) => (
+                <SpeciesReelItem key={specimen.id} specimen={specimen} />
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Action Buttons (per D-16) */}
         <SheetFooter className="flex flex-col gap-2 pt-4 sm:flex-col sm:space-x-0">
           {/* Primary "Done" action resets /walk to ready state */}
@@ -148,5 +166,49 @@ export function WalkSummarySheet({
         </SheetFooter>
       </SheetContent>
     </Sheet>
+  );
+}
+
+function SpeciesReelItem({ specimen }: { specimen: Entry }) {
+  const [thumbUrl, setThumbUrl] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const source = specimen.thumbnail || specimen.photo;
+    if (!source) return;
+
+    if (source instanceof Blob) {
+      const url = URL.createObjectURL(source);
+      setThumbUrl(url);
+      return () => URL.revokeObjectURL(url);
+    } else if (typeof source === 'string') {
+      setThumbUrl(source);
+    }
+  }, [specimen.thumbnail, specimen.photo]);
+
+  const name = specimen.confirmed?.commonName || 'Unidentified Specimen';
+
+  return (
+    <Link
+      href={`/entry/${specimen.id}`}
+      className="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-muted/40 hover:bg-muted/70 border border-border/60 shrink-0 w-24 text-center transition-transform active:scale-95 group cursor-pointer"
+    >
+      <div className="w-14 h-14 rounded-full overflow-hidden bg-black/10 border-2 border-[#F35C2B]/40 group-hover:border-[#F35C2B] transition-colors shrink-0">
+        {thumbUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumbUrl}
+            alt={name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-xs">
+            🌱
+          </div>
+        )}
+      </div>
+      <span className="text-[11px] font-medium text-foreground line-clamp-1 leading-tight group-hover:text-[#F35C2B] transition-colors">
+        {name}
+      </span>
+    </Link>
   );
 }

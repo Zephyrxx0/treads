@@ -21,6 +21,8 @@ import { WalkSummarySheet } from '@/components/walk/walk-summary-sheet';
 import { WalkDiscardDialog } from '@/components/walk/walk-discard-dialog';
 import type { WalkMapRef } from '@/components/map/walk-map';
 import { TrackPoint } from '@/lib/geo';
+import { useRouter } from 'next/navigation';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { processCapturedImage, blobToBase64 } from '@/lib/camera';
 import { db, Entry, Candidate } from '@/lib/db';
 
@@ -38,6 +40,7 @@ const WalkMap = dynamic(() => import('@/components/map/walk-map').then((mod) => 
 });
 
 export default function WalkPage() {
+  const router = useRouter();
   const { hasConsented } = useConsent();
   const walkMapRef = useRef<WalkMapRef | null>(null);
 
@@ -53,6 +56,17 @@ export default function WalkPage() {
     endWalk,
     discardWalk,
   } = useActiveWalk();
+
+  // Live specimen entries for the current active walk session
+  const walkId = activeWalk?.id;
+  const walkSpecimens = useLiveQuery(
+    async () => {
+      if (!walkId) return [];
+      return db.entries.where('walkId').equals(walkId).toArray();
+    },
+    [walkId]
+  ) || [];
+  const identifiedSpecimensCount = walkSpecimens.filter((e) => e.status !== 'unidentified').length;
 
   // Completed walk session metrics for Summary Drawer review
   const [completedSummary, setCompletedSummary] = useState<{
@@ -359,16 +373,18 @@ export default function WalkPage() {
         </div>
       </div>
 
-      {/* Interactive MapLibre GL Canvas (per D-01, MAP-01) */}
+      {/* Interactive MapLibre GL Canvas (per D-01, MAP-01, D-13) */}
       <WalkMap
         ref={walkMapRef}
         userPosition={currentPosition}
         trackPoints={displayTrackPoints}
+        specimenEntries={walkSpecimens}
+        onSpecimenClick={(entry) => router.push(`/entry/${entry.id}`)}
         isWalkActive={isActive}
         className="w-full h-full"
       />
 
-      {/* Active Walk Top HUD Pills (per D-01, D-02) */}
+      {/* Active Walk Top HUD Pills (per D-01, D-02, D-14) */}
       {isActive && (
         <WalkHud
           durationSeconds={elapsedSeconds}
@@ -378,6 +394,7 @@ export default function WalkPage() {
           onRequestLocation={requestCurrentPosition}
           isResumed={isResumed}
           onDismissResumed={dismissResumed}
+          specimenCount={identifiedSpecimensCount}
         />
       )}
 
@@ -444,7 +461,8 @@ export default function WalkPage() {
           }}
           durationSeconds={completedSummary.duration}
           distanceMeters={completedSummary.distance}
-          speciesCount={0}
+          speciesCount={identifiedSpecimensCount}
+          specimens={walkSpecimens}
           onDone={handleSummaryDone}
         />
       )}

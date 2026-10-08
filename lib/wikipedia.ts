@@ -14,6 +14,7 @@ export interface WikipediaTaxonResult {
 export interface WikipediaLeadSentencesResult {
   sentences: Array<{ index: number; text: string }>;
   sourceUrl: string;
+  rawExtract: string;
 }
 
 // In-memory LRU-style cache to avoid redundant network hits during active sessions
@@ -145,6 +146,7 @@ export async function getWikipediaLeadSentences(title: string): Promise<Wikipedi
       return {
         sentences: [],
         sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`,
+        rawExtract: '',
       };
     }
 
@@ -168,6 +170,7 @@ export async function getWikipediaLeadSentences(title: string): Promise<Wikipedi
     const result: WikipediaLeadSentencesResult = {
       sentences,
       sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(canonicalTitle.replace(/ /g, '_'))}`,
+      rawExtract: extract,
     };
 
     leadSentencesCache.set(cacheKey, result);
@@ -177,6 +180,7 @@ export async function getWikipediaLeadSentences(title: string): Promise<Wikipedi
     return {
       sentences: [],
       sourceUrl: `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`,
+      rawExtract: '',
     };
   }
 }
