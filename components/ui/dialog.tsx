@@ -75,28 +75,34 @@ export const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = 'DialogOverlay';
 
-export const DialogContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof BaseDialog.Popup>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
-    <BaseDialog.Popup
-      ref={ref}
-      className={cn(
-        'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-card p-6 text-card-foreground shadow-lg duration-200 sm:rounded-[var(--radius)] transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
-        className
-      )}
-      {...props}
-    >
-      {children}
-      <BaseDialog.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none text-muted-foreground hover:text-foreground cursor-pointer">
-        <X className="h-4 w-4" />
-        <span className="sr-only">Close</span>
-      </BaseDialog.Close>
-    </BaseDialog.Popup>
-  </DialogPortal>
-));
+export interface DialogContentProps
+  extends React.ComponentPropsWithoutRef<typeof BaseDialog.Popup> {
+  hideCloseButton?: boolean;
+}
+
+export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
+  ({ className, children, hideCloseButton = false, ...props }, ref) => (
+    <DialogPortal>
+      <DialogOverlay />
+      <BaseDialog.Popup
+        ref={ref}
+        className={cn(
+          'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-card p-6 text-card-foreground shadow-lg duration-200 sm:rounded-[var(--radius)] transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
+          className
+        )}
+        {...props}
+      >
+        {children}
+        {!hideCloseButton && (
+          <BaseDialog.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none text-muted-foreground hover:text-foreground cursor-pointer">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </BaseDialog.Close>
+        )}
+      </BaseDialog.Popup>
+    </DialogPortal>
+  )
+);
 DialogContent.displayName = 'DialogContent';
 
 export const DialogHeader = ({

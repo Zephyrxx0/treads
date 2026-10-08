@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Amaranth, Noto_Serif } from 'next/font/google';
 import './globals.css';
+import { ConsentModal } from '@/components/consent/consent-modal';
+import { ThemeSync } from '@/components/theme/theme-sync';
 
 const amaranth = Amaranth({
   weight: ['400', '700'],
@@ -47,6 +49,8 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen">
+        <ThemeSync />
+        <ConsentModal />
         {children}
       </body>
     </html>
