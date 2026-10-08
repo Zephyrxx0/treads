@@ -1,0 +1,9 @@
+/gsd-plan-phase 3
+
+---
+
+/gsd-ui-phase 3, what UI elements and components are we discuss
+
+---
+
+just be sure to use readymade comps , proceed
