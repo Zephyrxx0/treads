@@ -24,3 +24,4 @@
 4. **Walk Integration (`app/walk/page.tsx`)**:
    - Connected `handleIdentifyPhoto` to optimistic Dexie draft saving, base64 encoding, and `/api/identify` call.
    - Wired selection of candidate, updating Dexie entry with confirmed species, status `'identified'`, and verified taxon flag.
+

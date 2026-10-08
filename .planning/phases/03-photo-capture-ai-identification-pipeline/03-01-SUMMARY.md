@@ -25,3 +25,4 @@
 5. **Walk Integration (`components/walk/walk-controls.tsx`, `app/walk/page.tsx`)**:
    - Wired hidden `<input type="file" accept="image/*" capture="environment" />` with ref trigger into WalkControls.
    - Wired state management and draft entry persistence (`status: 'saved'`) directly to Dexie database on specimen capture.
+

@@ -29,3 +29,4 @@
    - `WalkMap`: Dynamically renders 36px circular thumbnail pins on the MapLibre trail with color-coded taxon border rings (emerald for plants/trees, sky blue for birds, terracotta for insects, amber for fungi). Tapping opens `/entry/[id]`.
    - `WalkHud`: Renders live glassmorphism specimen counter pill (`🌱 X finds`).
    - `WalkSummarySheet`: Displays horizontal species reel (`Specimens Logged Today`) with thumbnail avatars linking to `/entry/[id]`.
+

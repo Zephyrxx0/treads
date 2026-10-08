@@ -160,3 +160,4 @@ export function FactCard({ factsData, speciesName, className }: FactCardProps) {
     </Card>
   );
 }
+
