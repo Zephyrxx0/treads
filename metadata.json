@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DQHK0M5TX504HMWPYHARQ2",
+  "strategy": "manual-commit",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/collection/page.tsx",
+    "app/walk/page.tsx",
+    "components/collection/collection-filter-bar.tsx",
+    "components/collection/species-card.tsx",
+    "components/hunt/daily-hunt-card.tsx",
+    "components/hunt/daily-hunt-celebration-dialog.tsx",
+    "components/hunt/daily-hunt-hud-pill.tsx",
+    "components/walk/walk-hud.tsx",
+    "lib/hunt.ts",
+    "scripts/test-hunt-engine.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}

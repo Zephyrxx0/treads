@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DQHK0M5TX504HMWPYHARQ2",
+  "session_id": "9535c299-a2a7-4867-a152-75f0efdcd412",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T12:24:24.787426176Z",
+  "branch": "phase-5-collection-journal-export",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/collection/page.tsx",
+    "app/walk/page.tsx",
+    "components/collection/collection-filter-bar.tsx",
+    "components/collection/species-card.tsx",
+    "components/hunt/daily-hunt-card.tsx",
+    "components/hunt/daily-hunt-celebration-dialog.tsx",
+    "components/hunt/daily-hunt-hud-pill.tsx",
+    "components/walk/walk-hud.tsx",
+    "lib/hunt.ts",
+    "scripts/test-hunt-engine.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "a8e00ae19d07",
+  "checkpoint_transcript_start": 193,
+  "transcript_lines_at_start": 193,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T12:24:24.740705374Z",
+    "agent_lines": 1339,
+    "agent_removed": 2,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1339,
+    "total_lines_changed": 1341,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 4,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/05-collection-journal-export/05-01-PLAN.md": 1,
+        ".planning/phases/05-collection-journal-export/05-02-PLAN.md": 1,
+        ".planning/phases/05-collection-journal-export/05-RESEARCH.md": 1,
+        ".planning/phases/05-collection-journal-export/05-VALIDATION.md": 1
+      }
+    }
+  ]
+}
