@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DG4PFM9M7RCG8H5QRNH6KS",
+  "session_id": "8f19e585-48eb-4902-aa35-7833a15cd350",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T10:15:01.799736848Z",
+  "branch": "phase-2-walk-tracking",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/phases/02-walk-session-geolocation-tracking/02-01-SUMMARY.md",
+    ".planning/phases/02-walk-session-geolocation-tracking/02-02-SUMMARY.md",
+    ".planning/phases/02-walk-session-geolocation-tracking/02-SUMMARY.md",
+    "components/map/walk-map.tsx",
+    "components/walk/walk-controls.tsx",
+    "components/walk/walk-discard-dialog.tsx",
+    "components/walk/walk-hud.tsx",
+    "hooks/use-active-walk.ts",
+    "hooks/use-geolocation.ts",
+    "lib/geo.ts",
+    "scripts/test-active-walk.ts",
+    "scripts/test-geolocation-filter.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "18dc588f830c",
+  "checkpoint_transcript_start": 452,
+  "transcript_lines_at_start": 452,
+  "session_metrics": {
+    "turn_count": 5
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T10:15:01.68200424Z",
+    "agent_lines": 12,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 12,
+    "total_lines_changed": 12,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
