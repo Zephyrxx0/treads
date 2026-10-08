@@ -30,6 +30,8 @@ export interface VoiceRecorderSheetProps {
   onOpenChange: (open: boolean) => void;
   walkId?: string;
   entryId?: string;
+  lat?: number;
+  lng?: number;
   onNoteSaved?: (noteId: string) => void;
 }
 
@@ -47,6 +49,8 @@ export function VoiceRecorderSheet({
   onOpenChange,
   walkId,
   entryId,
+  lat,
+  lng,
   onNoteSaved,
 }: VoiceRecorderSheetProps) {
   const [recorderState, setRecorderState] = useState<RecorderState>('idle');
@@ -341,6 +345,8 @@ export function VoiceRecorderSheet({
         duration: secondsElapsed,
         transcript: transcript.trim(),
         language: detectedLanguage,
+        lat,
+        lng,
         createdAt: Date.now(),
       });
 

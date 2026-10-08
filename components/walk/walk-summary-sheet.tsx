@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Sheet,
   SheetContent,
@@ -11,11 +11,11 @@ import {
 } from '@/components/ui/sheet';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { formatDistance, formatDuration } from '@/lib/geo';
-import { Clock, MapPin, Gauge, Leaf, ArrowRight } from 'lucide-react';
+import { Clock, MapPin, Gauge, Leaf, ArrowRight, Mic, Play, Pause } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-import { Entry } from '@/lib/db';
+import { Entry, Note } from '@/lib/db';
 
 export interface WalkSummarySheetProps {
   open: boolean;
@@ -24,6 +24,7 @@ export interface WalkSummarySheetProps {
   distanceMeters: number;
   speciesCount?: number;
   specimens?: Entry[];
+  notes?: Note[];
   onDone: () => void;
   onViewJournal?: () => void;
 }
@@ -35,6 +36,7 @@ export function WalkSummarySheet({
   distanceMeters,
   speciesCount = 0,
   specimens = [],
+  notes = [],
   onDone,
   onViewJournal,
 }: WalkSummarySheetProps) {
@@ -128,6 +130,21 @@ export function WalkSummarySheet({
           </div>
         )}
 
+        {/* Voice Notes Reel (per D-03, ROUT-02, UI-SPEC) */}
+        {notes && notes.length > 0 && (
+          <div className="py-2 space-y-2">
+            <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono flex items-center justify-between">
+              <span>Voice Notes Logged</span>
+              <span className="text-[#F35C2B] font-semibold">{notes.length}</span>
+            </span>
+            <div className="max-h-36 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
+              {notes.map((note) => (
+                <NoteSnippetItem key={note.id} note={note} />
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Action Buttons (per D-16) */}
         <SheetFooter className="flex flex-col gap-2 pt-4 sm:flex-col sm:space-x-0">
           {/* Primary "Done" action resets /walk to ready state */}
@@ -210,5 +227,67 @@ function SpeciesReelItem({ specimen }: { specimen: Entry }) {
         {name}
       </span>
     </Link>
+  );
+}
+
+function NoteSnippetItem({ note }: { note: Note }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const togglePlay = () => {
+    if (!audioRef.current) {
+      if (!note.audio) return;
+      const url = URL.createObjectURL(note.audio);
+      const audio = new Audio(url);
+      audio.onended = () => setIsPlaying(false);
+      audioRef.current = audio;
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(console.warn);
+      setIsPlaying(true);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-muted/40 border border-border/50 text-xs">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={togglePlay}
+        disabled={!note.audio}
+        className="w-7 h-7 rounded-full bg-[#F35C2B]/10 text-[#F35C2B] hover:bg-[#F35C2B]/20 shrink-0 mt-0.5 cursor-pointer"
+      >
+        {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 ml-0.5" />}
+      </Button>
+      <div className="flex-1 min-w-0 space-y-1">
+        <div className="flex items-center justify-between gap-1">
+          <span className="font-semibold text-foreground truncate flex items-center gap-1">
+            <Mic className="w-3 h-3 text-[#F35C2B]" />
+            Voice Note
+          </span>
+          {note.duration && (
+            <span className="text-[10px] text-muted-foreground font-mono">
+              {note.duration}s
+            </span>
+          )}
+        </div>
+        <p className="text-muted-foreground line-clamp-2 leading-relaxed">
+          {note.transcript || 'Audio note recorded.'}
+        </p>
+      </div>
+    </div>
   );
 }

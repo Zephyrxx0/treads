@@ -20,12 +20,13 @@ import { IdentificationRefusalCard } from '@/components/walk/identification-refu
 import { WalkSummarySheet } from '@/components/walk/walk-summary-sheet';
 import { WalkDiscardDialog } from '@/components/walk/walk-discard-dialog';
 import { VoiceRecorderSheet } from '@/components/voice/voice-recorder-sheet';
+import { RoutePreviewSheet } from '@/components/route/route-preview-sheet';
 import type { WalkMapRef } from '@/components/map/walk-map';
-import { TrackPoint } from '@/lib/geo';
+import { TrackPoint, calculateHaversineDistance } from '@/lib/geo';
 import { useRouter } from 'next/navigation';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { processCapturedImage, blobToBase64 } from '@/lib/camera';
-import { db, Entry, Candidate } from '@/lib/db';
+import { db, Entry, Candidate, Note } from '@/lib/db';
 
 // Dynamically import WalkMap to prevent SSR "window is not defined" errors
 const WalkMap = dynamic(() => import('@/components/map/walk-map').then((mod) => mod.WalkMap), {
@@ -56,6 +57,7 @@ export default function WalkPage() {
     appendTrackPoint,
     endWalk,
     discardWalk,
+    clearRouteLine,
   } = useActiveWalk();
 
   // Live specimen entries for the current active walk session
@@ -68,6 +70,18 @@ export default function WalkPage() {
     [walkId]
   ) || [];
   const identifiedSpecimensCount = walkSpecimens.filter((e) => e.status !== 'unidentified').length;
+
+  // Live voice notes for the active walk session (per D-03)
+  const walkNotes = useLiveQuery(
+    async () => {
+      if (!walkId) return [];
+      return db.notes.where('walkId').equals(walkId).toArray();
+    },
+    [walkId]
+  ) || [];
+
+  // Pre-walk suggested pedestrian loop preview coordinates
+  const [previewRouteLine, setPreviewRouteLine] = useState<[number, number][] | null>(null);
 
   // Completed walk session metrics for Summary Drawer review
   const [completedSummary, setCompletedSummary] = useState<{
@@ -270,8 +284,21 @@ export default function WalkPage() {
     }
   }, [isResumed]);
 
-  // Start Walk action (per D-03, WALK-01)
-  const handleStartWalk = useCallback(async () => {
+  // Off-route guidance calculation (per D-15, ROUT-01)
+  const isOffRoute = React.useMemo(() => {
+    if (!isActive || !activeWalk?.routeLine || activeWalk.routeLine.length === 0 || !currentPosition) {
+      return false;
+    }
+    let minDistance = Infinity;
+    for (const pt of activeWalk.routeLine) {
+      const d = calculateHaversineDistance(currentPosition.lat, currentPosition.lng, pt[1], pt[0]);
+      if (d < minDistance) minDistance = d;
+    }
+    return minDistance > 60; // > 60m divergence triggers quiet HUD badge
+  }, [isActive, activeWalk?.routeLine, currentPosition]);
+
+  // Start Free Walk action (per D-03, WALK-01)
+  const handleStartFreeWalk = useCallback(async () => {
     try {
       await startWalk('free');
       if (currentPosition) {
@@ -284,11 +311,36 @@ export default function WalkPage() {
         };
         await appendTrackPoint(startPt, { immediate: true });
       }
+      setPreviewRouteLine(null);
       walkMapRef.current?.recenter();
     } catch (err) {
-      console.error('Failed to start walk session:', err);
+      console.error('Failed to start free walk session:', err);
     }
   }, [startWalk, currentPosition, appendTrackPoint]);
+
+  // Start Loop Walk action with suggested route line (per D-13, ROUT-01)
+  const handleStartLoopWalk = useCallback(
+    async (routeLine: [number, number][]) => {
+      try {
+        await startWalk('loop', routeLine);
+        if (currentPosition) {
+          // Record starting coordinate
+          const startPt: TrackPoint = {
+            lat: currentPosition.lat,
+            lng: currentPosition.lng,
+            accuracy: currentPosition.accuracy,
+            timestamp: currentPosition.timestamp,
+          };
+          await appendTrackPoint(startPt, { immediate: true });
+        }
+        setPreviewRouteLine(null);
+        walkMapRef.current?.recenter();
+      } catch (err) {
+        console.error('Failed to start loop walk session:', err);
+      }
+    },
+    [startWalk, currentPosition, appendTrackPoint]
+  );
 
   // Finalize walk session and show summary (per D-14, WALK-03)
   const finalizeWalk = useCallback(async () => {
@@ -375,18 +427,20 @@ export default function WalkPage() {
         </div>
       </div>
 
-      {/* Interactive MapLibre GL Canvas (per D-01, MAP-01, D-13) */}
+      {/* Interactive MapLibre GL Canvas (per D-01, MAP-01, D-13, ROUT-01, D-03) */}
       <WalkMap
         ref={walkMapRef}
         userPosition={currentPosition}
         trackPoints={displayTrackPoints}
         specimenEntries={walkSpecimens}
+        suggestedRouteLine={isActive ? (activeWalk?.routeLine || null) : previewRouteLine}
+        audioNotes={walkNotes}
         onSpecimenClick={(entry) => router.push(`/entry/${entry.id}`)}
         isWalkActive={isActive}
         className="w-full h-full"
       />
 
-      {/* Active Walk Top HUD Pills (per D-01, D-02, D-14) */}
+      {/* Active Walk Top HUD Pills (per D-01, D-02, D-14, D-15) */}
       {isActive && (
         <WalkHud
           durationSeconds={elapsedSeconds}
@@ -397,6 +451,8 @@ export default function WalkPage() {
           isResumed={isResumed}
           onDismissResumed={dismissResumed}
           specimenCount={identifiedSpecimensCount}
+          isOffRoute={isOffRoute}
+          onClearRoute={clearRouteLine}
         />
       )}
 
@@ -410,51 +466,18 @@ export default function WalkPage() {
         />
       )}
 
-      {/* Pre-walk Landing Card (per D-03) */}
+      {/* Pre-walk Loop Discovery & Start Sheet (per D-13, ROUT-01, ROUT-02) */}
       {!isActive && !completedSummary && (
-        <div className="absolute bottom-8 inset-x-0 z-30 flex justify-center px-4 pointer-events-none">
-          <div className="pointer-events-auto w-full max-w-sm p-5 rounded-3xl bg-background/90 backdrop-blur-md border border-border/80 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between">
-              <Badge
-                variant="outline"
-                className="font-mono text-xs border-[#F35C2B]/30 text-[#F35C2B] bg-[#F35C2B]/10"
-              >
-                Free Walk
-              </Badge>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
-                <Compass className="w-3.5 h-3.5 text-primary" />
-                <span>
-                  {gpsStatus === 'live'
-                    ? 'GPS Ready'
-                    : gpsStatus === 'searching'
-                    ? 'Searching GPS...'
-                    : 'GPS Waiting'}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold tracking-tight text-foreground font-sans">
-                Ready to Explore
-              </h2>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Tap Start Walk to track your path, record coordinates, and discover local wildlife.
-              </p>
-            </div>
-
-            <Button
-              type="button"
-              onClick={handleStartWalk}
-              className="w-full h-12 text-sm font-semibold bg-[#F35C2B] hover:bg-[#F35C2B]/90 text-white rounded-2xl shadow-lg transition-transform active:scale-95 cursor-pointer"
-            >
-              <Play className="w-4 h-4 mr-2 fill-current" />
-              Start Walk
-            </Button>
-          </div>
-        </div>
+        <RoutePreviewSheet
+          currentPosition={currentPosition}
+          gpsStatus={gpsStatus}
+          onStartFreeWalk={handleStartFreeWalk}
+          onStartLoopWalk={handleStartLoopWalk}
+          onRoutePreviewChange={setPreviewRouteLine}
+        />
       )}
 
-      {/* Post-walk Summary Bottom Sheet (per D-14, D-16) */}
+      {/* Post-walk Summary Bottom Sheet (per D-14, D-16, D-03) */}
       {completedSummary && (
         <WalkSummarySheet
           open={isSummaryOpen}
@@ -466,6 +489,7 @@ export default function WalkPage() {
           distanceMeters={completedSummary.distance}
           speciesCount={identifiedSpecimensCount}
           specimens={walkSpecimens}
+          notes={walkNotes}
           onDone={handleSummaryDone}
         />
       )}
@@ -508,11 +532,13 @@ export default function WalkPage() {
         onSaveUnidentified={handleSaveUnidentified}
       />
 
-      {/* Field Voice Note Recorder Bottom Sheet (Phase 4, per VOIC-01, D-01) */}
+      {/* Field Voice Note Recorder Bottom Sheet (Phase 4, per VOIC-01, D-01, D-03) */}
       <VoiceRecorderSheet
         open={isVoiceSheetOpen}
         onOpenChange={setIsVoiceSheetOpen}
         walkId={walkId}
+        lat={currentPosition?.lat}
+        lng={currentPosition?.lng}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback, useImperativeHandle, f
 import type { Map as MapLibreMap, Marker as MapLibreMarker, GeoJSONSource } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { calculateTrailBounds } from '@/lib/geo';
-import { Entry } from '@/lib/db';
+import { Entry, Note } from '@/lib/db';
 import { Navigation, Plus, Minus, Compass } from 'lucide-react';
 
 export interface WalkMapProps {
@@ -16,15 +16,19 @@ export interface WalkMapProps {
   } | null;
   trackPoints: Array<{ lat: number; lng: number }>;
   specimenEntries?: Entry[];
+  suggestedRouteLine?: [number, number][] | null;
+  audioNotes?: Note[];
   isWalkActive?: boolean;
   className?: string;
   onFollowChange?: (isFollowing: boolean) => void;
   onSpecimenClick?: (entry: Entry) => void;
+  onAudioNoteClick?: (note: Note) => void;
 }
 
 export interface WalkMapRef {
   recenter: () => void;
   fitTrailBounds: (customPadding?: { top: number; bottom: number; left: number; right: number }) => void;
+  fitRouteBounds: (customPadding?: { top: number; bottom: number; left: number; right: number }) => void;
   getMapInstance: () => MapLibreMap | null;
 }
 
@@ -33,10 +37,13 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
     userPosition,
     trackPoints,
     specimenEntries = [],
+    suggestedRouteLine = null,
+    audioNotes = [],
     isWalkActive = false,
     className = '',
     onFollowChange,
     onSpecimenClick,
+    onAudioNoteClick,
   },
   ref
 ) {
@@ -44,6 +51,7 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
   const mapRef = useRef<MapLibreMap | null>(null);
   const userMarkerRef = useRef<MapLibreMarker | null>(null);
   const specimenMarkersRef = useRef<MapLibreMarker[]>([]);
+  const audioMarkersRef = useRef<MapLibreMarker[]>([]);
   const markerElRef = useRef<HTMLDivElement | null>(null);
   const headingConeElRef = useRef<HTMLDivElement | null>(null);
 
@@ -89,15 +97,34 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
     [trackPoints, updateFollowing]
   );
 
+  // Fit camera bounds to suggested pedestrian loop route
+  const handleFitRouteBounds = useCallback(
+    (customPadding = { top: 96, bottom: 320, left: 48, right: 48 }) => {
+      if (!mapRef.current || !suggestedRouteLine || suggestedRouteLine.length === 0) return;
+      const points = suggestedRouteLine.map((c) => ({ lat: c[1], lng: c[0] }));
+      const bounds = calculateTrailBounds(points);
+      if (bounds) {
+        updateFollowing(false);
+        mapRef.current.fitBounds(bounds, {
+          padding: customPadding,
+          maxZoom: 17,
+          duration: 1200,
+        });
+      }
+    },
+    [suggestedRouteLine, updateFollowing]
+  );
+
   // Expose methods via ref
   useImperativeHandle(
     ref,
     () => ({
       recenter: handleRecenter,
       fitTrailBounds: handleFitTrailBounds,
+      fitRouteBounds: handleFitRouteBounds,
       getMapInstance: () => mapRef.current,
     }),
-    [handleRecenter, handleFitTrailBounds]
+    [handleRecenter, handleFitTrailBounds, handleFitRouteBounds]
   );
 
   // Zoom controls
@@ -153,6 +180,36 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
 
       map.on('load', () => {
         if (!isMounted) return;
+
+        // 0. Initialize GeoJSON source for suggested loop route line (per ROUT-01, D-14)
+        map.addSource('suggested-route', {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: suggestedRouteLine || [],
+            },
+          },
+        });
+
+        // Add dashed terracotta suggested line layer (per D-14)
+        map.addLayer({
+          id: 'walk-route-line',
+          type: 'line',
+          source: 'suggested-route',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round',
+          },
+          paint: {
+            'line-color': '#F35C2B',
+            'line-width': 4,
+            'line-opacity': 0.6,
+            'line-dasharray': [2, 2],
+          },
+        });
 
         // 1. Initialize GeoJSON source for trail polyline
         map.addSource('walk-trail', {
@@ -233,6 +290,14 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
       if (userMarkerRef.current) {
         userMarkerRef.current.remove();
         userMarkerRef.current = null;
+      }
+      if (specimenMarkersRef.current) {
+        specimenMarkersRef.current.forEach((m) => m.remove());
+        specimenMarkersRef.current = [];
+      }
+      if (audioMarkersRef.current) {
+        audioMarkersRef.current.forEach((m) => m.remove());
+        audioMarkersRef.current = [];
       }
       if (mapRef.current) {
         mapRef.current.remove();
@@ -358,6 +423,73 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
       });
     });
   }, [specimenEntries, mapLoaded, onSpecimenClick]);
+
+  // Sync suggested pedestrian loop route line (per ROUT-01, D-14)
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current) return;
+
+    const source = mapRef.current.getSource('suggested-route') as GeoJSONSource | undefined;
+    if (source) {
+      source.setData({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: suggestedRouteLine || [],
+        },
+      });
+    }
+
+    if (suggestedRouteLine && suggestedRouteLine.length > 1 && !isWalkActive) {
+      const points = suggestedRouteLine.map((c) => ({ lat: c[1], lng: c[0] }));
+      const bounds = calculateTrailBounds(points);
+      if (bounds) {
+        updateFollowing(false);
+        mapRef.current.fitBounds(bounds, {
+          padding: { top: 96, bottom: 320, left: 48, right: 48 },
+          maxZoom: 16,
+          duration: 1000,
+        });
+      }
+    }
+  }, [suggestedRouteLine, mapLoaded, isWalkActive, updateFollowing]);
+
+  // Sync audio note pins on the trail (per D-03)
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current) return;
+
+    // Clear previous audio markers
+    audioMarkersRef.current.forEach((m) => m.remove());
+    audioMarkersRef.current = [];
+
+    if (!audioNotes || audioNotes.length === 0) return;
+
+    import('maplibre-gl').then((mod) => {
+      const maplibregl = (mod as any).default || mod;
+      if (!mapRef.current) return;
+
+      audioNotes.forEach((note) => {
+        if (note.lat == null || note.lng == null) return;
+
+        const pinEl = document.createElement('div');
+        pinEl.className =
+          'treads-audio-pin relative flex items-center justify-center w-8 h-8 rounded-full bg-[#F35C2B] text-white shadow-lg border-2 border-white cursor-pointer transition-transform duration-150 hover:scale-110 active:scale-95';
+        pinEl.setAttribute('aria-label', 'Voice note pin');
+        pinEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>`;
+
+        pinEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          onAudioNoteClick?.(note);
+        });
+
+        const marker = new maplibregl.Marker({ element: pinEl, anchor: 'center' })
+          .setLngLat([note.lng, note.lat])
+          .addTo(mapRef.current);
+
+        audioMarkersRef.current.push(marker);
+      });
+    });
+  }, [audioNotes, mapLoaded, onAudioNoteClick]);
 
   return (
     <div className={`relative w-full h-full overflow-hidden bg-background ${className}`}>

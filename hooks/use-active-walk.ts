@@ -22,13 +22,17 @@ export async function getActiveWalk(): Promise<Walk | undefined> {
 /**
  * Starts a new walk session in Dexie.
  */
-export async function startWalkSession(mode: 'free' | 'loop' = 'free'): Promise<Walk> {
+export async function startWalkSession(
+  mode: 'free' | 'loop' = 'free',
+  routeLine?: [number, number][] | null
+): Promise<Walk> {
   const id = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `walk-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   const newWalk: Walk = {
     id,
     startedAt: Date.now(),
     endedAt: null,
     mode,
+    routeLine: routeLine || null,
     trackPoints: [],
     distance: 0,
   };
@@ -135,10 +139,11 @@ export interface UseActiveWalkReturn {
   dismissResumed: () => void;
   elapsedSeconds: number;
   distanceMeters: number;
-  startWalk: (mode?: 'free' | 'loop') => Promise<Walk>;
+  startWalk: (mode?: 'free' | 'loop', routeLine?: [number, number][] | null) => Promise<Walk>;
   appendTrackPoint: (point: TrackPoint, options?: { immediate?: boolean }) => Promise<void>;
   endWalk: () => Promise<Walk | null>;
   discardWalk: () => Promise<void>;
+  clearRouteLine: () => Promise<void>;
 }
 
 export function useActiveWalk(): UseActiveWalkReturn {
@@ -183,11 +188,14 @@ export function useActiveWalk(): UseActiveWalkReturn {
     return () => clearInterval(interval);
   }, [activeWalk?.startedAt, activeWalk?.endedAt]);
 
-  const startWalk = useCallback(async (mode: 'free' | 'loop' = 'free'): Promise<Walk> => {
-    startedInThisMountRef.current = true;
-    setIsResumed(false);
-    return await startWalkSession(mode);
-  }, []);
+  const startWalk = useCallback(
+    async (mode: 'free' | 'loop' = 'free', routeLine?: [number, number][] | null): Promise<Walk> => {
+      startedInThisMountRef.current = true;
+      setIsResumed(false);
+      return await startWalkSession(mode, routeLine);
+    },
+    []
+  );
 
   const appendTrackPoint = useCallback(
     async (point: TrackPoint, options: { immediate?: boolean } = {}): Promise<void> => {
@@ -207,6 +215,11 @@ export function useActiveWalk(): UseActiveWalkReturn {
     await discardWalkSession(activeWalk.id);
   }, [activeWalk?.id]);
 
+  const clearRouteLine = useCallback(async (): Promise<void> => {
+    if (!activeWalk?.id) return;
+    await db.walks.update(activeWalk.id, { routeLine: null });
+  }, [activeWalk?.id]);
+
   return {
     activeWalk,
     isActive: Boolean(activeWalk),
@@ -218,6 +231,7 @@ export function useActiveWalk(): UseActiveWalkReturn {
     appendTrackPoint,
     endWalk,
     discardWalk,
+    clearRouteLine,
   };
 }
 

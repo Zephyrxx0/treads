@@ -172,3 +172,4 @@ The phase will be verified through automated route harness tests and component s
 3. **Dexie Persistence:**
    - Verify `db.notes` stores voice note records with `walkId`/`entryId`, duration, transcript, and audio Blob.
    - Verify `db.speechCache` caches audio Blobs by `textHash` and prunes when exceeding limits.
+

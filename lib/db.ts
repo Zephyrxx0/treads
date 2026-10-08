@@ -54,6 +54,8 @@ export interface Note {
   duration?: number;
   transcript: string;
   language?: string;
+  lat?: number;
+  lng?: number;
   createdAt: number;
 }
 

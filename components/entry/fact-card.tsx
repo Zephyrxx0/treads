@@ -13,6 +13,7 @@ import {
   Quote,
   Sparkles,
 } from 'lucide-react';
+import { FactAudioPlayer } from '@/components/speech/fact-audio-player';
 
 export interface FactData {
   summary: string;
@@ -139,23 +140,16 @@ export function FactCard({ factsData, speciesName, className }: FactCardProps) {
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
 
-        {/* Voice Narration Scaffold (Phase 4 placeholder) */}
-        <div className="flex items-center gap-1.5">
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            disabled
-            className="h-8 text-xs gap-1.5 rounded-lg opacity-60 cursor-not-allowed"
-            title="Voice narration companion is planned for Phase 4"
-          >
-            <Volume2 className="w-3.5 h-3.5" />
-            <span>Listen</span>
-          </Button>
-          <span className="text-[10px] text-muted-foreground font-mono">
-            Phase 4
-          </span>
-        </div>
+        {/* Voice Narration Audio Player (Phase 4, per SPK-01, D-09, D-10) */}
+        <FactAudioPlayer
+          text={[
+            speciesName ? `${speciesName}.` : '',
+            summary,
+            ...facts.map((f, i) => `Fact ${i + 1}: ${f.text}`),
+          ]
+            .filter(Boolean)
+            .join(' ')}
+        />
       </CardFooter>
     </Card>
   );

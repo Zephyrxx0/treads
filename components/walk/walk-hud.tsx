@@ -17,6 +17,8 @@ export interface WalkHudProps {
   onDismissResumed?: () => void;
   specimenCount?: number;
   onSpecimenCountClick?: () => void;
+  isOffRoute?: boolean;
+  onClearRoute?: () => void;
 }
 
 export function WalkHud({
@@ -29,11 +31,31 @@ export function WalkHud({
   onDismissResumed,
   specimenCount = 0,
   onSpecimenCountClick,
+  isOffRoute = false,
+  onClearRoute,
 }: WalkHudProps) {
   return (
     <div className="absolute top-4 inset-x-0 z-30 flex flex-col items-center gap-2 px-4 pointer-events-none">
       {/* Top Notification Row */}
       <div className="flex items-center gap-2">
+        {/* Off-Route HUD Chip (per D-15, ROUT-01, UI-SPEC) */}
+        {isOffRoute && (
+          <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-amber-500/40 shadow-md text-xs font-medium text-foreground animate-in fade-in slide-in-from-top-2 duration-300">
+            <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+            <span>Off suggested loop</span>
+            {onClearRoute && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearRoute}
+                className="h-5 px-1.5 py-0 text-[11px] text-[#F35C2B] hover:text-[#F35C2B]/80 hover:bg-transparent font-medium cursor-pointer"
+              >
+                Clear Route
+              </Button>
+            )}
+          </div>
+        )}
+
         {/* Auto-resumed Toast Pill (per D-04) */}
         {isResumed && (
           <div className="pointer-events-auto flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-[#F35C2B]/40 shadow-md text-xs font-medium text-foreground animate-in fade-in slide-in-from-top-2 duration-300">
