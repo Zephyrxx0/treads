@@ -1,0 +1,684 @@
+[
+  {
+    "id": "fix-01",
+    "name": "White Oak",
+    "category": "plant",
+    "expectedScientificName": "Quercus alba",
+    "expectedCommonName": "White Oak",
+    "expectRefusal": false,
+    "description": "Broad leaf with 7-9 rounded finger lobes, light grey bark, native to eastern North America.",
+    "imagePath": "/eval-fixtures/images/quercus-alba.svg",
+    "kind": "tree",
+    "mockCandidates": [
+      {
+        "scientificName": "Quercus alba",
+        "commonName": "White Oak",
+        "kind": "tree",
+        "confidence": "Likely",
+        "wikipediaTitle": "Quercus alba"
+      },
+      {
+        "scientificName": "Quercus sp.",
+        "commonName": "Related White Oak",
+        "kind": "tree",
+        "confidence": "Possible",
+        "wikipediaTitle": "Quercus"
+      }
+    ]
+  },
+  {
+    "id": "fix-02",
+    "name": "Red Maple",
+    "category": "plant",
+    "expectedScientificName": "Acer rubrum",
+    "expectedCommonName": "Red Maple",
+    "expectRefusal": false,
+    "description": "Deciduous tree with opposite leaves showing 3 palmate lobes and reddish twigs.",
+    "imagePath": "/eval-fixtures/images/acer-rubrum.svg",
+    "kind": "tree",
+    "mockCandidates": [
+      {
+        "scientificName": "Acer rubrum",
+        "commonName": "Red Maple",
+        "kind": "tree",
+        "confidence": "Likely",
+        "wikipediaTitle": "Acer rubrum"
+      },
+      {
+        "scientificName": "Acer sp.",
+        "commonName": "Related Red Maple",
+        "kind": "tree",
+        "confidence": "Possible",
+        "wikipediaTitle": "Acer"
+      }
+    ]
+  },
+  {
+    "id": "fix-03",
+    "name": "Common Dandelion",
+    "category": "plant",
+    "expectedScientificName": "Taraxacum officinale",
+    "expectedCommonName": "Common Dandelion",
+    "expectRefusal": false,
+    "description": "Bright yellow ray-flowered composite head atop a hollow leafless scape with basal rosette of serrated leaves.",
+    "imagePath": "/eval-fixtures/images/taraxacum-officinale.svg",
+    "kind": "flower",
+    "mockCandidates": [
+      {
+        "scientificName": "Taraxacum officinale",
+        "commonName": "Common Dandelion",
+        "kind": "flower",
+        "confidence": "Likely",
+        "wikipediaTitle": "Taraxacum officinale"
+      },
+      {
+        "scientificName": "Taraxacum sp.",
+        "commonName": "Related Common Dandelion",
+        "kind": "flower",
+        "confidence": "Possible",
+        "wikipediaTitle": "Taraxacum"
+      }
+    ]
+  },
+  {
+    "id": "fix-04",
+    "name": "Common Daisy",
+    "category": "plant",
+    "expectedScientificName": "Bellis perennis",
+    "expectedCommonName": "Common Daisy",
+    "expectRefusal": false,
+    "description": "White ray florets surrounding a compact yellow disc center, spoon-shaped basal leaves.",
+    "imagePath": "/eval-fixtures/images/bellis-perennis.svg",
+    "kind": "flower",
+    "mockCandidates": [
+      {
+        "scientificName": "Bellis perennis",
+        "commonName": "Common Daisy",
+        "kind": "flower",
+        "confidence": "Likely",
+        "wikipediaTitle": "Bellis perennis"
+      },
+      {
+        "scientificName": "Bellis sp.",
+        "commonName": "Related Common Daisy",
+        "kind": "flower",
+        "confidence": "Possible",
+        "wikipediaTitle": "Bellis"
+      }
+    ]
+  },
+  {
+    "id": "fix-05",
+    "name": "Eastern White Pine",
+    "category": "plant",
+    "expectedScientificName": "Pinus strobus",
+    "expectedCommonName": "Eastern White Pine",
+    "expectRefusal": false,
+    "description": "Coniferous evergreen tree with flexible blue-green needles bundled in fascicles of five.",
+    "imagePath": "/eval-fixtures/images/pinus-strobus.svg",
+    "kind": "tree",
+    "mockCandidates": [
+      {
+        "scientificName": "Pinus strobus",
+        "commonName": "Eastern White Pine",
+        "kind": "tree",
+        "confidence": "Likely",
+        "wikipediaTitle": "Pinus strobus"
+      },
+      {
+        "scientificName": "Pinus sp.",
+        "commonName": "Related Eastern White Pine",
+        "kind": "tree",
+        "confidence": "Possible",
+        "wikipediaTitle": "Pinus"
+      }
+    ]
+  },
+  {
+    "id": "fix-06",
+    "name": "White Clover",
+    "category": "plant",
+    "expectedScientificName": "Trifolium repens",
+    "expectedCommonName": "White Clover",
+    "expectRefusal": false,
+    "description": "Trifoliate compound leaves with faint white crescent markings and spherical white floral heads.",
+    "imagePath": "/eval-fixtures/images/trifolium-repens.svg",
+    "kind": "plant",
+    "mockCandidates": [
+      {
+        "scientificName": "Trifolium repens",
+        "commonName": "White Clover",
+        "kind": "plant",
+        "confidence": "Likely",
+        "wikipediaTitle": "Trifolium repens"
+      },
+      {
+        "scientificName": "Trifolium sp.",
+        "commonName": "Related White Clover",
+        "kind": "plant",
+        "confidence": "Possible",
+        "wikipediaTitle": "Trifolium"
+      }
+    ]
+  },
+  {
+    "id": "fix-07",
+    "name": "Broadleaf Plantain",
+    "category": "plant",
+    "expectedScientificName": "Plantago major",
+    "expectedCommonName": "Broadleaf Plantain",
+    "expectRefusal": false,
+    "description": "Oval basal leaves with prominent parallel veins and upright dense spike-like inflorescences.",
+    "imagePath": "/eval-fixtures/images/plantago-major.svg",
+    "kind": "plant",
+    "mockCandidates": [
+      {
+        "scientificName": "Plantago major",
+        "commonName": "Broadleaf Plantain",
+        "kind": "plant",
+        "confidence": "Likely",
+        "wikipediaTitle": "Plantago major"
+      },
+      {
+        "scientificName": "Plantago sp.",
+        "commonName": "Related Broadleaf Plantain",
+        "kind": "plant",
+        "confidence": "Possible",
+        "wikipediaTitle": "Plantago"
+      }
+    ]
+  },
+  {
+    "id": "fix-08",
+    "name": "Sunflower",
+    "category": "plant",
+    "expectedScientificName": "Helianthus annuus",
+    "expectedCommonName": "Sunflower",
+    "expectRefusal": false,
+    "description": "Large radiating golden yellow head, rough heart-shaped leaves, tall thick stem.",
+    "imagePath": "/eval-fixtures/images/helianthus-annuus.svg",
+    "kind": "flower",
+    "mockCandidates": [
+      {
+        "scientificName": "Helianthus annuus",
+        "commonName": "Sunflower",
+        "kind": "flower",
+        "confidence": "Likely",
+        "wikipediaTitle": "Helianthus annuus"
+      },
+      {
+        "scientificName": "Helianthus sp.",
+        "commonName": "Related Sunflower",
+        "kind": "flower",
+        "confidence": "Possible",
+        "wikipediaTitle": "Helianthus"
+      }
+    ]
+  },
+  {
+    "id": "fix-09",
+    "name": "Dog Rose",
+    "category": "plant",
+    "expectedScientificName": "Rosa canina",
+    "expectedCommonName": "Dog Rose",
+    "expectRefusal": false,
+    "description": "Climbing wild rose shrub with curved prickles, pale pink to white five-petaled blossoms, and red hips.",
+    "imagePath": "/eval-fixtures/images/rosa-canina.svg",
+    "kind": "flower",
+    "mockCandidates": [
+      {
+        "scientificName": "Rosa canina",
+        "commonName": "Dog Rose",
+        "kind": "flower",
+        "confidence": "Likely",
+        "wikipediaTitle": "Rosa canina"
+      },
+      {
+        "scientificName": "Rosa sp.",
+        "commonName": "Related Dog Rose",
+        "kind": "flower",
+        "confidence": "Possible",
+        "wikipediaTitle": "Rosa"
+      }
+    ]
+  },
+  {
+    "id": "fix-10",
+    "name": "Common Ivy",
+    "category": "plant",
+    "expectedScientificName": "Hedera helix",
+    "expectedCommonName": "Common Ivy",
+    "expectRefusal": false,
+    "description": "Evergreen climbing vine with glossy, palmately 3-5 lobed dark green leaves with pale veins.",
+    "imagePath": "/eval-fixtures/images/hedera-helix.svg",
+    "kind": "plant",
+    "mockCandidates": [
+      {
+        "scientificName": "Hedera helix",
+        "commonName": "Common Ivy",
+        "kind": "plant",
+        "confidence": "Likely",
+        "wikipediaTitle": "Hedera helix"
+      },
+      {
+        "scientificName": "Hedera sp.",
+        "commonName": "Related Common Ivy",
+        "kind": "plant",
+        "confidence": "Possible",
+        "wikipediaTitle": "Hedera"
+      }
+    ]
+  },
+  {
+    "id": "fix-11",
+    "name": "House Sparrow",
+    "category": "bird",
+    "expectedScientificName": "Passer domesticus",
+    "expectedCommonName": "House Sparrow",
+    "expectRefusal": false,
+    "description": "Small stout passerine bird with grey crown, black bib, and rufous brown streaked back.",
+    "imagePath": "/eval-fixtures/images/passer-domesticus.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Passer domesticus",
+        "commonName": "House Sparrow",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Passer domesticus"
+      },
+      {
+        "scientificName": "Passer sp.",
+        "commonName": "Related House Sparrow",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Passer"
+      }
+    ]
+  },
+  {
+    "id": "fix-12",
+    "name": "American Robin",
+    "category": "bird",
+    "expectedScientificName": "Turdus migratorius",
+    "expectedCommonName": "American Robin",
+    "expectRefusal": false,
+    "description": "Migratory thrush with rich reddish-orange breast, dark charcoal head, and yellow beak.",
+    "imagePath": "/eval-fixtures/images/turdus-migratorius.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Turdus migratorius",
+        "commonName": "American Robin",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Turdus migratorius"
+      },
+      {
+        "scientificName": "Turdus sp.",
+        "commonName": "Related American Robin",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Turdus"
+      }
+    ]
+  },
+  {
+    "id": "fix-13",
+    "name": "Rock Dove / Pigeon",
+    "category": "bird",
+    "expectedScientificName": "Columba livia",
+    "expectedCommonName": "Rock Dove",
+    "expectRefusal": false,
+    "description": "Urban pigeon with slate-blue plumage, iridescent green-purple neck patch, and dual black wing bars.",
+    "imagePath": "/eval-fixtures/images/columba-livia.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Columba livia",
+        "commonName": "Rock Dove",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Columba livia"
+      },
+      {
+        "scientificName": "Columba sp.",
+        "commonName": "Related Rock Dove",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Columba"
+      }
+    ]
+  },
+  {
+    "id": "fix-14",
+    "name": "American Crow",
+    "category": "bird",
+    "expectedScientificName": "Corvus brachyrhynchos",
+    "expectedCommonName": "American Crow",
+    "expectRefusal": false,
+    "description": "All-black intelligent passerine with stout bill, glossy plumage, and fan-shaped tail.",
+    "imagePath": "/eval-fixtures/images/corvus-brachyrhynchos.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Corvus brachyrhynchos",
+        "commonName": "American Crow",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Corvus brachyrhynchos"
+      },
+      {
+        "scientificName": "Corvus sp.",
+        "commonName": "Related American Crow",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Corvus"
+      }
+    ]
+  },
+  {
+    "id": "fix-15",
+    "name": "Blue Jay",
+    "category": "bird",
+    "expectedScientificName": "Cyanocitta cristata",
+    "expectedCommonName": "Blue Jay",
+    "expectRefusal": false,
+    "description": "Crested corvid with vivid sky-blue plumage, white breast, black necklace collar, and barred wings.",
+    "imagePath": "/eval-fixtures/images/cyanocitta-cristata.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Cyanocitta cristata",
+        "commonName": "Blue Jay",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Cyanocitta cristata"
+      },
+      {
+        "scientificName": "Cyanocitta sp.",
+        "commonName": "Related Blue Jay",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Cyanocitta"
+      }
+    ]
+  },
+  {
+    "id": "fix-16",
+    "name": "Great Tit",
+    "category": "bird",
+    "expectedScientificName": "Parus major",
+    "expectedCommonName": "Great Tit",
+    "expectRefusal": false,
+    "description": "Distinctive woodland tit with glossy black crown, pure white cheeks, and yellow breast with central black stripe.",
+    "imagePath": "/eval-fixtures/images/parus-major.svg",
+    "kind": "bird",
+    "mockCandidates": [
+      {
+        "scientificName": "Parus major",
+        "commonName": "Great Tit",
+        "kind": "bird",
+        "confidence": "Likely",
+        "wikipediaTitle": "Parus major"
+      },
+      {
+        "scientificName": "Parus sp.",
+        "commonName": "Related Great Tit",
+        "kind": "bird",
+        "confidence": "Possible",
+        "wikipediaTitle": "Parus"
+      }
+    ]
+  },
+  {
+    "id": "fix-17",
+    "name": "Seven-spotted Ladybird",
+    "category": "insect",
+    "expectedScientificName": "Coccinella septempunctata",
+    "expectedCommonName": "Seven-spotted Ladybird",
+    "expectRefusal": false,
+    "description": "Convex red elytra bearing seven distinct black spots, black pronotum with white anterior corners.",
+    "imagePath": "/eval-fixtures/images/coccinella-septempunctata.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Coccinella septempunctata",
+        "commonName": "Seven-spotted Ladybird",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Coccinella septempunctata"
+      },
+      {
+        "scientificName": "Coccinella sp.",
+        "commonName": "Related Seven-spotted Ladybird",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Coccinella"
+      }
+    ]
+  },
+  {
+    "id": "fix-18",
+    "name": "Western Honey Bee",
+    "category": "insect",
+    "expectedScientificName": "Apis mellifera",
+    "expectedCommonName": "Western Honey Bee",
+    "expectRefusal": false,
+    "description": "Hairy golden-brown social bee with striped abdominal bands, pollen baskets on hind tibiae.",
+    "imagePath": "/eval-fixtures/images/apis-mellifera.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Apis mellifera",
+        "commonName": "Western Honey Bee",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Apis mellifera"
+      },
+      {
+        "scientificName": "Apis sp.",
+        "commonName": "Related Western Honey Bee",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Apis"
+      }
+    ]
+  },
+  {
+    "id": "fix-19",
+    "name": "Monarch Butterfly",
+    "category": "insect",
+    "expectedScientificName": "Danaus plexippus",
+    "expectedCommonName": "Monarch Butterfly",
+    "expectRefusal": false,
+    "description": "Tawny orange wings with intricate black veins and double rows of white dots along outer margins.",
+    "imagePath": "/eval-fixtures/images/danaus-plexippus.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Danaus plexippus",
+        "commonName": "Monarch Butterfly",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Danaus plexippus"
+      },
+      {
+        "scientificName": "Danaus sp.",
+        "commonName": "Related Monarch Butterfly",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Danaus"
+      }
+    ]
+  },
+  {
+    "id": "fix-20",
+    "name": "Buff-tailed Bumblebee",
+    "category": "insect",
+    "expectedScientificName": "Bombus terrestris",
+    "expectedCommonName": "Buff-tailed Bumblebee",
+    "expectRefusal": false,
+    "description": "Plump fuzzy bumblebee with two yellow-orange bands and a buff/whitish tail tip.",
+    "imagePath": "/eval-fixtures/images/bombus-terrestris.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Bombus terrestris",
+        "commonName": "Buff-tailed Bumblebee",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Bombus terrestris"
+      },
+      {
+        "scientificName": "Bombus sp.",
+        "commonName": "Related Buff-tailed Bumblebee",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Bombus"
+      }
+    ]
+  },
+  {
+    "id": "fix-21",
+    "name": "Red Admiral",
+    "category": "insect",
+    "expectedScientificName": "Vanessa atalanta",
+    "expectedCommonName": "Red Admiral",
+    "expectRefusal": false,
+    "description": "Velvety dark brown butterfly with striking orange-red median diagonal bands and white apical spots.",
+    "imagePath": "/eval-fixtures/images/vanessa-atalanta.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Vanessa atalanta",
+        "commonName": "Red Admiral",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Vanessa atalanta"
+      },
+      {
+        "scientificName": "Vanessa sp.",
+        "commonName": "Related Red Admiral",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Vanessa"
+      }
+    ]
+  },
+  {
+    "id": "fix-22",
+    "name": "Housefly",
+    "category": "insect",
+    "expectedScientificName": "Musca domestica",
+    "expectedCommonName": "Housefly",
+    "expectRefusal": false,
+    "description": "Grey dipteran fly with four longitudinal dark stripes on thorax and large reddish compound eyes.",
+    "imagePath": "/eval-fixtures/images/musca-domestica.svg",
+    "kind": "insect",
+    "mockCandidates": [
+      {
+        "scientificName": "Musca domestica",
+        "commonName": "Housefly",
+        "kind": "insect",
+        "confidence": "Likely",
+        "wikipediaTitle": "Musca domestica"
+      },
+      {
+        "scientificName": "Musca sp.",
+        "commonName": "Related Housefly",
+        "kind": "insect",
+        "confidence": "Possible",
+        "wikipediaTitle": "Musca"
+      }
+    ]
+  },
+  {
+    "id": "fix-23",
+    "name": "Ceramic coffee mug",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Ceramic coffee mug",
+    "expectRefusal": true,
+    "description": "Handcrafted ceramic mug filled with tea resting on a desk surface.",
+    "imagePath": "/eval-fixtures/images/coffee-mug.svg",
+    "kind": "object"
+  },
+  {
+    "id": "fix-24",
+    "name": "Commuter bicycle",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Commuter bicycle",
+    "expectRefusal": true,
+    "description": "Steel-frame two-wheeled commuter bicycle locked to an urban metal bike post.",
+    "imagePath": "/eval-fixtures/images/commuter-bicycle.svg",
+    "kind": "object"
+  },
+  {
+    "id": "fix-25",
+    "name": "Wooden park bench",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Wooden park bench",
+    "expectRefusal": true,
+    "description": "Slat-wood park bench with cast-iron frame positioned beside a paved footpath.",
+    "imagePath": "/eval-fixtures/images/wooden-bench.svg",
+    "kind": "object"
+  },
+  {
+    "id": "fix-26",
+    "name": "Smartphone screen",
+    "category": "non-organism",
+    "expectedScientificName": null,
+    "expectedCommonName": "Smartphone screen",
+    "expectRefusal": true,
+    "description": "Glass touch display of a mobile phone displaying application icons.",
+    "imagePath": "/eval-fixtures/images/smartphone-screen.svg",
+    "kind": "object"
+  },
+  {
+    "id": "fix-27",
+    "name": "Human face portrait",
+    "category": "person",
+    "expectedScientificName": null,
+    "expectedCommonName": "Human face portrait",
+    "expectRefusal": true,
+    "description": "Close-up studio photographic portrait of an adult human face.",
+    "imagePath": "/eval-fixtures/images/human-portrait.svg",
+    "kind": "person"
+  },
+  {
+    "id": "fix-28",
+    "name": "Selfie outdoors",
+    "category": "person",
+    "expectedScientificName": null,
+    "expectedCommonName": "Selfie outdoors",
+    "expectRefusal": true,
+    "description": "Front-facing selfie capture of a hiker smiling outdoors on a woodland trail.",
+    "imagePath": "/eval-fixtures/images/selfie-outdoors.svg",
+    "kind": "person"
+  },
+  {
+    "id": "fix-29",
+    "name": "Person walking in park",
+    "category": "person",
+    "expectedScientificName": null,
+    "expectedCommonName": "Person walking in park",
+    "expectRefusal": true,
+    "description": "Full-body photo of an adult pedestrian walking in a municipal botanical park.",
+    "imagePath": "/eval-fixtures/images/person-walking.svg",
+    "kind": "person"
+  },
+  {
+    "id": "fix-30",
+    "name": "Human hand",
+    "category": "person",
+    "expectedScientificName": null,
+    "expectedCommonName": "Human hand",
+    "expectRefusal": true,
+    "description": "Close-up shot of an open human palm and fingers.",
+    "imagePath": "/eval-fixtures/images/human-hand.svg",
+    "kind": "person"
+  }
+]

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0077b6" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0077b6" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="240" rx="16" fill="url(#grad)" />
+  <rect x="8" y="8" width="304" height="224" rx="12" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+  <text x="160" y="95" font-size="52" text-anchor="middle" dominant-baseline="middle">🪶</text>
+  <text x="160" y="150" font-family="system-ui, -apple-system, sans-serif" font-weight="bold" font-size="16" fill="#ffffff" text-anchor="middle">Blue Jay</text>
+  <text x="160" y="174" font-family="system-ui, -apple-system, serif" font-style="italic" font-size="12" fill="rgba(255,255,255,0.85)" text-anchor="middle">Cyanocitta cristata</text>
+  <rect x="20" y="194" width="280" height="24" rx="6" fill="rgba(0,0,0,0.25)" />
+  <text x="160" y="210" font-family="system-ui, -apple-system, sans-serif" font-size="10" fill="rgba(255,255,255,0.9)" text-anchor="middle">Fixture: fix-15 • bird</text>
+</svg>
