@@ -13,6 +13,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Check, CheckCircle2, FileQuestion, RotateCcw, Sparkles } from 'lucide-react';
 import type { Candidate } from '@/lib/db';
+import { playCaptureChime } from '@/lib/audio/cuelume';
+import { triggerConfirmHaptic } from '@/lib/haptics';
 
 export interface CandidatePickerSheetProps {
   open: boolean;
@@ -31,6 +33,12 @@ export function CandidatePickerSheet({
   onSaveUnidentified,
   onRetake,
 }: CandidatePickerSheetProps) {
+  const handleConfirm = (candidate: Candidate) => {
+    playCaptureChime();
+    triggerConfirmHaptic();
+    onConfirmCandidate(candidate);
+  };
+
   // Check if all candidates have low confidence ('Unsure')
   const allUnsure = candidates.length > 0 && candidates.every((c) => c.confidence === 'Unsure');
 
@@ -66,7 +74,7 @@ export function CandidatePickerSheet({
           {candidates.map((candidate, idx) => (
             <Card
               key={`${candidate.scientificName}-${idx}`}
-              onClick={() => onConfirmCandidate(candidate)}
+              onClick={() => handleConfirm(candidate)}
               className="cursor-pointer border-border/80 hover:border-[#F35C2B]/60 hover:shadow-md transition-all active:scale-[0.99] group bg-card/60 backdrop-blur-xs"
             >
               <CardHeader className="p-4 pb-2">

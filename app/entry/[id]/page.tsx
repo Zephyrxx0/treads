@@ -10,6 +10,7 @@ import { VoiceRecorderSheet } from '@/components/voice/voice-recorder-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { TegakiText } from '@/components/motion/tegaki-text';
 import { cn } from '@/lib/utils';
 
 export default function EntryDetailPage({
@@ -243,9 +244,11 @@ export default function EntryDetailPage({
         {/* Taxonomic Heading */}
         <div className="space-y-1">
           <div className="flex items-center justify-between gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              {commonName}
-            </h1>
+            <TegakiText
+              text={commonName}
+              as="h1"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
+            />
             {entry.verified && (
               <Badge
                 variant="secondary"

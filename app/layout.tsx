@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Amaranth, Noto_Serif } from 'next/font/google';
+import { Amaranth, Noto_Serif, Caveat } from 'next/font/google';
 import './globals.css';
 import { ConsentModal } from '@/components/consent/consent-modal';
 import { ThemeSync } from '@/components/theme/theme-sync';
@@ -17,6 +17,12 @@ const notoSerif = Noto_Serif({
   display: 'swap',
 });
 
+const caveat = Caveat({
+  subsets: ['latin'],
+  variable: '--font-handwriting',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'Treads - Field Walking & Specimen Journal',
   description: 'Mindful walking companion, taxonomic specimen identifier, and nature field journal.',
@@ -28,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${amaranth.variable} ${notoSerif.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${amaranth.variable} ${notoSerif.variable} ${caveat.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{

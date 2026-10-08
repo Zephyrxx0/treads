@@ -119,3 +119,4 @@ Phase 6 hardens the user experience and prepares Treads for production release a
 
 *Phase: 6-Polish, Consent Gate, Evaluation & Submission*
 *Context gathered: 2026-10-08*
+

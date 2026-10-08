@@ -30,6 +30,7 @@ import {
   SheetClose,
 } from '@/components/ui/sheet';
 import { MotionView } from '@/components/motion/motion-view';
+import { TegakiText } from '@/components/motion/tegaki-text';
 
 export default function HomePage() {
   const [progressVal, setProgressVal] = React.useState(68);
@@ -47,9 +48,12 @@ export default function HomePage() {
               <h1 className="font-sans text-xl font-bold tracking-tight text-foreground">
                 Treads
               </h1>
-              <p className="font-serif text-xs text-muted-foreground">
-                Field Walking & Specimen Journal
-              </p>
+              <TegakiText
+                text="Step outside. Notice what lives."
+                as="span"
+                className="text-xs text-primary font-handwriting"
+                showFlourish={false}
+              />
             </div>
           </div>
 

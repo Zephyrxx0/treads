@@ -37,6 +37,7 @@
   --sidebar-ring: oklch(0.6559 0.2328 34.5244);
   --font-sans: "Amaranth", ui-sans-serif, sans-serif, system-ui;
   --font-serif: "Noto Serif", ui-serif, serif;
+  --font-handwriting: "Caveat", cursive, system-ui;
   --font-mono: "JetBrains Mono", "Courier New", monospace;
   --radius: 0.5rem;
   --shadow-x: 0;
@@ -92,6 +93,7 @@
   --sidebar-ring: oklch(0.6559 0.2328 34.5244);
   --font-sans: "Amaranth", ui-sans-serif, sans-serif, system-ui;
   --font-serif: "Noto Serif", ui-serif, serif;
+  --font-handwriting: "Caveat", cursive, system-ui;
   --font-mono: "JetBrains Mono", "Courier New", monospace;
   --radius: 0.5rem;
   --shadow-x: 0;
@@ -147,6 +149,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-handwriting: var(--font-handwriting);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -161,6 +164,10 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+}
+
+@utility font-handwriting {
+  font-family: var(--font-handwriting), "Caveat", cursive, system-ui;
 }
 
 @layer base {

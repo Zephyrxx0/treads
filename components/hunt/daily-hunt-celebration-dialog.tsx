@@ -15,6 +15,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { DailyHunt } from '@/lib/hunt';
+import { playHuntChime } from '@/lib/audio/cuelume';
+import { triggerHuntWinHaptic } from '@/lib/haptics';
 
 export interface DailyHuntCelebrationDialogProps {
   open: boolean;
@@ -29,13 +31,8 @@ export function DailyHuntCelebrationDialog({
 }: DailyHuntCelebrationDialogProps) {
   React.useEffect(() => {
     if (open) {
-      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-        try {
-          navigator.vibrate([40, 60, 100]);
-        } catch {
-          // ignore error if vibrations are blocked by permissions
-        }
-      }
+      playHuntChime();
+      triggerHuntWinHaptic();
     }
   }, [open]);
 

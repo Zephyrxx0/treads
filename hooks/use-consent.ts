@@ -64,7 +64,7 @@ export function useConsent() {
 
     const updatedSettings: UserSettings = {
       ...(current || DEFAULT_SETTINGS),
-      consentVersion: '1.0',
+      consentVersion: '1.0.0',
       consentTimestamp: Date.now(),
       storagePersisted: isPersisted,
       theme: storedTheme ?? current?.theme ?? DEFAULT_SETTINGS.theme,
@@ -78,7 +78,7 @@ export function useConsent() {
   }, []);
 
   const isLoading = settings === undefined;
-  const hasConsented = settings?.consentVersion === '1.0';
+  const hasConsented = settings?.consentVersion === '1.0.0' || settings?.consentVersion === '1.0';
   const consentTimestamp = settings?.consentTimestamp ?? null;
   const storagePersisted = settings?.storagePersisted ?? false;
 
