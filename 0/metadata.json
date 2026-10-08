@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DNCC3Q2M7M0Y3W3GPVJNFE",
+  "session_id": "757c7bed-45dd-4d8d-a62a-71d6bc6a436c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T11:46:37.126407435Z",
+  "branch": "phase-4-voice-narration-routing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/api/route/route.ts",
+    "app/api/speak/route.ts",
+    "app/walk/page.tsx",
+    "components/entry/fact-card.tsx",
+    "components/map/walk-map.tsx",
+    "components/route/route-preview-sheet.tsx",
+    "components/speech/fact-audio-player.tsx",
+    "components/voice/voice-recorder-sheet.tsx",
+    "components/walk/walk-hud.tsx",
+    "components/walk/walk-summary-sheet.tsx",
+    "hooks/use-active-walk.ts",
+    "lib/db.ts",
+    "lib/route.ts",
+    "lib/speech.ts",
+    "scripts/test-route-loop.ts",
+    "scripts/test-speak-route.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "b77361c1e674",
+  "checkpoint_transcript_start": 306,
+  "transcript_lines_at_start": 306,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T11:46:37.042459794Z",
+    "agent_lines": 1411,
+    "agent_removed": 79,
+    "human_added": 2,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1413,
+    "total_lines_changed": 1492,
+    "agent_percentage": 99.86595174262735,
+    "metric_version": 2
+  }
+}
