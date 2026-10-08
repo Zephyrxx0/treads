@@ -1,0 +1,53 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DM9C1GG8292ZBJ20XHG3VX",
+  "session_id": "757c7bed-45dd-4d8d-a62a-71d6bc6a436c",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T11:27:29.590386102Z",
+  "branch": "phase-4-voice-narration-routing",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-01-PLAN.md",
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-02-PLAN.md",
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-RESEARCH.md",
+    ".planning/phases/04-voice-notes-narration-loop-routing/04-VALIDATION.md"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "27a1698075e2",
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T11:27:29.558486933Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 646,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 646,
+    "total_lines_changed": 646,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 1,
+      "user_lines_removed": 0,
+      "agent_lines_added": 2,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/04-voice-notes-narration-loop-routing/04-UI-SPEC.md": 1
+      }
+    }
+  ]
+}
