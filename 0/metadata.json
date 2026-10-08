@@ -1,0 +1,64 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DV3FEVPRQMJP7193G0CXER",
+  "session_id": "66d63aa3-9ffd-42f6-8484-c1d641e03b67",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-08T13:26:36.216998091Z",
+  "branch": "phase-6-polish-eval-submission",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".planning/ROADMAP.md",
+    ".planning/phases/06-polish-consent-gate-evaluation-submission/06-02-SUMMARY.md",
+    "FIELD-VERIFICATION.md",
+    "README.md",
+    "package.json",
+    "public/eval-fixtures/fixtures.json",
+    "public/eval-fixtures/images/asphalt-pavement.svg",
+    "public/eval-fixtures/images/water-bottle.svg",
+    "scripts/run-eval-suite.ts"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "9d560f1a0c05",
+  "checkpoint_transcript_start": 311,
+  "transcript_lines_at_start": 311,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-08T13:26:36.198572833Z",
+    "agent_lines": 0,
+    "agent_removed": 176,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 49,
+    "total_committed": 0,
+    "total_lines_changed": 504,
+    "agent_percentage": 34.92063492063492,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 310,
+      "user_lines_removed": 49,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".planning/phases/06-polish-consent-gate-evaluation-submission/06-01-SUMMARY.md": 1,
+        "components/motion/tegaki-text.tsx": 1,
+        "lib/audio/cuelume.ts": 1,
+        "lib/haptics.ts": 1,
+        "package.json": 2,
+        "public/eval-fixtures/fixtures.json": 16,
+        "public/eval-fixtures/images/asphalt-pavement.svg": 16,
+        "public/eval-fixtures/images/water-bottle.svg": 16,
+        "scripts/run-eval-suite.ts": 256
+      },
+      "user_removed_per_file": {
+        "package.json": 1,
+        "public/eval-fixtures/fixtures.json": 48
+      }
+    }
+  ]
+}
