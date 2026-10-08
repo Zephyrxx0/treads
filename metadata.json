@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4DMNP9MGPH5655C02S2HM20",
+  "strategy": "manual-commit",
+  "branch": "phase-4-voice-narration-routing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/api/transcribe/route.ts",
+    "app/entry/[id]/page.tsx",
+    "app/walk/page.tsx",
+    "components/voice/voice-recorder-sheet.tsx",
+    "components/voice/voice-waveform.tsx",
+    "components/walk/walk-controls.tsx",
+    "lib/audio.ts",
+    "scripts/test-transcribe-route.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
