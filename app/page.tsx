@@ -2,7 +2,9 @@
 
 import * as React from 'react';
 import { Compass, Footprints, Sparkles, SlidersHorizontal, SunMedium } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -52,6 +54,16 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link
+              href="/walk"
+              className={cn(
+                buttonVariants({ variant: 'default', size: 'sm' }),
+                'bg-[#F35C2B] text-white hover:bg-[#F35C2B]/90 font-medium'
+              )}
+            >
+              <Footprints className="h-3.5 w-3.5 mr-1" />
+              Start Walk
+            </Link>
             <Badge variant="outline" className="hidden sm:inline-flex">
               Tangerin Dream
             </Badge>
@@ -84,7 +96,17 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href="/walk"
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'bg-[#F35C2B] text-white hover:bg-[#F35C2B]/90 font-medium shadow-sm'
+                )}
+              >
+                <Compass className="h-4 w-4 mr-1.5" />
+                Live Walk Map
+              </Link>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="default">
