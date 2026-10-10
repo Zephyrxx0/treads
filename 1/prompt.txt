@@ -1,0 +1,208 @@
+/collection route : ## Page Feedback: /collection
+**Viewport:** 1892×1012
+
+### 1. <CollectionPage> <PageShell> <CollectionFilterBar> flex items
+**Location:** .grid > .min-w-0 > .space-y-3 > .flex
+**React:** <CollectionPage> <PageShell> <CollectionFilterBar>
+**Feedback:** add an animal category too
+
+### 2. <CollectionPage> <PageShell> <SpeciesCard> <LinkComponent> image "Beagle"
+**Location:** .grid > .group > .relative > .h-full
+**React:** <CollectionPage> <PageShell> <SpeciesCard> <LinkComponent>
+**Feedback:** the image cover doesnt look as pretty. 
+make it a card, with square cutout for image
+and under image all other information
+
+## Page Feedback: /collection
+**Viewport:** 1892×1012
+
+### 1. <CollectionPage> <PageShell> <CollectionFilterBar> flex items
+**Location:** .grid > .min-w-0 > .space-y-3 > .flex
+**React:** <CollectionPage> <PageShell> <CollectionFilterBar>
+**Feedback:** add an animal category too
+
+### 2. <CollectionPage> <PageShell> <SpeciesCard> <LinkComponent> image "Beagle"
+**Location:** .grid > .group > .relative > .h-full
+**React:** <CollectionPage> <PageShell> <SpeciesCard> <LinkComponent>
+**Feedback:** the image cover doesnt look as pretty. 
+make it a card, with square cutout for image
+and under image all other information
+
+## Page Feedback: /journal/19df3fa1-ab47-4e89-bea5-c0ab20726bd1
+**Viewport:** 1892×1012
+
+### 1. canvas
+**Location:** .relative > .absolute > .maplibregl-canvas-container > .maplibregl-canvas
+**Feedback:** not sure but the map doesnt show the correct location for the journal, even if the distance is 0, should the map show correct distance ? 
+if there is some distance , I hope it shows it too.
+
+### 2. 3 elements: <WalkDetailPage> button "Stats & Telemetry", <WalkDetailPage> button "Confirmed Specimens1", <WalkDetailPage> button "Voice Notes1"
+**Location:** multi-select
+**Feedback:** remove these 3 tabls
+
+### 3. Area selection
+**Location:** region at (587, 533)
+**Feedback:** the current ui doesnt look good enough for me, 
+instead , show the information like I entered while walking, the chat system. 
+these stats are okay, keep them, 
+below it , add the same chat log (voice note ,text, images etc)
+
+## Page Feedback: /journal
+**Viewport:** 1892×1012
+
+### 1. <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card> <CardContent> space sm:p
+**Location:** .space-y-3 > .group > .text-card-foreground > .space-y-3
+**React:** <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card> <CardContent>
+**Feedback:** make it a vertical rectangle, with cover in styles : 
+- if walk has a image : first image as cover, inside white borders
+- if no images in walk , choose a random from cover, from a preset collection of 25, generated via hairline skill , that resembles natural elements.
+
+---
+
+## Page Feedback: /journal
+**Viewport:** 1734×928
+
+### 1. <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card> relative full
+**Location:** .group > .text-card-foreground > .relative > .relative
+**React:** <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card>
+**Feedback:** remove this container , only image
+
+### 2. <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card> sm:p flex
+**Location:** .grid > .group > .text-card-foreground > .p-4
+**React:** <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card>
+**Feedback:** remove all these too
+
+## Error Type
+Console Error
+
+## Error Message
+React has detected a change in the order of Hooks called by WalkDetailPage. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+1. useContext                 useContext
+2. useContext                 useContext
+3. useMemo                    useMemo
+4. useRef                     useRef
+5. useReducer                 useReducer
+6. useMemo                    useMemo
+7. useDebugValue              useDebugValue
+8. useEffect                  useEffect
+9. useRef                     useRef
+10. useReducer                useReducer
+11. useMemo                   useMemo
+12. useDebugValue             useDebugValue
+13. useEffect                 useEffect
+14. useRef                    useRef
+15. useReducer                useReducer
+16. useMemo                   useMemo
+17. useDebugValue             useDebugValue
+18. useEffect                 useEffect
+19. useRef                    useRef
+20. useState                  useState
+21. useState                  useState
+22. useState                  useState
+23. useState                  useState
+24. useEffect                 useEffect
+25. useEffect                 useEffect
+26. undefined                 useMemo
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+    at WalkDetailPage (app/journal/[walkId]/page.tsx:179:34)
+
+## Code Frame
+  177 |   }
+  178 |
+> 179 |   const computedDistanceMeters = React.useMemo(() => {
+      |                                  ^
+  180 |     let d = walk.distance || 0;
+  181 |     if (d === 0 && walk.trackPoints && walk.trackPoints.length > 1) {
+  182 |       for (let i = 1; i < walk.trackPoints.length; i++) {
+
+Next.js version: 16.4.0 (Turbopack)
+
+## Error Type
+Runtime Error
+
+## Error Message
+Rendered more hooks than during the previous render.
+
+
+    at WalkDetailPage (app/journal/[walkId]/page.tsx:179:34)
+
+## Code Frame
+  177 |   }
+  178 |
+> 179 |   const computedDistanceMeters = React.useMemo(() => {
+      |                                  ^
+  180 |     let d = walk.distance || 0;
+  181 |     if (d === 0 && walk.trackPoints && walk.trackPoints.length > 1) {
+  182 |       for (let i = 1; i < walk.trackPoints.length; i++) {
+
+Next.js version: 16.4.0 (Turbopack)
+
+---
+
+## Page Feedback: /journal/19df3fa1-ab47-4e89-bea5-c0ab20726bd1
+**Viewport:** 1734×928
+
+### 1. <WalkDetailPage> h2 "Trail Activity Log"
+**Location:** .max-w-4xl > .space-y-3 > .flex > .font-serif
+**React:** <WalkDetailPage>
+**Feedback:** remove
+
+### 2. <WalkDetailPage> "2 records"
+**Location:** .max-w-4xl > .space-y-3 > .flex > .font-mono
+**React:** <WalkDetailPage>
+**Feedback:** removve
+
+### 3. <WalkDetailPage> <ActivityLog> div [Walk activity]
+**Location:** .max-w-4xl > .space-y-3 > .rounded-2xl > .flex
+**React:** <WalkDetailPage> <ActivityLog>
+**Feedback:** remove container, laydown the chat directly, also on the journal and entry pages, add the top to bottom vines along butterflies and bees
+
+## Page Feedback: /journal
+**Viewport:** 1734×928
+
+### 1. <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card> image "Walk at 11:48 am"
+**Location:** .grid > .group > .text-card-foreground > .h-full
+**React:** <JournalPage> <PageShell> <WalkCard> <LinkComponent> <Card>
+**Feedback:** right click -> change cover 
+modal opens , first optiion , upload, the rest are from catalog created from hairline skill
+
+second right click option , delete, 
+
+I would also like a share option but idk how that will work without dbs
+
+---
+
+@[Quote] doesnt open
+no vines appearing anywhere, try again
+
+---
+
+## Page Feedback: /journal
+**Viewport:** 1734×928
+
+### 1. <ContextMenuRoot> <MenuRoot> <FloatingTree> <ContextMenuTrigger> <LinkComponent> <Card> text card
+**Location:** .grid > .group > .block > .text-card-foreground
+**React:** <ContextMenuRoot> <MenuRoot> <FloatingTree> <ContextMenuTrigger> <LinkComponent> <Card>
+**Feedback:** scale down the container, also thin the border
+
+### 2. <ContextMenuRoot> <MenuRoot> <FloatingTree> <ContextMenuTrigger> <LinkComponent> <Card> text card
+**Location:** .grid > .group > .block > .text-card-foreground
+**React:** <ContextMenuRoot> <MenuRoot> <FloatingTree> <ContextMenuTrigger> <LinkComponent> <Card>
+**Feedback:** At the bottom, center, render the title of the the walk
+
+the current 25 item catalog looks good, but can you enhance them, make it more sophisticated?
+
+---
+
+@[Quote] not displayed
+@[Quote] looks the same
+
+---
+
+ill tweak the size of the card by myself, how can I do that?
