@@ -1,0 +1,7 @@
+## Page Feedback: /walk
+**Viewport:** 1892×1012
+
+### 1. <WalkPage> div [Resize panel horizontally]
+**Location:** .contents > .flex > .group
+**React:** <WalkPage>
+**Feedback:** wake it more sleek
