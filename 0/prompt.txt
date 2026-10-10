@@ -1,0 +1,38 @@
+I want you to make a gif. 
+
+Steps :
+- Duplicate the footer comp
+- Replace the text with `Treads`
+- record the animation
+- convert to gif (looping)
+
+---
+
+the starting and ending frames are so vastly different that the gif restarts abruptly, 
+make it a smooth loop. 
+Also looks like the font is being stretched or something like that, if it is , dont do it
+
+---
+
+@[public/treads-grow-loop.gif] looks perfect, just a slight extra second or so of uneeded frame, try again
+
+---
+
+@[public/treads-grow-loop.gif] looks perfect, just a slight extra second or so of uneeded frame of vines growing, try again
+
+---
+
+Your README says “Google AI Studio / Gemini Naturalist Challenge” and “powered by Google Gemini.” Your code actually uses Gemma 4 (gemma-4-26b-a4b-it) everywhere. The challenge requires open-weight AI, so a README that says Gemini looks like a closed API. Change it to Hacktoberfest Touch Grass and Gemma.
+The “100% accuracy / 100% refusal” numbers in your planning docs come from the mock engine (14–28 ms average latency, no API key). I did not put them in the post as Gemma results. Run pnpm test:eval with your key set and paste the live numbers where marked. The fixtures are SVG illustrations, and the post says so.
+/api/identify returns fake placeholder candidates (White Oak, Sugar Maple) when the model errors. They are flagged with a warning, but it’s a weak spot for an app built on honesty. The post discloses it. Better to fix it or show a “couldn’t identify” state.
+These are findings from external review, check if any of these is true and report back to me
+
+update the readme , tell more about the app, emphasis a little bit more on Gemma4 and elevenlabs implementation
+Different routes and features etc
+
+---
+
+@[/home/zeph/Code/treads/README.md] Remove the #Gemma4 and ElevenLabs section 
+write their importance other areas, sleekly apprasing it
+
+`Application Routes & Feature Tour` just give a biref overview
