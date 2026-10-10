@@ -1,0 +1,19 @@
+on the landing this is the layout I want , and it works perfectly, on desktop and landscaped tablets, but not on mobile views and vertical tablet layouts. This probably occurs due to placing image by top and right tags.
+
+Fix it
+
+Using the desktop layout as the source, apply it to the mobile devices too. 
+
+The ratio of size of icon and text , keep it identical
+icon behind text, so that start a walk button is clickable 
+
+Also on the map during a walk , it gets quite conjusted on mobile, so 
+optimize the layout for that too
+
+Also the vines in routes render on top of the content, making it unreadable and bad UX 
+
+@directory:.temp There are 4 screenshot files, from a mobile device : realme GT neo 3T. These show all the problems i am facing
+
+---
+
+how do I change the size of celestial bodies on mobile devices on code
