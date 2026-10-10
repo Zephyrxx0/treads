@@ -1,0 +1,15 @@
+Are agents properly well guarded in the app?
+
+---
+
+okay, now describe those agents themselves
+
+---
+
+what framework are those agents based on? 
+adk or eve or plain md files ?
+if md files why not framework used?
+
+---
+
+are api keys well guarded? any chance of leaking?
