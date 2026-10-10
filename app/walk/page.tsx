@@ -711,7 +711,7 @@ export default function WalkPage() {
         />
       </section>
 
-      {/* Draggable panel resizer handle in landscape / desktop mode */}
+      {/* Sleek horizontal splitter in landscape / desktop mode */}
       <div
         role="separator"
         aria-orientation="vertical"
@@ -720,25 +720,47 @@ export default function WalkPage() {
         onPointerDown={handleResizeStart}
         onDoubleClick={handleResetAsideWidth}
         onKeyDown={handleResizeKeyDown}
-        title="Drag horizontally to resize panel. Double-click to reset."
+        title="Drag to resize · Double-click to reset"
         className={cn(
-          'group relative hidden landscape:flex select-none touch-none cursor-col-resize items-center justify-center shrink-0 w-3 -mx-1 z-30 transition-colors',
+          'group relative hidden landscape:flex select-none touch-none cursor-col-resize items-center justify-center shrink-0 w-3 -mx-1.5 z-30 outline-none',
           isResizing && 'cursor-col-resize',
         )}
       >
+        {/* Subtle full-height hair-thin guide that warms up on hover/drag */}
         <div
           className={cn(
-            'h-20 w-1 rounded-full bg-border/80 group-hover:bg-primary/70 transition-all duration-200 group-hover:h-28 group-hover:w-1.5',
-            isResizing && 'bg-primary h-36 w-1.5 shadow-sm shadow-primary/40',
+            'h-full w-px bg-border/40 transition-colors duration-150',
+            'group-hover:bg-primary/50 group-focus-visible:bg-primary/70',
+            isResizing && 'bg-primary/80',
           )}
         />
+
+        {/* Sleek, tactile floating handle */}
         <div
           className={cn(
-            'absolute flex h-7 w-4.5 items-center justify-center rounded-full bg-background border border-border/80 shadow-md text-muted-foreground group-hover:text-primary group-hover:border-primary/50 transition-all duration-150',
-            isResizing && 'border-primary text-primary scale-110 shadow-lg',
+            'absolute flex h-9 w-3.5 items-center justify-center rounded-full',
+            'border border-border/60 bg-card/85 backdrop-blur-md shadow-xs',
+            'text-muted-foreground/60 transition-[transform,color,border-color,background-color,box-shadow] duration-150',
+            'group-hover:scale-105 group-hover:border-primary/40 group-hover:text-primary group-hover:bg-card group-hover:shadow-sm',
+            'group-focus-visible:ring-1 group-focus-visible:ring-primary/40',
+            isResizing && 'scale-110 border-primary/60 text-primary bg-card shadow-sm shadow-primary/20',
           )}
         >
-          <GripVertical className="h-3 w-3" />
+          {/* Two minimalist vertical needle bars */}
+          <div className="flex items-center gap-[2px]">
+            <div
+              className={cn(
+                'h-3.5 w-[1.5px] rounded-full bg-current opacity-60 transition-opacity',
+                isResizing && 'opacity-100',
+              )}
+            />
+            <div
+              className={cn(
+                'h-3.5 w-[1.5px] rounded-full bg-current opacity-60 transition-opacity',
+                isResizing && 'opacity-100',
+              )}
+            />
+          </div>
         </div>
       </div>
 
