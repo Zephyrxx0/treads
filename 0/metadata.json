@@ -1,0 +1,317 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JTMFWYCGKM9PPPZ8PNKN7H",
+  "session_id": "4f473395-f69f-46f3-940f-5cf5f0fb0f5e",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T11:54:37.542677768Z",
+  "branch": "feat/frontend",
+  "checkpoints_count": 17,
+  "save_step_count": 17,
+  "files_touched": [
+    "app/globals.css",
+    "app/walk/page.tsx",
+    "components/route/route-preview-sheet.tsx",
+    "components/walk/walk-controls.tsx"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "5e66d33175d1",
+  "checkpoint_transcript_start": 133,
+  "transcript_lines_at_start": 133,
+  "session_metrics": {
+    "turn_count": 19
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T11:54:37.470932788Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 2583,
+    "total_committed": 1723,
+    "total_lines_changed": 3034,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 5180,
+      "user_lines_removed": 1391,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "README.md": 1,
+        "app/api/route/route.ts": 1,
+        "app/collection/page.tsx": 50,
+        "app/entry/[id]/page.tsx": 7,
+        "app/globals.css": 282,
+        "app/icon.svg": 5,
+        "app/journal/[walkId]/page.tsx": 29,
+        "app/journal/page.tsx": 41,
+        "app/layout.tsx": 20,
+        "app/page.tsx": 50,
+        "app/privacy/page.tsx": 6,
+        "app/settings/page.tsx": 40,
+        "app/walk/page.tsx": 31,
+        "components/ai/spike-ai-runner.tsx": 1,
+        "components/brand/leaf-mark.tsx": 25,
+        "components/collection/collection-filter-bar.tsx": 12,
+        "components/collection/empty-field-guide.tsx": 76,
+        "components/collection/species-card.tsx": 41,
+        "components/entry/fact-card.tsx": 5,
+        "components/eval/fixture-card.tsx": 1,
+        "components/hairline/figure-empty-state.tsx": 48,
+        "components/hairline/hairline-figure.tsx": 133,
+        "components/hunt/daily-hunt-card.tsx": 53,
+        "components/hunt/daily-hunt-celebration-dialog.tsx": 6,
+        "components/hunt/daily-hunt-hud-pill.tsx": 3,
+        "components/journal/flower-garden.tsx": 268,
+        "components/journal/walk-card.tsx": 11,
+        "components/landing/ambient-walk.tsx": 163,
+        "components/landing/meadow.tsx": 121,
+        "components/layout/app-nav.tsx": 75,
+        "components/layout/page-shell.tsx": 41,
+        "components/map/spike-map.tsx": 4,
+        "components/map/walk-map.tsx": 16,
+        "components/nature/flora.tsx": 46,
+        "components/nature/grass.ts": 33,
+        "components/nature/insects.tsx": 72,
+        "components/nature/page-ambience.tsx": 157,
+        "components/route/route-preview-sheet.tsx": 8,
+        "components/ui/input.tsx": 1,
+        "components/ui/theme-toggle.tsx": 1,
+        "components/voice/voice-recorder-sheet.tsx": 4,
+        "components/voice/voice-waveform.tsx": 3,
+        "components/walk/candidate-picker-sheet.tsx": 6,
+        "components/walk/identification-refusal-card.tsx": 1,
+        "components/walk/live-camera.tsx": 152,
+        "components/walk/walk-controls.tsx": 192,
+        "components/walk/walk-end-dialog.tsx": 68,
+        "components/walk/walk-hud.tsx": 3,
+        "components/walk/walk-summary-sheet.tsx": 8,
+        "hairline/hairline-nest.html": 834,
+        "hairline/hairline-pebbles.html": 856,
+        "hairline/nest.js": 111,
+        "hairline/pebbles.js": 133,
+        "public/hairline/kernel.js": 570,
+        "public/hairline/nest.js": 111,
+        "public/hairline/pebbles.js": 133,
+        "public/maplibre-gl-worker.mjs": 10,
+        "public/maplibre-gl-worker.mjs.map": 1
+      },
+      "user_removed_per_file": {
+        "README.md": 1,
+        "app/api/route/route.ts": 1,
+        "app/collection/page.tsx": 114,
+        "app/entry/[id]/page.tsx": 8,
+        "app/globals.css": 120,
+        "app/journal/[walkId]/page.tsx": 29,
+        "app/journal/page.tsx": 105,
+        "app/layout.tsx": 9,
+        "app/page.tsx": 227,
+        "app/privacy/page.tsx": 29,
+        "app/settings/page.tsx": 81,
+        "app/walk/page.tsx": 10,
+        "components/ai/spike-ai-runner.tsx": 1,
+        "components/collection/collection-filter-bar.tsx": 11,
+        "components/collection/species-card.tsx": 79,
+        "components/entry/fact-card.tsx": 5,
+        "components/eval/fixture-card.tsx": 1,
+        "components/hunt/daily-hunt-card.tsx": 135,
+        "components/hunt/daily-hunt-celebration-dialog.tsx": 6,
+        "components/hunt/daily-hunt-hud-pill.tsx": 3,
+        "components/journal/activity-heatmap.tsx": 240,
+        "components/journal/walk-card.tsx": 11,
+        "components/map/walk-map.tsx": 12,
+        "components/route/route-preview-sheet.tsx": 8,
+        "components/ui/input.tsx": 1,
+        "components/ui/theme-toggle.tsx": 1,
+        "components/voice/voice-recorder-sheet.tsx": 4,
+        "components/voice/voice-waveform.tsx": 3,
+        "components/walk/candidate-picker-sheet.tsx": 6,
+        "components/walk/identification-refusal-card.tsx": 1,
+        "components/walk/walk-controls.tsx": 118,
+        "components/walk/walk-hud.tsx": 3,
+        "components/walk/walk-summary-sheet.tsx": 8
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5180,
+      "agent_lines_removed": 1391
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5180,
+      "agent_lines_removed": 1391
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5180,
+      "agent_lines_removed": 1391,
+      "user_added_per_file": {
+        ".gitignore": 2
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5182,
+      "agent_lines_removed": 1391
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5182,
+      "agent_lines_removed": 1391
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5432,
+      "agent_lines_removed": 1540
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5468,
+      "agent_lines_removed": 1556
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 5477,
+      "agent_lines_removed": 1557
+    },
+    {
+      "checkpoint_number": 10,
+      "user_lines_added": 5,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18473,
+      "agent_lines_removed": 1675,
+      "user_added_per_file": {
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 11,
+      "user_lines_added": 5,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18880,
+      "agent_lines_removed": 1675,
+      "user_added_per_file": {
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 12,
+      "user_lines_added": 854,
+      "user_lines_removed": 452,
+      "agent_lines_added": 19004,
+      "agent_lines_removed": 1675,
+      "user_added_per_file": {
+        "components/journal/flower-garden.tsx": 347,
+        "components/journal/garden-blooms.tsx": 290,
+        "components/journal/garden-hedge.tsx": 212,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "components/journal/flower-garden.tsx": 435,
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 13,
+      "user_lines_added": 657,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18872,
+      "agent_lines_removed": 1678,
+      "user_added_per_file": {
+        "components/journal/garden-blooms.tsx": 302,
+        "components/journal/garden-hedge.tsx": 350,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 14,
+      "user_lines_added": 657,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18959,
+      "agent_lines_removed": 1715,
+      "user_added_per_file": {
+        "components/journal/garden-blooms.tsx": 302,
+        "components/journal/garden-hedge.tsx": 350,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 15,
+      "user_lines_added": 657,
+      "user_lines_removed": 17,
+      "agent_lines_added": 19087,
+      "agent_lines_removed": 1730,
+      "user_added_per_file": {
+        "components/journal/garden-blooms.tsx": 302,
+        "components/journal/garden-hedge.tsx": 350,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 16,
+      "user_lines_added": 657,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18978,
+      "agent_lines_removed": 1732,
+      "user_added_per_file": {
+        "components/journal/garden-blooms.tsx": 302,
+        "components/journal/garden-hedge.tsx": 350,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    },
+    {
+      "checkpoint_number": 17,
+      "user_lines_added": 657,
+      "user_lines_removed": 17,
+      "agent_lines_added": 18992,
+      "agent_lines_removed": 1733,
+      "user_added_per_file": {
+        "components/journal/garden-blooms.tsx": 302,
+        "components/journal/garden-hedge.tsx": 350,
+        "public/styles/dark-liberty.json": 5
+      },
+      "user_removed_per_file": {
+        "public/styles/dark-liberty.json": 17
+      }
+    }
+  ]
+}

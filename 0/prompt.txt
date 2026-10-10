@@ -1,0 +1,218 @@
+how do I tunnel this site locally to test on mobile devices
+
+---
+
+how do I run this site on devices on same network
+
+---
+
+@[Quote] on tablet , says site is unreachable, even after ufw
+
+---
+
+@[Quote]  503 error : tunnel unvailable
+all other methods also not wotking
+
+---
+
+10.203.40.74/24 didnt send any data errir
+
+---
+
+something that I noticed on my tab
+
+1. dark/light icon doesnt work
+2. dark light icon is am sun emoji(not an icon like in the app) 
+3. Journal Page stuck on skeleton  loading
+4. /walk route stuck on `Initializing liberty map`state
+5. no popup for perisistant storage or anything, unlinke on first landing on desktop 
+
+
+Using desktop as the source of truth , apply these changes to the mobile app
+
+---
+
+same issue, all same propblems still persist. Also now, even the theme toggle emoji appear
+
+---
+
+same issue, all same propblems still persist. Also now, even the theme toggle emoji dont appear
+
+---
+
+conitnue
+
+---
+
+## Error Type
+Console Error
+
+## Error Message
+Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).
+
+
+    at script (unknown:0:0)
+    at RootLayout (app/layout.tsx:47:9)
+
+## Code Frame
+  45 |     <html lang="en" suppressHydrationWarning className={`${hanken.variable} ${fraunces.variable} ${jetbrains.variable} ${caveat.variable}`}>
+  46 |       <head>
+> 47 |         <script
+     |         ^
+  48 |           dangerouslySetInnerHTML={{
+  49 |             __html: `
+  50 |               (function() {
+
+Next.js version: 16.4.0 (Turbopack)
+
+
+## Error Type
+Recoverable Error
+
+## Error Message
+Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="walk/" loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/walk" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                <SegmentViewNode type="page" pagePath="walk/page.tsx">
+                  <SegmentTrieNode>
+                  <ClientPageRoot Component={function WalkPage} serverProvidedParams={{...}}>
+                    <WalkPage params={Promise} searchParams={Promise}>
+                      <div className="relative w...">
+                        <ConsentModal>
+                        <div>
+                        <div className="absolute t...">
+                          <div className="rounded-fu...">
+                            <ThemeToggle>
+                              <button
+                                type="button"
+                                onClick={function handleToggle}
++                               aria-label="Switch to light mode"
+-                               aria-label="Switch to dark mode"
++                               title="Switch to light mode"
+-                               title="Switch to dark mode"
+                                className="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius)] bor..."
+                              >
+                                <Moon className="h-4 w-4">
+                                  <svg
+                                    ref={null}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width={24}
+                                    height={24}
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
++                                   className="lucide lucide-moon h-4 w-4"
+-                                   className="lucide lucide-sun h-4 w-4"
+                                    aria-hidden="true"
+                                  >
++                                   <path
++                                     d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268..."
++                                   >
+-                                   <circle cx="12" cy="12" r="4">
+                        ...
+                ...
+              ...
+
+
+
+    at path (unknown:0:0)
+    at ThemeToggle (components/ui/theme-toggle.tsx:73:9)
+    at WalkPage (app/walk/page.tsx:447:11)
+
+## Code Frame
+  71 |     >
+  72 |       {isDark ? (
+> 73 |         <Moon className="h-4 w-4" />
+     |         ^
+  74 |       ) : (
+  75 |         <Sun className="h-4 w-4" />
+  76 |       )}
+
+Next.js version: 16.4.0 (Turbopack)
+
+
+On android chrome, persistanct statues shows `best effort` while on destop hows `persisted` 
+
+Check if sound desing (cuelume ) works correctly 
+
+GPS not sesnsing device location on android mobile and tablet , look into that
+
+---
+
+for the flowers , in the last 2 stages, add some leaves under the flowers too, nothing too big, just a couple, variyaing size, just t filll the spaces and make it feel cozier
+maybe add some other colored flowers too, as a test right now, maybe purple and pink, other species, but same number of state as original
+
+Make sure that state is preserved for streaks n such  
+
+introduce bees over a patch of flower , kinda acting like pollen collection
+hovering and doing bee stuff
+
+---
+
+whatever empty spaces are there between months, can you put some bushes/headges ? it will elevate the aethetics 
+
+## Page Feedback: /journal
+**Viewport:** 1892×1012
+
+### 1. <JournalPage> <PageShell> <FlowerGarden> flex flex
+**Location:** .rounded-[1.75rem] > .flex > div > .mt-3
+**React:** <JournalPage> <PageShell> <FlowerGarden>
+**Feedback:** just denote by colored dots
+
+---
+
+## Page Feedback: /journal
+**Viewport:** 1892×1012
+
+### 1. <JournalPage> <PageShell> <FlowerGarden> overflow auto
+**Location:** .relative > .space-y-8 > .rounded-[1.75rem] > .mt-8
+**React:** <JournalPage> <PageShell> <FlowerGarden>
+**Feedback:** this is induces a scrollbar , so increase the parent div a little to remove that
+
+on mobile, on landing page, i can scroll, so I see below the `flower and grasses`, fix that , no scrolling on landing page
+
+also for all instance of scrollbar on the app, make it inline with the theme and design of the app
+
+---
+
+the landing page text layout seems to be changed, change it to as before
+
+also use some tegaki for font animation 
+npm i tegaki
+
+---
+
+1. text doesnt animate
+2. use a better font, example a sans seriff bold one
+
+---
+
+Change to seriff font
+also the animation doesnt look of tegaki, which is like writing , but instead some html animation
+
+---
+
+what font options do we have for tegaki, I want some bold, seriff font, also speed up the font animation
+
+---
+
+okay remove tegaki, use the old one

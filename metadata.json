@@ -1,0 +1,21 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JTMFWYCGKM9PPPZ8PNKN7H",
+  "strategy": "manual-commit",
+  "branch": "feat/frontend",
+  "checkpoints_count": 17,
+  "files_touched": [
+    "app/globals.css",
+    "app/walk/page.tsx",
+    "components/route/route-preview-sheet.tsx",
+    "components/walk/walk-controls.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
