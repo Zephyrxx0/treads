@@ -1,0 +1,14 @@
+## Page Feedback: /walk
+**Viewport:** 1892×1012
+
+### 1. <WalkPage> aside [Walk activity]
+**Location:** .contents > .flex > .flex
+**React:** <WalkPage>
+**Feedback:** make it wider such that the map is square
+
+check if fact parsing is working or not or is some other issue , beacause i tried fro beagle and it worked
+[UPDATE] did it in journal after finishing walk, it generated
+
+cant see ecoweb anywhere, where to find
+
+epilogue didnt sythesized automatically, had to do it From journal

@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JYQPQ8PGV7E0M8BGTVT3PY",
+  "session_id": "2e79b4c7-12bc-4fcc-9ee3-0adc0b55cfea",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T13:06:16.949632103Z",
+  "branch": "feat/frontend",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "app/entry/[id]/page.tsx",
+    "app/journal/[walkId]/page.tsx",
+    "app/walk/page.tsx",
+    "components/walk/activity-log.tsx",
+    "components/walk/entry-detail-pane.tsx",
+    "components/walk/walk-summary-sheet.tsx"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "c50635c8c25f",
+  "checkpoint_transcript_start": 297,
+  "transcript_lines_at_start": 297,
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T13:06:16.918666717Z",
+    "agent_lines": 243,
+    "agent_removed": 47,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 243,
+    "total_lines_changed": 290,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/api/walk/dispatch/route.ts": 1,
+        "scripts/test-gemma-enhancements.ts": 1
+      }
+    }
+  ]
+}
