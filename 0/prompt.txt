@@ -1,0 +1,3 @@
+garbage entry generated , random 
+
+add a holder to resize the panel horizontally
