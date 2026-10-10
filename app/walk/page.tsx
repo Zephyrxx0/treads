@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, Leaf } from 'lucide-react';
+import { ArrowLeft, BookOpen, Leaf, GripVertical } from 'lucide-react';
 import { getDailyHunt, evaluateHuntProgress } from '@/lib/hunt';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -158,6 +158,107 @@ export default function WalkPage() {
   // on phones it takes over the whole screen instead.
   const isDesktopLayout = useMediaQuery('(min-width: 1024px)', true);
   // Find currently open in the side pane (slides over the activity log)
+
+  // Horizontal panel resizer state for landscape / wide screens
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [asideWidth, setAsideWidth] = useState<number | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const saved = localStorage.getItem('treads:walk-aside-width');
+    if (saved) {
+      const parsed = Number(saved);
+      if (!Number.isNaN(parsed) && parsed >= 300 && parsed <= 1200) {
+        return parsed;
+      }
+    }
+    return null;
+  });
+  const [isResizing, setIsResizing] = useState<boolean>(false);
+
+  const handleResizeStart = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.button !== 0) return; // Only primary button
+      e.preventDefault();
+      const target = e.currentTarget;
+      target.setPointerCapture(e.pointerId);
+      setIsResizing(true);
+
+      const onPointerMove = (moveEvent: PointerEvent) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        // Width of aside is distance from mouse to the right edge of container
+        const newWidth = Math.round(rect.right - moveEvent.clientX);
+        // Constrain aside width so both map and aside stay functional:
+        // aside: min 320px, max (containerWidth - 320px)
+        const minAside = 320;
+        const maxAside = Math.max(minAside, rect.width - 340);
+        const clamped = Math.min(Math.max(newWidth, minAside), maxAside);
+        setAsideWidth(clamped);
+      };
+
+      const onPointerUp = (upEvent: PointerEvent) => {
+        try {
+          target.releasePointerCapture(upEvent.pointerId);
+        } catch {
+          // pointer might already be released
+        }
+        setIsResizing(false);
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+
+        // Persist preference
+        setAsideWidth((curr) => {
+          if (curr !== null) {
+            localStorage.setItem('treads:walk-aside-width', String(curr));
+          }
+          return curr;
+        });
+
+        // Trigger map resize so canvas matches new dimensions cleanly
+        setTimeout(() => {
+          walkMapRef.current?.resize();
+        }, 50);
+      };
+
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    },
+    [],
+  );
+
+  const handleResetAsideWidth = useCallback(() => {
+    setAsideWidth(null);
+    localStorage.removeItem('treads:walk-aside-width');
+    setTimeout(() => {
+      walkMapRef.current?.resize();
+    }, 50);
+  }, []);
+
+  const handleResizeKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setAsideWidth((prev) => {
+          const next = Math.min((prev ?? 450) + 30, 900);
+          localStorage.setItem('treads:walk-aside-width', String(next));
+          setTimeout(() => walkMapRef.current?.resize(), 50);
+          return next;
+        });
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setAsideWidth((prev) => {
+          const next = Math.max((prev ?? 450) - 30, 320);
+          localStorage.setItem('treads:walk-aside-width', String(next));
+          setTimeout(() => walkMapRef.current?.resize(), 50);
+          return next;
+        });
+      } else if (e.key === 'Enter' || e.key === 'Escape') {
+        handleResetAsideWidth();
+      }
+    },
+    [handleResetAsideWidth],
+  );
   const [openEntryId, setOpenEntryId] = useState<string | null>(null);
   const closeEntryPane = useCallback(() => setOpenEntryId(null), []);
 
@@ -523,6 +624,7 @@ export default function WalkPage() {
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         // Held upright (phones, tablets): the map stacks above the panel. Before the walk the page
         // itself scrolls and the setup cards keep their full height; during a walk the screen is
@@ -534,7 +636,12 @@ export default function WalkPage() {
       {/* Map panel: top when upright, left of the panel when landscape */}
       <section
         aria-label="Map"
-        className="relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm landscape:h-full landscape:aspect-square landscape:w-auto landscape:shrink-0"
+        className={cn(
+          'relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm landscape:h-full landscape:min-w-0',
+          asideWidth === null
+            ? 'landscape:aspect-square landscape:w-auto landscape:shrink-0 landscape:flex-none'
+            : 'landscape:flex-1 landscape:w-auto',
+        )}
       >
         {/* Top Left Home Back Link */}
         <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-20">
@@ -604,11 +711,46 @@ export default function WalkPage() {
         />
       </section>
 
+      {/* Draggable panel resizer handle in landscape / desktop mode */}
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize panel horizontally"
+        tabIndex={0}
+        onPointerDown={handleResizeStart}
+        onDoubleClick={handleResetAsideWidth}
+        onKeyDown={handleResizeKeyDown}
+        title="Drag horizontally to resize panel. Double-click to reset."
+        className={cn(
+          'group relative hidden landscape:flex select-none touch-none cursor-col-resize items-center justify-center shrink-0 w-3 -mx-1 z-30 transition-colors',
+          isResizing && 'cursor-col-resize',
+        )}
+      >
+        <div
+          className={cn(
+            'h-20 w-1 rounded-full bg-border/80 group-hover:bg-primary/70 transition-all duration-200 group-hover:h-28 group-hover:w-1.5',
+            isResizing && 'bg-primary h-36 w-1.5 shadow-sm shadow-primary/40',
+          )}
+        />
+        <div
+          className={cn(
+            'absolute flex h-7 w-4.5 items-center justify-center rounded-full bg-background border border-border/80 shadow-md text-muted-foreground group-hover:text-primary group-hover:border-primary/50 transition-all duration-150',
+            isResizing && 'border-primary text-primary scale-110 shadow-lg',
+          )}
+        >
+          <GripVertical className="h-3 w-3" />
+        </div>
+      </div>
+
       {/* Side panel: route setup before the walk, activity log + dock during it */}
       <aside
         aria-label={showRoutePanel ? 'Walk setup' : 'Walk activity'}
+        style={asideWidth ? { width: `${asideWidth}px` } : undefined}
         className={cn(
-          'flex flex-col min-h-0 landscape:h-full landscape:flex-1 landscape:min-w-0 landscape:w-auto',
+          'flex flex-col min-h-0 landscape:h-full landscape:min-w-0',
+          asideWidth
+            ? 'landscape:flex-none landscape:shrink-0'
+            : 'landscape:flex-1 landscape:w-auto',
         )}
       >
         {showRoutePanel ? (

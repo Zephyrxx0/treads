@@ -37,6 +37,7 @@ export interface WalkMapRef {
   fitTrailBounds: (customPadding?: { top: number; bottom: number; left: number; right: number }) => void;
   fitRouteBounds: (customPadding?: { top: number; bottom: number; left: number; right: number }) => void;
   getMapInstance: () => MapLibreMap | null;
+  resize: () => void;
 }
 
 export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
@@ -195,6 +196,7 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
       fitTrailBounds: handleFitTrailBounds,
       fitRouteBounds: handleFitRouteBounds,
       getMapInstance: () => mapRef.current,
+      resize: () => mapRef.current?.resize(),
     }),
     [handleRecenter, handleFitTrailBounds, handleFitRouteBounds]
   );
@@ -471,8 +473,17 @@ export const WalkMap = forwardRef<WalkMapRef, WalkMapProps>(function WalkMap(
 
     initMap();
 
+    let resizeObserver: ResizeObserver | null = null;
+    if (mapContainerRef.current && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        mapRef.current?.resize();
+      });
+      resizeObserver.observe(mapContainerRef.current);
+    }
+
     return () => {
       isMounted = false;
+      resizeObserver?.disconnect();
       if (userMarkerRef.current) {
         userMarkerRef.current.remove();
         userMarkerRef.current = null;

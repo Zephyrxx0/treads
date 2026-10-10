@@ -15,6 +15,7 @@ import {
   HelpCircle,
 } from 'lucide-react';
 import { FactAudioPlayer } from '@/components/speech/fact-audio-player';
+import { isGarbageOrDegenerate } from '@/lib/facts-safety';
 
 export interface FactData {
   summary: string;
@@ -92,6 +93,16 @@ export function FactCard({
 
   const { summary, facts, sourceUrl, sentences = [] } = factsData;
 
+  const validFacts = facts.filter((fact) => !isGarbageOrDegenerate(fact.text));
+  const displayFacts =
+    validFacts.length > 0
+      ? validFacts
+      : sentences.length > 0
+        ? [{ sentenceNumber: 1, text: sentences[0].text }]
+        : facts;
+
+  const showLookClosely = factsData.lookClosely && !isGarbageOrDegenerate(factsData.lookClosely);
+
   const getSourceSentence = (sentenceNumber: number): string => {
     const found = sentences.find((s) => s.index === sentenceNumber);
     return found?.text || `Cited from sentence #${sentenceNumber} of the Wikipedia article.`;
@@ -125,7 +136,7 @@ export function FactCard({
 
       <CardContent className="p-5 pt-0 space-y-3">
         {/* Look Closely Sensory Field Prompt */}
-        {factsData.lookClosely && (
+        {showLookClosely && (
           <div className="flex items-start gap-2.5 p-3 rounded-xl bg-primary/10 border border-primary/20 text-foreground">
             <div className="p-1 rounded-md bg-primary/20 text-primary shrink-0 mt-0.5">
               <Sparkles className="w-3.5 h-3.5" />
@@ -147,7 +158,7 @@ export function FactCard({
             Key Field Notes
           </h4>
           <ul className="space-y-2 text-xs text-foreground/80 leading-normal">
-            {facts.map((fact, i) => (
+            {displayFacts.map((fact, i) => (
               <li
                 key={`fact-${fact.sentenceNumber}-${i}`}
                 className="flex items-start gap-2 p-2.5 rounded-xl bg-muted/30 border border-border/40"

@@ -6,6 +6,7 @@ import {
   containsSafetyViolations,
   getFallbackFact,
   sanitizeFactText,
+  isGarbageOrDegenerate,
   FactItem,
 } from '@/lib/facts-safety';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
@@ -15,6 +16,8 @@ import { z } from 'zod';
 const FactsSchema = z.object({
   summary: z
     .string()
+    .min(10)
+    .max(350)
     .describe('A crisp, educational 2-3 sentence overview of this organism (max 40 words).'),
   facts: z
     .array(
@@ -27,6 +30,8 @@ const FactsSchema = z.object({
           ),
         text: z
           .string()
+          .min(5)
+          .max(220)
           .describe(
             'An engaging biological or ecological fact (max 20 words). Strictly avoid any claims about edibility, recipes, taste, foraging, medicinal remedies, or toxicity.'
           ),
@@ -35,6 +40,7 @@ const FactsSchema = z.object({
     .describe('Up to 3 distinct biological facts citing source sentence numbers.'),
   lookClosely: z
     .string()
+    .max(200)
     .optional()
     .describe(
       'A 1-sentence tactile, sensory observation prompt directing the walker to look closely at a physical feature of the organism right in front of them (e.g., leaf veins, underside texture, bark ridges, pollen sacs, wing patterns).'
@@ -163,25 +169,40 @@ INSTRUCTIONS:
       model,
       schema: FactsSchema,
       prompt,
+      temperature: 0.2,
     });
 
     // 4. Multi-layer safety scrubbing and citation validation
     let validFacts = validateCitations(object.facts, wikiData.sentences.length);
 
-    // If all facts were dropped or none generated, use verified Sentence #1 fallback (FACT-04)
+    // If facts were dropped due to degeneration or violation, supplement from verified Wikipedia sentences
+    if (validFacts.length < 2 && wikiData.sentences.length > 0) {
+      const usedIndices = new Set(validFacts.map((f) => f.sentenceNumber));
+      for (const s of wikiData.sentences) {
+        if (validFacts.length >= 3) break;
+        if (!usedIndices.has(s.index)) {
+          const text = sanitizeFactText(s.text);
+          if (!containsSafetyViolations(text) && !isGarbageOrDegenerate(text)) {
+            validFacts.push({ sentenceNumber: s.index, text });
+            usedIndices.add(s.index);
+          }
+        }
+      }
+    }
+
     if (validFacts.length === 0) {
       validFacts = getFallbackFact(wikiData.sentences);
     }
 
     // Clean and verify summary
     let summary = sanitizeFactText(object.summary);
-    if (containsSafetyViolations(summary) || summary.length < 10) {
+    if (containsSafetyViolations(summary) || isGarbageOrDegenerate(summary) || summary.length < 10) {
       summary = sanitizeFactText(wikiData.sentences[0].text);
     }
 
     // Clean and verify lookClosely prompt
     let lookClosely = object.lookClosely ? sanitizeFactText(object.lookClosely) : undefined;
-    if (!lookClosely || containsSafetyViolations(lookClosely)) {
+    if (!lookClosely || containsSafetyViolations(lookClosely) || isGarbageOrDegenerate(lookClosely)) {
       lookClosely = 'Examine the fine surface patterns and observe how light and shadow fall across its form.';
     }
 
