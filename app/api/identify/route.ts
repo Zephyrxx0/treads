@@ -212,15 +212,17 @@ ${contextDescription ? `Context:${contextDescription}` : ''}`;
     });
   } catch (err) {
     console.error('Identification API error:', err);
-    // On unexpected model failure, return fallback gracefully
+    // On unexpected model failure, return an honest error state rather than fake placeholder species
     return NextResponse.json(
       {
-        ...MOCK_IDENTIFY_RESPONSE,
-        warning: 'AI Identification service temporarily unavailable. Returned fallback candidates.',
+        success: false,
+        isLivingOrganism: false,
+        error: "Couldn't identify species. Please try again with a clearer or closer shot.",
+        candidates: [],
         latencyMs: Date.now() - startTime,
       },
       {
-        status: 200,
+        status: 503,
         headers: rateLimit.headers,
       }
     );

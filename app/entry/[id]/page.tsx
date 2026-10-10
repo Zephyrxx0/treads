@@ -206,11 +206,20 @@ export default function EntryDetailPage({
         }),
       });
 
-      if (!res.ok) throw new Error(`Identify API returned HTTP ${res.status}`);
+      if (!res.ok) {
+        let errorMsg = `Identify API returned HTTP ${res.status}`;
+        try {
+          const errData = await res.json();
+          if (errData.error) errorMsg = errData.error;
+        } catch {
+          // ignore json parse error
+        }
+        throw new Error(errorMsg);
+      }
       const data = await res.json();
 
       if (!data.isLivingOrganism) {
-        setReidentifyError(data.refusalReason || 'The AI detected an inanimate object or human person.');
+        setReidentifyError(data.refusalReason || data.error || 'The AI detected an inanimate object or human person.');
         return;
       }
 
