@@ -1,0 +1,81 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4KVJ591F5ZCDACRPZ8ST03B",
+  "session_id": "5011e11c-b460-499c-83b5-7d5f8d3bfa50",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T21:30:03.745122894Z",
+  "branch": "temp/video",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    "app/(dev)/gif-record/page.tsx",
+    "components/landing/treads-footer.tsx",
+    "public/treads-ambient.gif",
+    "public/treads-animation.gif",
+    "public/treads-grow-loop.gif",
+    "public/treads-loop.gif",
+    "public/treads.gif"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "ac97e6b0fe12",
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T21:30:03.736547695Z",
+    "agent_lines": 369,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 150,
+    "human_removed": 4,
+    "total_committed": 516,
+    "total_lines_changed": 523,
+    "agent_percentage": 70.55449330783938,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 2,
+      "user_lines_removed": 0,
+      "agent_lines_added": 686,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/(dev)/gif-record/page.tsx": 1,
+        "scripts/record-footer-animation.mjs": 1
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 1,
+      "user_lines_removed": 0,
+      "agent_lines_added": 722,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/(dev)/gif-record/page.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 6,
+      "user_lines_removed": 7,
+      "agent_lines_added": 724,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "app/(dev)/gif-record/page.tsx": 1,
+        "scripts/record-footer-animation.mjs": 5
+      },
+      "user_removed_per_file": {
+        "scripts/record-footer-animation.mjs": 7
+      }
+    }
+  ]
+}

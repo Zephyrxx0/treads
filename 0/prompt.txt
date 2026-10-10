@@ -1,0 +1,21 @@
+I want you to make a gif. 
+
+Steps :
+- Duplicate the footer comp
+- Replace the text with `Treads`
+- record the animation
+- convert to gif (looping)
+
+---
+
+the starting and ending frames are so vastly different that the gif restarts abruptly, 
+make it a smooth loop. 
+Also looks like the font is being stretched or something like that, if it is , dont do it
+
+---
+
+@[public/treads-grow-loop.gif] looks perfect, just a slight extra second or so of uneeded frame, try again
+
+---
+
+@[public/treads-grow-loop.gif] looks perfect, just a slight extra second or so of uneeded frame of vines growing, try again
