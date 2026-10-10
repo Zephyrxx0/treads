@@ -1,9 +1,11 @@
+# Local specifications & tool metadata
 DECISIONS.md
 PRD.md
-.agents/hooks.json
-.entire/.gitignore
-.entire/settings.json
-.opencode/plugins/entire.ts
+.agents/
+.entire/
+.opencode/
+.fallow/
+.temp/
 
 # Next.js & Node
 node_modules/
@@ -13,10 +15,19 @@ build/
 dist/
 .DS_Store
 *.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Environment
 .env*.local
+.env
 
-# Typescript
+# TypeScript
 next-env.d.ts
 *.tsbuildinfo
+
+# Certificates
+certificates/

@@ -2,37 +2,14 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ShieldCheck, Camera, Mic, Compass, Database, HardDrive, Lock } from 'lucide-react';
+import { ShieldCheck, Camera, Mic, Compass, Database, HardDrive, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { PageShell } from '@/components/layout/page-shell';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
-      {/* Top Header */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Back to home"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-            <div>
-              <h1 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                Privacy & Data Architecture
-              </h1>
-            </div>
-          </div>
-
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 space-y-10">
+    <PageShell eyebrow="Privacy" title="Data architecture" width="narrow">
+      <div className="space-y-10">
         <div className="space-y-3">
           <h2 className="font-serif text-3xl font-bold tracking-tight text-foreground">
             The phone is a lens, not a feed.
@@ -116,8 +93,8 @@ export default function PrivacyPage() {
             </Button>
           </Link>
         </div>
-      </main>
-    </div>
+      </div>
+    </PageShell>
   );
 }
 

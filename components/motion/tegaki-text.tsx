@@ -5,10 +5,10 @@ import { motion } from 'motion/react';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { cn } from '@/lib/utils';
 
-interface TegakiTextProps {
+export interface TegakiTextProps {
   text: string;
   className?: string;
-  as?: 'h1' | 'h2' | 'span';
+  as?: 'h1' | 'h2' | 'span' | 'em' | 'p';
   delay?: number;
   showFlourish?: boolean;
 }
@@ -18,29 +18,26 @@ export function TegakiText({
   className,
   as: Component = 'span',
   delay = 0.1,
-  showFlourish = true,
+  showFlourish = false,
 }: TegakiTextProps) {
-  const shouldReduceMotion = useReducedMotion();
+  const { prefersReducedMotion } = useReducedMotion();
   const [mounted, setMounted] = React.useState(false);
-  const hasAnimatedRef = React.useRef(false);
 
   React.useEffect(() => {
     setMounted(true);
-    hasAnimatedRef.current = true;
   }, []);
 
   // Instant static render for SSR or reduced motion preference
-  if (!mounted || shouldReduceMotion) {
+  if (!mounted || prefersReducedMotion) {
     return (
-      <Component className={cn('font-handwriting inline-block select-text', className)}>
+      <Component className={cn('inline-block select-text', className)}>
         {text}
       </Component>
     );
   }
 
   return (
-    <Component className={cn('relative inline-flex flex-col items-start font-handwriting select-text', className)}>
-      {/* Animated cursive text ink wipe */}
+    <Component className={cn('relative inline-flex flex-col items-start select-text', className)}>
       <motion.span
         initial={{ clipPath: 'inset(0 100% 0 0)', opacity: 0.8 }}
         animate={{ clipPath: 'inset(0 0% 0 0)', opacity: 1 }}
@@ -54,7 +51,6 @@ export function TegakiText({
         {text}
       </motion.span>
 
-      {/* Organic ink flourish underline */}
       {showFlourish && (
         <svg
           aria-hidden="true"
@@ -82,3 +78,4 @@ export function TegakiText({
   );
 }
 
+export const AnimatedText = TegakiText;

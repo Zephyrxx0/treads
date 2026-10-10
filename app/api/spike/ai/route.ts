@@ -80,8 +80,8 @@ async function handleAiSpike(req: NextRequest) {
 
   const hasImage = Boolean(body.image);
   const modelId = body.model || (hasImage
-    ? process.env.IDENTIFY_MODEL_ID || 'gemini-2.0-flash'
-    : process.env.FACTS_MODEL_ID || 'gemma-2-9b-it');
+    ? process.env.IDENTIFY_MODEL_ID || 'gemma-4-26b-a4b-it'
+    : process.env.FACTS_MODEL_ID || 'gemma-4-26b-a4b-it');
 
   const startTime = Date.now();
 

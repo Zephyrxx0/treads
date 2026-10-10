@@ -15,5 +15,8 @@
     "ui": "@/components/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
+  },
+  "registries": {
+    "@toggles": "https://toggles.dev/r/{name}.json"
   }
 }

@@ -30,9 +30,20 @@ export function ThemeSync() {
     window.addEventListener('themechange', handleThemeChange);
     window.addEventListener('storage', handleStorage);
 
+    // One-time user interaction unlock for Web Audio on mobile browsers
+    const handleFirstInteraction = () => {
+      import('@/lib/audio/cuelume').then(({ unlockAudio }) => {
+        unlockAudio();
+      }).catch(() => {});
+    };
+    window.addEventListener('pointerdown', handleFirstInteraction, { once: true, passive: true });
+    window.addEventListener('keydown', handleFirstInteraction, { once: true, passive: true });
+
     return () => {
       window.removeEventListener('themechange', handleThemeChange);
       window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('pointerdown', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
     };
   }, []);
 

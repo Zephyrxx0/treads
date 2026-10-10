@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Search, X, ArrowUpDown, TreePine, Flower2, Sprout, Bird, Bug, Sparkles } from 'lucide-react';
+import { Search, X, ArrowUpDown, TreePine, Flower2, Sprout, Bird, Bug, PawPrint, Sparkles, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { OrganismKind } from '@/lib/hunt';
@@ -35,6 +35,8 @@ function getCategoryIcon(kind: OrganismKind | 'all') {
       return Sprout;
     case 'bird':
       return Bird;
+    case 'animal':
+      return PawPrint;
     case 'insect':
       return Bug;
     case 'all':
@@ -55,7 +57,7 @@ export function CollectionFilterBar({
   className,
 }: CollectionFilterBarProps) {
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn('space-y-3', className)}>
       {/* Search and Sort Toolbar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Search Input */}
@@ -66,7 +68,7 @@ export function CollectionFilterBar({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search by common or scientific name..."
-            className="w-full h-11 pl-10 pr-9 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-[#F35C2B] transition-all"
+            className="w-full h-11 pl-10 pr-9 rounded-full border border-border bg-card text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all"
           />
           {searchQuery && (
             <button
@@ -83,23 +85,24 @@ export function CollectionFilterBar({
         {/* Sort Selector */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="relative inline-flex items-center">
-            <ArrowUpDown className="absolute left-3 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+            <ArrowUpDown className="absolute left-4 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
             <select
               value={sortBy}
               aria-label="Sort species collection"
               onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="h-11 pl-9 pr-8 rounded-xl border border-border bg-card text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#F35C2B] appearance-none cursor-pointer"
+              className="h-11 min-w-[12.5rem] pl-10 pr-11 rounded-full border border-border bg-card text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
             >
               <option value="recent">Most Recent</option>
               <option value="seen">Most Seen</option>
               <option value="alpha">Alphabetical (A–Z)</option>
             </select>
+            <ChevronDown className="absolute right-4 w-4 h-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
       </div>
 
       {/* Horizontal Category Filter Pills (per D-05) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-5 px-5 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
         {categoryCounts.map((cat) => {
           const Icon = getCategoryIcon(cat.kind);
           const isSelected = selectedKind === cat.kind;
@@ -112,16 +115,16 @@ export function CollectionFilterBar({
               className={cn(
                 'inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer shrink-0 border',
                 isSelected
-                  ? 'bg-[#F35C2B] text-white border-[#F35C2B] shadow-sm'
-                  : 'bg-card text-foreground border-border hover:border-[#F35C2B]/40 hover:bg-muted/40'
+                  ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                  : 'bg-card text-foreground border-border hover:border-primary/40 hover:bg-muted/40'
               )}
             >
-              <Icon className={cn('w-3.5 h-3.5', isSelected ? 'text-white' : 'text-muted-foreground')} />
+              <Icon className={cn('w-3.5 h-3.5', isSelected ? 'text-primary-foreground' : 'text-muted-foreground')} />
               <span>{cat.label}</span>
               <span
                 className={cn(
-                  'ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono',
-                  isSelected ? 'bg-white/20 text-white' : 'bg-muted text-muted-foreground'
+                  'ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-mono',
+                  isSelected ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-muted text-muted-foreground'
                 )}
               >
                 {cat.count}

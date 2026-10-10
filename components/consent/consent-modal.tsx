@@ -38,6 +38,7 @@ const PRIVACY_PILLARS = [
 export function ConsentModal() {
   const { mounted, isLoading, hasConsented, acceptConsent } = useConsent();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(true);
 
   // Avoid SSR hydration flash: only show once mounted and loaded
   if (!mounted || isLoading) {
@@ -53,6 +54,7 @@ export function ConsentModal() {
     setIsSubmitting(true);
     try {
       await acceptConsent();
+      setIsOpen(false);
     } catch (err) {
       console.error('Failed to accept consent:', err);
     } finally {
@@ -61,7 +63,7 @@ export function ConsentModal() {
   };
 
   return (
-    <Dialog open={true} disablePointerDismissal={true}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent
         hideCloseButton={true}
         className="max-w-lg sm:max-w-xl max-h-[90vh] overflow-y-auto p-6 border-border/80 shadow-2xl bg-card"

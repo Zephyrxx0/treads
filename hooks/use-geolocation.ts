@@ -61,7 +61,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
     setError(null);
 
     // Accuracy threshold per D-05 and GPS-01
-    if (coords.accuracy > 35) {
+    if (coords.accuracy > 40) {
       setStatus('weak');
     } else {
       setStatus('live');
@@ -86,21 +86,35 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
 
   const handleError = useCallback((err: GeolocationPositionError) => {
     let msg = 'Unable to acquire location.';
+    const isOriginInsecure = typeof window !== 'undefined' && !window.isSecureContext;
+
     if (err.code === err.PERMISSION_DENIED) {
       setStatus('denied');
-      msg = 'Location permission denied. Please enable location permissions in browser settings.';
+      if (isOriginInsecure) {
+        msg = 'Location blocked: Android Chrome restricts GPS on HTTP LAN origins. Use HTTPS or set chrome://flags/#unsafely-treat-insecure-origin-as-secure.';
+      } else {
+        msg = 'Location permission denied. Please allow location access in your browser settings.';
+      }
     } else if (err.code === err.POSITION_UNAVAILABLE) {
       setStatus('error');
-      msg = 'Location unavailable. Checking for GPS signal...';
+      msg = 'Location signal unavailable. Checking for GPS / cellular signal...';
     } else if (err.code === err.TIMEOUT) {
       setStatus('weak');
-      msg = 'Location signal timed out. Retrying...';
+      msg = 'High-accuracy GPS fix timed out. Retrying with network location...';
+      // Fallback to coarse / network position immediately
+      if (typeof navigator !== 'undefined' && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          handlePosition,
+          () => {},
+          { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+        );
+      }
     } else {
       setStatus('error');
       msg = err.message || 'Location tracking error.';
     }
     setError(msg);
-  }, []);
+  }, [handlePosition]);
 
   const requestCurrentPosition = useCallback(async (): Promise<CurrentPosition | null> => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -111,6 +125,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
 
     setStatus('searching');
     return new Promise((resolve) => {
+      // First attempt with high accuracy but allowing cached fix for instant response
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           handlePosition(pos);
@@ -125,13 +140,36 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
           });
         },
         (err) => {
-          handleError(err);
-          resolve(null);
+          // If high accuracy times out, fall back to cellular/Wi-Fi position
+          if (err.code === err.TIMEOUT) {
+            navigator.geolocation.getCurrentPosition(
+              (coarsePos) => {
+                handlePosition(coarsePos);
+                const coords = coarsePos.coords;
+                resolve({
+                  lat: coords.latitude,
+                  lng: coords.longitude,
+                  accuracy: coords.accuracy,
+                  heading: coords.heading ?? null,
+                  speed: coords.speed ?? null,
+                  timestamp: coarsePos.timestamp || Date.now(),
+                });
+              },
+              (secondErr) => {
+                handleError(secondErr);
+                resolve(null);
+              },
+              { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+            );
+          } else {
+            handleError(err);
+            resolve(null);
+          }
         },
         {
           enableHighAccuracy: true,
           timeout: 10000,
-          maximumAge: 0,
+          maximumAge: 15000,
         }
       );
     });
@@ -151,13 +189,28 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
       return;
     }
 
+    const isOriginInsecure = typeof window !== 'undefined' && !window.isSecureContext;
+    if (isOriginInsecure) {
+      setError(
+        'Android Chrome blocks GPS on insecure HTTP origins. Use HTTPS or enable chrome://flags/#unsafely-treat-insecure-origin-as-secure.'
+      );
+    }
+
     setStatus('searching');
     setIsWatching(true);
 
+    // Initial fast acquisition: allow cached fix or cellular/Wi-Fi fix immediately
+    navigator.geolocation.getCurrentPosition(
+      handlePosition,
+      () => {},
+      { enableHighAccuracy: false, timeout: 6000, maximumAge: 30000 }
+    );
+
+    // Continuous watch with progressive high accuracy
     const watchId = navigator.geolocation.watchPosition(handlePosition, handleError, {
       enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0,
+      timeout: 15000,
+      maximumAge: 5000,
     });
 
     // Visibility change handler for background throttling recovery (per D-07)
@@ -166,7 +219,7 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
         navigator.geolocation.getCurrentPosition(handlePosition, handleError, {
           enableHighAccuracy: true,
           timeout: 10000,
-          maximumAge: 0,
+          maximumAge: 10000,
         });
       }
     };
@@ -189,4 +242,3 @@ export function useGeolocation(options: UseGeolocationOptions = {}): Geolocation
     requestCurrentPosition,
   };
 }
-

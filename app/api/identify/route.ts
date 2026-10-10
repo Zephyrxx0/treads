@@ -22,7 +22,7 @@ const IdentificationSchema = z.object({
       z.object({
         scientificName: z.string().describe('Binomial nomenclature, e.g. Quercus alba or Passer domesticus'),
         commonName: z.string().describe('Common vernacular name, e.g. White Oak or House Sparrow'),
-        kind: z.enum(['tree', 'flower', 'plant', 'bird', 'insect', 'fungus', 'other']),
+        kind: z.enum(['tree', 'flower', 'plant', 'bird', 'insect', 'fungus', 'animal', 'other']),
         confidence: z.enum(['Likely', 'Possible', 'Unsure']),
         wikipediaTitle: z.string().describe('Exact English Wikipedia article title for this species'),
       })
@@ -33,7 +33,7 @@ const IdentificationSchema = z.object({
 export interface IdentifyCandidate {
   scientificName: string;
   commonName: string;
-  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'other';
+  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'animal' | 'other';
   confidence: 'Likely' | 'Possible' | 'Unsure';
   wikipediaTitle: string;
   canonicalWikipediaTitle?: string;
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
   }
 
   const startTime = Date.now();
-  const modelId = process.env.IDENTIFY_MODEL_ID || 'gemini-2.0-flash';
+  const modelId = process.env.IDENTIFY_MODEL_ID || 'gemma-4-26b-a4b-it';
 
   try {
     const google = createGoogleGenerativeAI({ apiKey });

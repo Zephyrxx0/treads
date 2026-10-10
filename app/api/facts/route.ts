@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 3. Grounded Synthesis via Gemma/Gemini
-  const modelId = process.env.FACTS_MODEL_ID || 'gemini-2.0-flash';
+  const modelId = process.env.FACTS_MODEL_ID || 'gemma-4-26b-a4b-it';
 
   try {
     const google = createGoogleGenerativeAI({ apiKey });

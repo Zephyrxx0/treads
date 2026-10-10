@@ -12,7 +12,8 @@ import { calculateHaversineDistance } from '@/lib/geo';
 export function generateSyntheticLoop(
   centerLng: number,
   centerLat: number,
-  targetMeters: number
+  targetMeters: number,
+  seed?: number
 ): [number, number][] {
   // Approximate radius for a circle with circumference = targetMeters
   const radiusMeters = targetMeters / (2 * Math.PI);
@@ -24,19 +25,23 @@ export function generateSyntheticLoop(
   const numPoints = 28;
   const coordinates: [number, number][] = [];
 
+  // Rotate starting direction based on seed (allows cycling diverse loops)
+  const baseAngle = typeof seed === 'number' ? (seed % 360) * (Math.PI / 180) : 0;
+
   // Start with exact origin point
   coordinates.push([centerLng, centerLat]);
 
   for (let i = 1; i < numPoints; i++) {
     const angle = (i / numPoints) * 2 * Math.PI;
 
-    // Organic perturbation so it's not a rigid mechanical circle
-    const perturbation = 1 + 0.08 * Math.sin(3 * angle) + 0.04 * Math.cos(5 * angle);
+    // Gentle perturbation with minimum turns
+    const perturbation = 1 + 0.02 * Math.sin(angle);
     const r = radiusMeters * perturbation;
 
-    // Offset coordinates slightly so the start is tangent to the circle
-    const dLat = (r * Math.sin(angle)) / metersPerDegreeLat;
-    const dLng = (r * (1 - Math.cos(angle))) / metersPerDegreeLng;
+    // Offset coordinates rotated by baseAngle
+    const rotatedAngle = angle + baseAngle;
+    const dLat = (r * Math.sin(rotatedAngle)) / metersPerDegreeLat;
+    const dLng = (r * (1 - Math.cos(rotatedAngle))) / metersPerDegreeLng;
 
     const lat = centerLat + dLat;
     const lng = centerLng + dLng;
@@ -47,6 +52,33 @@ export function generateSyntheticLoop(
   // Close the loop back at the origin point
   coordinates.push([centerLng, centerLat]);
 
+  return coordinates;
+}
+
+/**
+ * Connects arbitrary waypoints into an interpolated polyline path
+ * when routing through custom stops without ORS access.
+ */
+export function generateSyntheticWaypointsRoute(
+  waypoints: [number, number][]
+): [number, number][] {
+  if (waypoints.length < 2) return waypoints;
+  const coordinates: [number, number][] = [];
+  const stepsPerLeg = 10;
+
+  for (let i = 0; i < waypoints.length - 1; i++) {
+    const start = waypoints[i];
+    const end = waypoints[i + 1];
+
+    for (let step = 0; step < stepsPerLeg; step++) {
+      const t = step / stepsPerLeg;
+      coordinates.push([
+        start[0] + (end[0] - start[0]) * t,
+        start[1] + (end[1] - start[1]) * t,
+      ]);
+    }
+  }
+  coordinates.push(waypoints[waypoints.length - 1]);
   return coordinates;
 }
 

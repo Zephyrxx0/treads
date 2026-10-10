@@ -14,12 +14,14 @@ export interface Walk {
   }>;
   distance: number; // in meters
   title?: string;
+  coverImage?: Blob | string | null;
+  coverId?: string | null;
 }
 
 export interface Candidate {
   scientificName: string;
   commonName: string;
-  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'other';
+  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'animal' | 'other';
   confidence: 'Likely' | 'Possible' | 'Unsure';
   wikipediaTitle: string;
   verified?: boolean;
@@ -35,7 +37,10 @@ export interface Entry {
   lat: number;
   lng: number;
   accuracy: number;
-  status: 'saved' | 'identifying' | 'identified' | 'confirmed' | 'unidentified' | 'failed';
+  /** `scene`: a photo kept for the log as it is (a view, a moment), never meant to be identified */
+  status: 'saved' | 'identifying' | 'identified' | 'confirmed' | 'unidentified' | 'failed' | 'scene';
+  /** Optional one-line caption, used by scene photos */
+  caption?: string;
   candidates: Candidate[];
   confirmed?: Candidate | null;
   verified: boolean;
@@ -54,6 +59,8 @@ export interface Note {
   audio?: Blob | null;
   duration?: number;
   transcript: string;
+  /** Per-word timings from speech-to-text, when available */
+  words?: Array<{ text: string; start: number; end: number; type?: 'word' | 'spacing' | 'audio_event' }>;
   language?: string;
   lat?: number;
   lng?: number;

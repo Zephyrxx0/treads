@@ -51,7 +51,7 @@ Built for the **Google AI Studio / Gemini Naturalist Challenge**.
 ## Tech Stack
 
 - **Framework:** Next.js 16.4 (App Router, Turbopack) & React 19
-- **UI & Tokens:** Tailwind CSS v4, Base UI primitives, Lucide React, Tangerin Dream design tokens
+- **UI & Tokens:** Tailwind CSS v4, Base UI primitives, Lucide React, a bone-paper and forest-ink design system, with isometric Hairline line figures for the hero and empty states
 - **Database:** Dexie 4.4 (IndexedDB) with `dexie-react-hooks`
 - **Maps:** MapLibre GL 6.13
 - **AI & Speech:** Google Gemini (`@ai-sdk/google`, `ai`), ElevenLabs API

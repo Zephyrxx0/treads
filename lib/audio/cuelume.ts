@@ -4,7 +4,7 @@ let audioCtx: AudioContext | null = null;
 
 /**
  * Lazily instantiate and resume the Web Audio AudioContext upon user gesture.
- * Complies with modern browser autoplay policies.
+ * Complies with modern mobile browser autoplay policies.
  */
 export function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
@@ -24,6 +24,13 @@ export function getAudioContext(): AudioContext | null {
   }
 
   return audioCtx;
+}
+
+/**
+ * Unlock audio on initial user touch or interaction to satisfy mobile autoplay policies.
+ */
+export function unlockAudio(): void {
+  getAudioContext();
 }
 
 /**
@@ -64,13 +71,20 @@ function synthesizeChimeTone(
  * Warm major-third dual chime (E5: 659.25 Hz and G#5: 830.61 Hz)
  * with a slight 30ms offset for an organic field bell timbre.
  */
-export async function playCaptureChime(): Promise<void> {
-  try {
-    const settings = await getUserSettings();
-    if (!settings.soundEnabled) return;
+export async function playCaptureChime(force: boolean = false): Promise<void> {
+  // Synchronously capture/resume context within active user gesture stack
+  const ctx = getAudioContext();
+  if (!ctx) return;
 
-    const ctx = getAudioContext();
-    if (!ctx) return;
+  try {
+    if (!force) {
+      const settings = await getUserSettings();
+      if (!settings.soundEnabled) return;
+    }
+
+    if (ctx.state === 'suspended') {
+      await ctx.resume().catch(() => {});
+    }
 
     const now = ctx.currentTime;
     // Primary E5 tone
@@ -90,13 +104,19 @@ export async function playCaptureChime(): Promise<void> {
  * Joyful 4-note ascending arpeggio (C5 -> E5 -> G5 -> C6)
  * spaced at 120ms intervals with smooth decay.
  */
-export async function playHuntChime(): Promise<void> {
-  try {
-    const settings = await getUserSettings();
-    if (!settings.soundEnabled) return;
+export async function playHuntChime(force: boolean = false): Promise<void> {
+  const ctx = getAudioContext();
+  if (!ctx) return;
 
-    const ctx = getAudioContext();
-    if (!ctx) return;
+  try {
+    if (!force) {
+      const settings = await getUserSettings();
+      if (!settings.soundEnabled) return;
+    }
+
+    if (ctx.state === 'suspended') {
+      await ctx.resume().catch(() => {});
+    }
 
     const now = ctx.currentTime;
     const notes = [
@@ -113,4 +133,3 @@ export async function playHuntChime(): Promise<void> {
     console.warn('[Cuelume] playHuntChime error:', err);
   }
 }
-
