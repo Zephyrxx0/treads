@@ -1,0 +1,19 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4K0CGF58X0GBR5AKH02EBXN",
+  "strategy": "manual-commit",
+  "branch": "feat/frontend",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".env.example",
+    "lib/db.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
