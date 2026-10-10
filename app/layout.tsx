@@ -33,8 +33,50 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: 'Treads - Field Walking & Specimen Journal',
-  description: 'Mindful walking companion, taxonomic specimen identifier, and nature field journal.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://treads-nature.vercel.app'),
+  title: {
+    default: 'Treads 🌿 — Notice What Lives',
+    template: '%s | Treads',
+  },
+  description:
+    'A mindful, local-first naturalist companion and field journal. Turn outdoor walks into observational field notes with open-weight Gemma 4 AI, ElevenLabs voice notes, pedestrian loops, and Obsidian vault export.',
+  keywords: [
+    'naturalist',
+    'field journal',
+    'nature walk',
+    'species identification',
+    'Gemma 4',
+    'ElevenLabs',
+    'local-first',
+    'Obsidian',
+    'MapLibre',
+    'biodiversity',
+    'botany',
+    'birdwatching',
+    'Hacktoberfest',
+    'Touch Grass',
+  ],
+  authors: [{ name: 'Treads Naturalist Team' }],
+  creator: 'Treads',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: '/',
+    title: 'Treads 🌿 — Notice What Lives',
+    description:
+      'Mindful walking companion, open-weight taxonomic specimen identifier, and local-first nature field journal.',
+    siteName: 'Treads',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Treads 🌿 — Notice What Lives',
+    description:
+      'Mindful walking companion, open-weight taxonomic specimen identifier, and local-first nature field journal.',
+  },
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

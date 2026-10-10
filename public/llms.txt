@@ -1,0 +1,34 @@
+# Treads 🌿
+
+> Step outside. Notice what lives.
+
+Treads is a mindful, local-first naturalist companion and field journal built for Hacktoberfest Touch Grass. It guides outdoor walkers with pedestrian loop generation, identifies living flora, fauna, and fungi using open-weight AI (Google Gemma 4), captures voice reflections via ElevenLabs, grounds natural history notes in Wikipedia, and exports observational field journals into Obsidian vaults.
+
+## Core Pillars
+- Local-First Privacy: 100% of user field journals, specimen photos, GPS breadcrumbs, and voice notes live strictly in browser IndexedDB (Dexie). No accounts or tracking databases.
+- Client-Side EXIF Stripping: Captured photos are rasterized on an HTML5 Canvas to remove 100% of EXIF and GPS hardware metadata before transient AI analysis.
+- Open-Weight AI (Gemma 4): Uses `gemma-4-26b-a4b-it` via `@ai-sdk/google` for phenology-aware taxonomic ranking, Wikipedia-grounded natural history synthesis, tactile "Look Closely" sensory prompts, and Aldo Leopold-style field dispatches.
+- ElevenLabs Audio & Speech: High-fidelity field journaling via ElevenLabs Scribe STT (`scribe_v1`) and natural speech narration via ElevenLabs Multilingual v2 (`eleven_multilingual_v2`, voice: Rachel).
+- Tactile & Sensory Feedback: Dual-oscillator Web Audio synthesized chimes (E5–G#5 major third, C5–E5–G5–C6 celebration arpeggio), Japanese Tegaki ink handwriting reveals (`Caveat`), and native haptic vibration.
+- Obsidian Vault Export: One-tap export generating a zip archive with YAML-frontmatter Markdown notes, organized photographs, and full JSON database backups.
+
+## Key Routes & Architecture
+- `/`: The Field Hearth — active walk launcher with 15m/30m/45m loop goals, daily species hunt targets, and naturalist lifetime stats.
+- `/walk`: Active Field Walk — full-screen MapLibre GL outdoor topography maps, OpenRouteService pedestrian loops, 35m accuracy-filtered GPS tracking, canvas EXIF stripping camera dock, live-waveform voice recorder, and pocket-safe hold-to-confirm finish.
+- `/collection`: Herbarium & Life List — visual catalog of observed species categorized by kingdom with instant local text search.
+- `/journal`: Field Logbook — chronological walk expeditions with GPS replays, elevation metrics, species counts, and Obsidian export.
+- `/journal/[walkId]`: Walk Expedition Detail — interactive GPS trail replay and species encounter breakdown.
+- `/entry/[id]`: Specimen Observation Note — high-resolution photo inspector, Wikipedia natural history fact cards, ElevenLabs audio narration, sensory observation prompt, and re-identification.
+- `/settings`: Audio chimes, native haptics, and durable browser storage persistence.
+- `/privacy`: Transparent data manifesto detailing local-first zero-server privacy architecture.
+- `/eval`: Interactive 30-specimen benchmark harness scoring taxonomic accuracy (≥70%) and honest refusal (≥90%).
+- `/spike`: Hardware & API diagnostic panel testing maps, GPS sensors, audio synthesizers, camera canvas, and AI endpoints.
+
+## Technical Specifications
+- Framework: Next.js 16.4 (App Router, Turbopack) & React 19
+- Styling & Components: Tailwind CSS v4, Base UI primitives, Lucide React, Caveat, Fraunces, Hanken Grotesk, JetBrains Mono
+- Database: Dexie 4.4 (IndexedDB) with dexie-react-hooks
+- Maps: MapLibre GL 6.13 with OpenFreeMap vector tiles
+- AI & Speech: Google Gemma 4 (`gemma-4-26b-a4b-it`), ElevenLabs Scribe & Multilingual v2
+- Repository: https://github.com/Zephyrxx0/treads
+
