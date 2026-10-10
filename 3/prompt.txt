@@ -1,0 +1,14 @@
+how are quests created? what basis, criteria?
+
+---
+
+Is there a way to make better quests ?
+
+---
+
+Seasonal quests are in, 
+also update the existing quests, make them a little more engaging
+
+---
+
+config .gitignore , commit all files, clear git tree
