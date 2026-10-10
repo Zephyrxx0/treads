@@ -1,0 +1,74 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4K7D2SYNY1R7MADMF4VBJGK",
+  "session_id": "161d203b-057f-4fb5-a023-b80ba3d80845",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T15:37:45.811085994Z",
+  "branch": "feat/frontend",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    ".env.example",
+    "app/api/spike/ai/route.ts",
+    "app/collection/page.tsx",
+    "app/entry/[id]/page.tsx",
+    "app/globals.css",
+    "app/journal/[walkId]/page.tsx",
+    "app/journal/page.tsx",
+    "app/page.tsx",
+    "app/settings/page.tsx",
+    "components/journal/flower-garden.tsx",
+    "components/layout/page-shell.tsx",
+    "components/nature/insects.tsx"
+  ],
+  "agent": "Antigravity",
+  "model": "",
+  "turn_id": "a300296621a8",
+  "checkpoint_transcript_start": 1082,
+  "transcript_lines_at_start": 1082,
+  "session_metrics": {
+    "turn_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T15:37:45.757110681Z",
+    "agent_lines": 160,
+    "agent_removed": 74,
+    "human_added": 0,
+    "human_modified": 32,
+    "human_removed": 42,
+    "total_committed": 183,
+    "total_lines_changed": 308,
+    "agent_percentage": 75.97402597402598,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 614,
+      "user_lines_removed": 59,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".env.example": 25,
+        "app/api/spike/ai/route.ts": 5,
+        "app/globals.css": 59,
+        "app/page.tsx": 64,
+        "components/landing/signature-footer.tsx": 429,
+        "components/layout/page-shell.tsx": 5,
+        "components/nature/insects.tsx": 27
+      },
+      "user_removed_per_file": {
+        "app/api/spike/ai/route.ts": 1,
+        "app/page.tsx": 57,
+        "components/layout/page-shell.tsx": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 651,
+      "agent_lines_removed": 116
+    }
+  ]
+}

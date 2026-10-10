@@ -1,0 +1,5 @@
+okay, remove the debuggin for the journal route, and make it so the state of the flowers are based on amount of kilometers walked. 
+
+for ex under 500 m , 1st state, and so on 
+
+make sure it works
