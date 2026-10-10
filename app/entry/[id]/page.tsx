@@ -133,6 +133,7 @@ export default function EntryDetailPage({
             summary: data.summary,
             facts: data.facts,
             sourceUrl: data.sourceUrl,
+            lookClosely: data.lookClosely,
             sentences: data.sentences,
           };
 

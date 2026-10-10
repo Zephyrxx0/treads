@@ -138,6 +138,7 @@ function PhotoMessage({ entry, onOpen }: { entry: Entry; onOpen: () => void }) {
             summary: data.summary,
             facts: data.facts,
             sourceUrl: data.sourceUrl,
+            ...(data.lookClosely ? { lookClosely: data.lookClosely } : {}),
             // Matches what the entry page stores so its fact card can cite sentences.
             ...(data.sentences ? { sentences: data.sentences } : {}),
           } as Entry['facts'],

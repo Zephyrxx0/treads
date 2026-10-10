@@ -41,11 +41,54 @@ export function EntryDetailPane({ entryId, onClose, onIdentify }: EntryDetailPan
   const photoUrl = useBlobUrl(entry?.photo);
   const backRef = useRef<HTMLButtonElement | null>(null);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [isFetchingFacts, setIsFetchingFacts] = useState(false);
 
   // A different find (or a closed pane) never inherits a half-made delete.
   useEffect(() => {
     setConfirmingDelete(false);
   }, [entryId]);
+
+  const wikipediaTitle = entry?.confirmed?.wikipediaTitle || entry?.confirmed?.scientificName;
+
+  // On-demand fetch of verified Wikipedia facts if confirmed but not yet saved in Dexie
+  useEffect(() => {
+    if (!open || !entry?.confirmed || entry.facts || isFetchingFacts || !wikipediaTitle) return;
+    let active = true;
+    setIsFetchingFacts(true);
+
+    async function fetchFacts() {
+      try {
+        const res = await fetch('/api/facts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ wikipediaTitle }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const factsData = {
+            summary: data.summary,
+            facts: data.facts,
+            sourceUrl: data.sourceUrl,
+            ...(data.lookClosely ? { lookClosely: data.lookClosely } : {}),
+            ...(data.sentences ? { sentences: data.sentences } : {}),
+          };
+          if (active && entry?.id) {
+            await db.entries.update(entry.id, { facts: factsData });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to auto-fetch facts in entry detail pane:', err);
+      } finally {
+        if (active) setIsFetchingFacts(false);
+      }
+    }
+
+    fetchFacts();
+
+    return () => {
+      active = false;
+    };
+  }, [open, entry?.id, entry?.confirmed, entry?.facts, isFetchingFacts, wikipediaTitle]);
 
   // The find was deleted while it was open: go back to the chat.
   const gone = open && !!found && found.id === entryId && found.entry === null;
@@ -148,7 +191,11 @@ export function EntryDetailPane({ entryId, onClose, onIdentify }: EntryDetailPan
           </div>
 
           {entry.confirmed ? (
-            <FactCard factsData={entry.facts} speciesName={commonName} />
+            <FactCard
+              factsData={entry.facts}
+              speciesName={commonName}
+              isLoading={isFetchingFacts || (!entry.facts && !!wikipediaTitle)}
+            />
           ) : (
             <div className="space-y-3 rounded-xl border border-dashed border-border/80 bg-muted/20 p-4">
               <p className="text-center text-xs text-muted-foreground">

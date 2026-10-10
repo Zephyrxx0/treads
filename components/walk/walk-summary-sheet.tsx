@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/sheet';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { formatDistance, formatDuration } from '@/lib/geo';
-import { Clock, MapPin, Gauge, Leaf, ArrowRight, Mic, Play, Pause } from 'lucide-react';
+import { Clock, MapPin, Gauge, Leaf, ArrowRight, Mic, Play, Pause, Network } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -44,6 +44,74 @@ export function WalkSummarySheet({
   onViewJournal,
 }: WalkSummarySheetProps) {
   const liveWalk = useLiveQuery(() => (walkId ? db.walks.get(walkId) : undefined), [walkId]);
+  const liveSpecimens = useLiveQuery(
+    () => (walkId ? db.entries.where('walkId').equals(walkId).toArray() : []),
+    [walkId],
+  );
+  const liveNotes = useLiveQuery(
+    () => (walkId ? db.notes.where('walkId').equals(walkId).toArray() : []),
+    [walkId],
+  );
+
+  const displaySpecimens = (liveSpecimens && liveSpecimens.length > 0) ? liveSpecimens : specimens;
+  const displayNotes = (liveNotes && liveNotes.length > 0) ? liveNotes : notes;
+
+  const [isSynthesizingDispatch, setIsSynthesizingDispatch] = useState(false);
+  const hasTriggeredRef = useRef(false);
+
+  useEffect(() => {
+    hasTriggeredRef.current = false;
+  }, [walkId]);
+
+  // Auto-synthesize dispatch and ecological web if not yet generated
+  useEffect(() => {
+    const targetWalkId = walkId;
+    if (!open || !targetWalkId || !liveWalk || liveWalk.dispatch || isSynthesizingDispatch || hasTriggeredRef.current) {
+      return;
+    }
+    hasTriggeredRef.current = true;
+    setIsSynthesizingDispatch(true);
+
+    async function triggerDispatch(resolvedId: string) {
+      try {
+        const currentEntries = await db.entries.where('walkId').equals(resolvedId).toArray();
+        const currentNotes = await db.notes.where('walkId').equals(resolvedId).toArray();
+
+        const confirmedNames = currentEntries
+          .map((s) => s.confirmed?.commonName || s.confirmed?.scientificName)
+          .filter(Boolean) as string[];
+        const noteTexts = currentNotes.map((n) => n.transcript).filter(Boolean);
+
+        const res = await fetch('/api/walk/dispatch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            species: confirmedNames,
+            notes: noteTexts,
+            duration: durationSeconds,
+            distance: distanceMeters,
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.dispatch) {
+            await db.walks.update(resolvedId, {
+              dispatch: data.dispatch,
+              connections: data.connections || [],
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to auto-synthesize walk dispatch in summary sheet:', err);
+      } finally {
+        setIsSynthesizingDispatch(false);
+      }
+    }
+
+    triggerDispatch(targetWalkId);
+  }, [open, walkId, liveWalk, isSynthesizingDispatch, durationSeconds, distanceMeters]);
+
   // Compute average pace (minutes per km)
   let paceDisplay = '--:-- /km';
   if (distanceMeters >= 50 && durationSeconds > 0) {
@@ -54,8 +122,12 @@ export function WalkSummarySheet({
     paceDisplay = `${paceMin}:${paceSec.toString().padStart(2, '0')} /km`;
   }
 
+  const confirmedCount = displaySpecimens.filter(
+    (e) => e.status !== 'unidentified' && e.status !== 'scene',
+  ).length;
+  const effectiveSpeciesCount = confirmedCount || speciesCount;
   const speciesLabel =
-    speciesCount === 1 ? '1 species recorded' : `${speciesCount} species recorded`;
+    effectiveSpeciesCount === 1 ? '1 species recorded' : `${effectiveSpeciesCount} species recorded`;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -120,13 +192,13 @@ export function WalkSummarySheet({
         </div>
 
         {/* Visual Species Reel (per D-16) */}
-        {specimens.length > 0 && (
+        {displaySpecimens.length > 0 && (
           <div className="py-2 space-y-2">
             <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono">
               Specimens Logged Today
             </span>
             <div className="flex items-center gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
-              {specimens.map((specimen) => (
+              {displaySpecimens.map((specimen) => (
                 <SpeciesReelItem key={specimen.id} specimen={specimen} />
               ))}
             </div>
@@ -134,14 +206,14 @@ export function WalkSummarySheet({
         )}
 
         {/* Voice Notes Reel (per D-03, ROUT-02, UI-SPEC) */}
-        {notes && notes.length > 0 && (
+        {displayNotes && displayNotes.length > 0 && (
           <div className="py-2 space-y-2">
             <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono flex items-center justify-between">
               <span>Voice Notes Logged</span>
-              <span className="text-primary font-semibold">{notes.length}</span>
+              <span className="text-primary font-semibold">{displayNotes.length}</span>
             </span>
             <div className="max-h-36 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
-              {notes.map((note) => (
+              {displayNotes.map((note) => (
                 <NoteSnippetItem key={note.id} note={note} />
               ))}
             </div>
@@ -149,7 +221,7 @@ export function WalkSummarySheet({
         )}
 
         {/* Naturalist Field Dispatch (Gemma) */}
-        {liveWalk?.dispatch && (
+        {liveWalk?.dispatch ? (
           <div className="py-2 space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary font-mono">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
@@ -159,14 +231,33 @@ export function WalkSummarySheet({
               &ldquo;{liveWalk.dispatch}&rdquo;
             </div>
           </div>
-        )}
+        ) : isSynthesizingDispatch ? (
+          <div className="py-2 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-primary animate-pulse" />
+              <span>Naturalist Field Dispatch</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-primary/10 border border-primary/20 text-xs leading-relaxed text-muted-foreground flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-primary animate-spin shrink-0" />
+              <span>Synthesizing naturalist dispatch with Gemma...</span>
+            </div>
+          </div>
+        ) : null}
 
-        {/* Observed Ecological Web (Gemma) - only shown when connections exist */}
-        {liveWalk?.connections && liveWalk.connections.length > 0 && (
-          <div className="py-2 space-y-2">
+        {/* Observed Ecological Web (Gemma) */}
+        <div className="py-2 space-y-2">
+          <div className="flex items-center justify-between">
             <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono">
               Observed Ecological Web
             </span>
+            {liveWalk?.connections && liveWalk.connections.length > 0 && (
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                {liveWalk.connections.length} {liveWalk.connections.length === 1 ? 'relation' : 'relations'}
+              </span>
+            )}
+          </div>
+
+          {liveWalk?.connections && liveWalk.connections.length > 0 ? (
             <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 scrollbar-thin">
               {liveWalk.connections.map((conn, idx) => (
                 <div
@@ -188,8 +279,23 @@ export function WalkSummarySheet({
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : isSynthesizingDispatch ? (
+            <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs text-muted-foreground leading-relaxed flex items-center gap-2">
+              <Network className="w-4 h-4 text-primary animate-pulse shrink-0" />
+              <span>Analyzing trophic relationships with Gemma...</span>
+            </div>
+          ) : (
+            <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs text-muted-foreground leading-relaxed flex items-start gap-2.5">
+              <Network className="w-4 h-4 text-muted-foreground/70 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-medium text-foreground/80">No ecological connections detected</p>
+                <p className="text-[11px] mt-0.5">
+                  Ecological web links activate when two or more interconnected wild species (pollinators, plants, canopy trees, fungi) are recorded on the trail.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Action Buttons (per D-16) */}
         <SheetFooter className="flex flex-col gap-2 pt-4 sm:flex-col sm:space-x-0">

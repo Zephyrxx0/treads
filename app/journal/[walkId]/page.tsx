@@ -22,6 +22,7 @@ import {
   X,
   Sparkles,
   ExternalLink,
+  Network,
 } from 'lucide-react';
 import { db, Walk, Entry, Note } from '@/lib/db';
 import { formatDistance, formatDuration, calculateHaversineDistance } from '@/lib/geo';
@@ -205,6 +206,14 @@ export default function WalkDetailPage({
       setIsGeneratingDispatch(false);
     }
   };
+
+  const hasAutoTriggeredDispatchRef = useRef(false);
+  useEffect(() => {
+    if (walk && !walk.dispatch && !isGeneratingDispatch && !hasAutoTriggeredDispatchRef.current) {
+      hasAutoTriggeredDispatchRef.current = true;
+      handleGenerateDispatch();
+    }
+  }, [walk, isGeneratingDispatch]);
 
   if (walk === undefined) {
     return (
@@ -410,6 +419,16 @@ export default function WalkDetailPage({
               &ldquo;{walk.dispatch}&rdquo;
             </p>
           </div>
+        ) : isGeneratingDispatch ? (
+          <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary font-mono">
+              <Sparkles className="w-4 h-4 animate-spin text-primary" />
+              <span>Synthesizing Naturalist Field Dispatch...</span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Connecting to Gemma to compose a field dispatch grounded in your observations.
+            </p>
+          </div>
         ) : (
           <div className="flex items-center justify-between p-3.5 rounded-2xl bg-muted/30 border border-border/60">
             <div className="flex items-center gap-2">
@@ -425,20 +444,22 @@ export default function WalkDetailPage({
               disabled={isGeneratingDispatch}
               className="h-8 text-xs font-semibold rounded-lg border-border hover:bg-muted cursor-pointer"
             >
-              {isGeneratingDispatch ? 'Synthesizing...' : 'Synthesize Dispatch'}
+              Synthesize Dispatch
             </Button>
           </div>
         )}
 
-        {/* Observed Ecological Web (Gemma) - only displayed when connections exist */}
-        {walk.connections && walk.connections.length > 0 && (
-          <div className="space-y-2.5">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
-              <span>Observed Ecological Web</span>
+        {/* Observed Ecological Web (Gemma) */}
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+            <span>Observed Ecological Web</span>
+            {walk.connections && walk.connections.length > 0 && (
               <Badge variant="secondary" className="text-[10px] h-5 px-1.5 font-mono">
                 {walk.connections.length} {walk.connections.length === 1 ? 'relation' : 'relations'}
               </Badge>
-            </div>
+            )}
+          </div>
+          {walk.connections && walk.connections.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {walk.connections.map((conn, idx) => (
                 <div
@@ -460,8 +481,23 @@ export default function WalkDetailPage({
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : isGeneratingDispatch ? (
+            <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 flex items-center gap-2.5 text-xs text-muted-foreground">
+              <Network className="w-4 h-4 text-primary animate-pulse shrink-0" />
+              <span>Analyzing ecological relationships with Gemma...</span>
+            </div>
+          ) : (
+            <div className="p-3.5 rounded-xl border border-border/60 bg-muted/20 flex items-start gap-3">
+              <Network className="w-4 h-4 text-muted-foreground/70 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="text-xs font-medium text-foreground/80">No ecological connections detected</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Gemma links species into an ecological web when two or more wild organisms with ecological ties (e.g. host plants, pollinators, canopy trees, fungi) are recorded on the trail.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Chat-Style Walk Activity Log */}
         <section className="pt-3">

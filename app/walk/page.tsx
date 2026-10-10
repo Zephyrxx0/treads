@@ -421,31 +421,37 @@ export default function WalkPage() {
 
     // Trigger naturalist dispatch & ecological connections generation via Gemma
     if (currentWalkId) {
-      const confirmedNames = walkSpecimens
-        .map((s) => s.confirmed?.commonName || s.confirmed?.scientificName)
-        .filter(Boolean) as string[];
-      const noteTexts = walkNotes.map((n) => n.transcript).filter(Boolean);
+      (async () => {
+        try {
+          const currentEntries = await db.entries.where('walkId').equals(currentWalkId).toArray();
+          const currentNotes = await db.notes.where('walkId').equals(currentWalkId).toArray();
 
-      fetch('/api/walk/dispatch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          species: confirmedNames,
-          notes: noteTexts,
-          duration: finalDuration,
-          distance: finalDistance,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
+          const confirmedNames = currentEntries
+            .map((s) => s.confirmed?.commonName || s.confirmed?.scientificName)
+            .filter(Boolean) as string[];
+          const noteTexts = currentNotes.map((n) => n.transcript).filter(Boolean);
+
+          const res = await fetch('/api/walk/dispatch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              species: confirmedNames,
+              notes: noteTexts,
+              duration: finalDuration,
+              distance: finalDistance,
+            }),
+          });
+          const data = await res.json();
           if (data.dispatch) {
-            db.walks.update(currentWalkId, {
+            await db.walks.update(currentWalkId, {
               dispatch: data.dispatch,
               connections: data.connections || [],
             });
           }
-        })
-        .catch((err) => console.error('Failed to generate walk dispatch:', err));
+        } catch (err) {
+          console.error('Failed to generate walk dispatch:', err);
+        }
+      })();
     }
 
     await endWalk();
@@ -456,7 +462,7 @@ export default function WalkPage() {
     }, 200);
 
     setIsSummaryOpen(true);
-  }, [elapsedSeconds, distanceMeters, activeWalk?.trackPoints, endWalk]);
+  }, [elapsedSeconds, distanceMeters, activeWalk?.trackPoints, activeWalk?.id, walkId, endWalk]);
 
   // Hold-to-confirm or tap End Walk trigger (per D-13)
   const handleEndWalkAttempt = useCallback(
@@ -528,7 +534,7 @@ export default function WalkPage() {
       {/* Map panel: top when upright, left of the panel when landscape */}
       <section
         aria-label="Map"
-        className="relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm landscape:h-full landscape:min-h-0 landscape:flex-1"
+        className="relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm landscape:h-full landscape:aspect-square landscape:w-auto landscape:shrink-0"
       >
         {/* Top Left Home Back Link */}
         <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-20">
@@ -602,8 +608,7 @@ export default function WalkPage() {
       <aside
         aria-label={showRoutePanel ? 'Walk setup' : 'Walk activity'}
         className={cn(
-          'flex flex-col landscape:min-h-0 landscape:w-[min(22rem,44vw)] landscape:flex-none lg:w-[380px] xl:w-[420px]',
-          !showRoutePanel && 'min-h-0 flex-1',
+          'flex flex-col min-h-0 landscape:h-full landscape:flex-1 landscape:min-w-0 landscape:w-auto',
         )}
       >
         {showRoutePanel ? (
