@@ -1,0 +1,43 @@
+/grill-me from @PRD.md
+
+---
+
+/grill-me from @PRD.md 
+use antigravity's question / modal tool 
+Also give reccomeneded choice
+
+---
+
+start grilling for the entire doc
+
+---
+
+Before that, write the decisions in a DECISIONS.md file, 
+and all the libraries/tool who cannot be webfectched to get install commands, note them in the doc
+
+---
+
+/gsd-new-project docs from: @[PRD.md] and @[/home/zeph/Code/treads/DECISIONS.md]
+
+---
+
+Check if everything from the project has been implemented ? 
+how is gemma used in the app ?
+
+---
+
+what more can gemma do make the project more standout?
+
+---
+
+@[Quote] sounds good, complexity of implementaion? 
+@[Quote] what if there are none? what if no connections?
+@[Quote] sounds good, remove elevenlabs inclusion, no tts
+
+discard 4 and 5 
+
+3 are chosen, now what would be changed and where?
+
+---
+
+sure sounds good , proceed

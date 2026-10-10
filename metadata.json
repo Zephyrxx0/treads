@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JXG71NTJKA7ABP302W66ZP",
+  "strategy": "manual-commit",
+  "branch": "feat/frontend",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "app/api/facts/route.ts",
+    "app/api/walk/dispatch/route.ts",
+    "app/journal/[walkId]/page.tsx",
+    "app/walk/page.tsx",
+    "components/entry/fact-card.tsx",
+    "components/walk/walk-summary-sheet.tsx",
+    "lib/db.ts",
+    "lib/rate-limit.ts",
+    "scripts/test-gemma-enhancements.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ]
+}
