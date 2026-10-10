@@ -1,5 +1,11 @@
 import Dexie, { type Table } from 'dexie';
 
+export interface EcologicalConnection {
+  speciesA: string;
+  speciesB: string;
+  relationship: string;
+}
+
 export interface Walk {
   id: string; // crypto.randomUUID()
   startedAt: number;
@@ -16,6 +22,8 @@ export interface Walk {
   title?: string;
   coverImage?: Blob | string | null;
   coverId?: string | null;
+  dispatch?: string | null;
+  connections?: EcologicalConnection[] | null;
 }
 
 export interface Candidate {
@@ -47,6 +55,7 @@ export interface Entry {
   facts?: {
     summary: string;
     facts: Array<{ sentenceNumber: number; text: string }>;
+    lookClosely?: string;
     sourceUrl: string;
   } | null;
 }

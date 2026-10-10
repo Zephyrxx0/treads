@@ -33,12 +33,19 @@ const FactsSchema = z.object({
       })
     )
     .describe('Up to 3 distinct biological facts citing source sentence numbers.'),
+  lookClosely: z
+    .string()
+    .optional()
+    .describe(
+      'A 1-sentence tactile, sensory observation prompt directing the walker to look closely at a physical feature of the organism right in front of them (e.g., leaf veins, underside texture, bark ridges, pollen sacs, wing patterns).'
+    ),
 });
 
 export interface FactsResponse {
   success: boolean;
   summary: string;
   facts: FactItem[];
+  lookClosely?: string;
   sourceUrl: string;
   sentences: Array<{ index: number; text: string }>;
   cached?: boolean;
@@ -117,6 +124,7 @@ export async function POST(req: NextRequest) {
       warning: 'GOOGLE_GENERATIVE_AI_API_KEY not configured. Returning Wikipedia extract fallback.',
       summary: sanitizeFactText(wikiData.sentences[0].text),
       facts: validateCitations(fallbackFacts, wikiData.sentences.length),
+      lookClosely: 'Examine the fine vein structure and subtle variations in texture along the margins.',
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
     };
@@ -148,7 +156,8 @@ INSTRUCTIONS:
 1. Write a short summary (max 40 words) describing the organism.
 2. Select up to 3 interesting biological facts (max 20 words each).
 3. For each fact, cite the exact sentence index where the information was found.
-4. STRICT NEGATIVE CONSTRAINT: Do NOT include any claims about edibility, foraging, culinary recipes, taste, medicinal remedies, cures, or human toxicity. If a sentence mentions these, ignore it completely.`;
+4. "Look Closely" sensory prompt: Write 1 direct, engaging sentence instructing the walker to physically examine a specific tactile or visual detail right in front of them (e.g. leaf veins, bark grooves, petal margins, pollen sacs, wing borders).
+5. STRICT NEGATIVE CONSTRAINT: Do NOT include any claims about edibility, foraging, culinary recipes, taste, medicinal remedies, cures, or human toxicity. If a sentence mentions these, ignore it completely.`;
 
     const { object } = await generateObject({
       model,
@@ -170,10 +179,17 @@ INSTRUCTIONS:
       summary = sanitizeFactText(wikiData.sentences[0].text);
     }
 
+    // Clean and verify lookClosely prompt
+    let lookClosely = object.lookClosely ? sanitizeFactText(object.lookClosely) : undefined;
+    if (!lookClosely || containsSafetyViolations(lookClosely)) {
+      lookClosely = 'Examine the fine surface patterns and observe how light and shadow fall across its form.';
+    }
+
     const responsePayload: FactsResponse = {
       success: true,
       summary,
       facts: validFacts,
+      lookClosely,
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
       cached: false,
@@ -192,6 +208,7 @@ INSTRUCTIONS:
       success: true,
       summary: sanitizeFactText(wikiData.sentences[0].text),
       facts: getFallbackFact(wikiData.sentences),
+      lookClosely: 'Examine the fine surface details and textures right in front of you.',
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
       warning: 'AI generation error. Reverted to verified Wikipedia extract.',

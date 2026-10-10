@@ -96,6 +96,7 @@ export default function WalkPage() {
 
   // Completed walk session metrics for Summary Drawer review
   const [completedSummary, setCompletedSummary] = useState<{
+    walkId?: string;
     duration: number;
     distance: number;
     trackPoints: TrackPoint[];
@@ -409,12 +410,43 @@ export default function WalkPage() {
     const finalDuration = elapsedSeconds;
     const finalDistance = distanceMeters;
     const finalPoints = activeWalk?.trackPoints ? [...activeWalk.trackPoints] : [];
+    const currentWalkId = activeWalk?.id || walkId;
 
     setCompletedSummary({
+      walkId: currentWalkId,
       duration: finalDuration,
       distance: finalDistance,
       trackPoints: finalPoints,
     });
+
+    // Trigger naturalist dispatch & ecological connections generation via Gemma
+    if (currentWalkId) {
+      const confirmedNames = walkSpecimens
+        .map((s) => s.confirmed?.commonName || s.confirmed?.scientificName)
+        .filter(Boolean) as string[];
+      const noteTexts = walkNotes.map((n) => n.transcript).filter(Boolean);
+
+      fetch('/api/walk/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          species: confirmedNames,
+          notes: noteTexts,
+          duration: finalDuration,
+          distance: finalDistance,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.dispatch) {
+            db.walks.update(currentWalkId, {
+              dispatch: data.dispatch,
+              connections: data.connections || [],
+            });
+          }
+        })
+        .catch((err) => console.error('Failed to generate walk dispatch:', err));
+    }
 
     await endWalk();
 
@@ -661,6 +693,7 @@ export default function WalkPage() {
             setIsSummaryOpen(open);
             if (!open) handleSummaryDone();
           }}
+          walkId={completedSummary.walkId}
           durationSeconds={completedSummary.duration}
           distanceMeters={completedSummary.distance}
           speciesCount={identifiedSpecimensCount}

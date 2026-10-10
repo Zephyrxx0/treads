@@ -7,7 +7,8 @@ export type RateLimitEndpoint =
   | 'transcribe'
   | 'speak'
   | 'route'
-  | 'spike';
+  | 'spike'
+  | 'dispatch';
 
 export interface RateLimitResult {
   success: boolean;
@@ -27,6 +28,7 @@ export const ENDPOINT_QUOTAS: Record<
   speak: { limit: 40, windowSeconds: 86400 },
   route: { limit: 40, windowSeconds: 86400 },
   spike: { limit: 60, windowSeconds: 86400 },
+  dispatch: { limit: 40, windowSeconds: 86400 },
 };
 
 interface TokenBucket {

@@ -19,6 +19,7 @@ import { FactAudioPlayer } from '@/components/speech/fact-audio-player';
 export interface FactData {
   summary: string;
   facts: Array<{ sentenceNumber: number; text: string }>;
+  lookClosely?: string;
   sourceUrl: string;
   sentences?: Array<{ index: number; text: string }>;
 }
@@ -123,6 +124,23 @@ export function FactCard({
       </CardHeader>
 
       <CardContent className="p-5 pt-0 space-y-3">
+        {/* Look Closely Sensory Field Prompt */}
+        {factsData.lookClosely && (
+          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-primary/10 border border-primary/20 text-foreground">
+            <div className="p-1 rounded-md bg-primary/20 text-primary shrink-0 mt-0.5">
+              <Sparkles className="w-3.5 h-3.5" />
+            </div>
+            <div className="space-y-0.5">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                Look Closely
+              </span>
+              <p className="text-xs leading-relaxed font-medium text-foreground/90">
+                {factsData.lookClosely}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Grounded Cited Facts List */}
         <div className="space-y-2.5">
           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">

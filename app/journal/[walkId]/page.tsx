@@ -77,6 +77,7 @@ export default function WalkDetailPage({
   // Safe delete dialog state
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isGeneratingDispatch, setIsGeneratingDispatch] = useState(false);
 
   // Compute geodesic distance if walk.distance is 0 but track points exist
   const computedDistanceMeters = React.useMemo(() => {
@@ -168,6 +169,40 @@ export default function WalkDetailPage({
     } catch (err) {
       console.error('Failed to purge walk and entries:', err);
       setIsDeleting(false);
+    }
+  };
+
+  const handleGenerateDispatch = async () => {
+    if (!walk) return;
+    setIsGeneratingDispatch(true);
+    try {
+      const confirmedNames = entries
+        .map((s) => s.confirmed?.commonName || s.confirmed?.scientificName)
+        .filter(Boolean) as string[];
+      const noteTexts = notes.map((n) => n.transcript).filter(Boolean);
+      const duration = walk.endedAt ? Math.round((walk.endedAt - walk.startedAt) / 1000) : 0;
+
+      const res = await fetch('/api/walk/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          species: confirmedNames,
+          notes: noteTexts,
+          duration,
+          distance: computedDistanceMeters,
+        }),
+      });
+      const data = await res.json();
+      if (data.dispatch) {
+        await db.walks.update(walk.id, {
+          dispatch: data.dispatch,
+          connections: data.connections || [],
+        });
+      }
+    } catch (err) {
+      console.error('Failed to generate dispatch:', err);
+    } finally {
+      setIsGeneratingDispatch(false);
     }
   };
 
@@ -363,6 +398,70 @@ export default function WalkDetailPage({
             </Badge>
           </div>
         </div>
+
+        {/* Naturalist Field Dispatch Card (Gemma) */}
+        {walk.dispatch ? (
+          <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 space-y-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary font-mono">
+              <Sparkles className="w-4 h-4" />
+              <span>Naturalist Field Dispatch</span>
+            </div>
+            <p className="text-sm font-serif italic leading-relaxed text-foreground/90">
+              &ldquo;{walk.dispatch}&rdquo;
+            </p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-muted/30 border border-border/60">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">
+                No naturalist dispatch synthesized for this walk yet.
+              </span>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleGenerateDispatch}
+              disabled={isGeneratingDispatch}
+              className="h-8 text-xs font-semibold rounded-lg border-border hover:bg-muted cursor-pointer"
+            >
+              {isGeneratingDispatch ? 'Synthesizing...' : 'Synthesize Dispatch'}
+            </Button>
+          </div>
+        )}
+
+        {/* Observed Ecological Web (Gemma) - only displayed when connections exist */}
+        {walk.connections && walk.connections.length > 0 && (
+          <div className="space-y-2.5">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+              <span>Observed Ecological Web</span>
+              <Badge variant="secondary" className="text-[10px] h-5 px-1.5 font-mono">
+                {walk.connections.length} {walk.connections.length === 1 ? 'relation' : 'relations'}
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {walk.connections.map((conn, idx) => (
+                <div
+                  key={`detail-conn-${idx}`}
+                  className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs space-y-1.5"
+                >
+                  <div className="flex items-center gap-1.5 font-semibold text-emerald-800 dark:text-emerald-300">
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-[10px] font-sans">
+                      {conn.speciesA}
+                    </span>
+                    <span className="text-muted-foreground text-[10px]">↔</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-[10px] font-sans">
+                      {conn.speciesB}
+                    </span>
+                  </div>
+                  <p className="text-xs text-foreground/85 leading-relaxed">
+                    {conn.relationship}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Chat-Style Walk Activity Log */}
         <section className="pt-3">

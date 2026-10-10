@@ -14,12 +14,14 @@ import { formatDistance, formatDuration } from '@/lib/geo';
 import { Clock, MapPin, Gauge, Leaf, ArrowRight, Mic, Play, Pause } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-
-import { Entry, Note } from '@/lib/db';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, Entry, Note } from '@/lib/db';
+import { Sparkles } from 'lucide-react';
 
 export interface WalkSummarySheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  walkId?: string;
   durationSeconds: number;
   distanceMeters: number;
   speciesCount?: number;
@@ -32,6 +34,7 @@ export interface WalkSummarySheetProps {
 export function WalkSummarySheet({
   open,
   onOpenChange,
+  walkId,
   durationSeconds,
   distanceMeters,
   speciesCount = 0,
@@ -40,6 +43,7 @@ export function WalkSummarySheet({
   onDone,
   onViewJournal,
 }: WalkSummarySheetProps) {
+  const liveWalk = useLiveQuery(() => (walkId ? db.walks.get(walkId) : undefined), [walkId]);
   // Compute average pace (minutes per km)
   let paceDisplay = '--:-- /km';
   if (distanceMeters >= 50 && durationSeconds > 0) {
@@ -139,6 +143,49 @@ export function WalkSummarySheet({
             <div className="max-h-36 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
               {notes.map((note) => (
                 <NoteSnippetItem key={note.id} note={note} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Naturalist Field Dispatch (Gemma) */}
+        {liveWalk?.dispatch && (
+          <div className="py-2 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span>Naturalist Field Dispatch</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-primary/10 border border-primary/20 text-xs leading-relaxed text-foreground font-serif italic">
+              &ldquo;{liveWalk.dispatch}&rdquo;
+            </div>
+          </div>
+        )}
+
+        {/* Observed Ecological Web (Gemma) - only shown when connections exist */}
+        {liveWalk?.connections && liveWalk.connections.length > 0 && (
+          <div className="py-2 space-y-2">
+            <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono">
+              Observed Ecological Web
+            </span>
+            <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 scrollbar-thin">
+              {liveWalk.connections.map((conn, idx) => (
+                <div
+                  key={`conn-${idx}`}
+                  className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs space-y-1"
+                >
+                  <div className="flex items-center gap-1.5 font-semibold text-emerald-800 dark:text-emerald-300">
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-[10px]">
+                      {conn.speciesA}
+                    </span>
+                    <span className="text-muted-foreground text-[10px]">↔</span>
+                    <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-[10px]">
+                      {conn.speciesB}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-foreground/80 leading-normal">
+                    {conn.relationship}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
