@@ -119,7 +119,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   consentVersion: null,
   consentTimestamp: null,
   storagePersisted: false,
-  soundEnabled: false,
+  soundEnabled: true,
   hapticsEnabled: true,
   theme: 'system',
 };
