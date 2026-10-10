@@ -1,0 +1,9 @@
+its a dog, yet labeled as an unidentified organism 
+also it is recognised as tree ...?
+
+look if image cature and recognition works , 
+also look if parsing information and displaying it works correctly
+
+---
+
+@[Quote] use this model : gemma-4-26b-a4b-it everywhere

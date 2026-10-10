@@ -3,7 +3,7 @@
   "checkpoint_id": "01M4JTMFWYCGKM9PPPZ8PNKN7H",
   "strategy": "manual-commit",
   "branch": "feat/frontend",
-  "checkpoints_count": 19,
+  "checkpoints_count": 21,
   "files_touched": [
     "app/globals.css",
     "app/walk/page.tsx",
@@ -23,6 +23,12 @@
       "transcript": "/1/full.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ]
 }
