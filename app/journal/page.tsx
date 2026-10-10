@@ -112,6 +112,7 @@ export default function JournalPage() {
 
   return (
     <PageShell
+      signature
       eyebrow="Field journal"
       title="Journal"
       aside={walks ? `${walks.length} ${walks.length === 1 ? 'walk' : 'walks'}` : undefined}

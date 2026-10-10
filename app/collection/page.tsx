@@ -148,6 +148,7 @@ export default function CollectionPage() {
 
   return (
     <PageShell
+      signature
       eyebrow="Field collection"
       title="Life list"
       aside={`${uniqueSpeciesList.length} ${uniqueSpeciesList.length === 1 ? 'species' : 'species'}`}

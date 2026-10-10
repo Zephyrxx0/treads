@@ -31,6 +31,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ActivityLog } from '@/components/walk/activity-log';
 import { PageAmbience } from '@/components/nature/page-ambience';
+import { SignatureFooter } from '@/components/landing/signature-footer';
 import {
   Dialog,
   DialogContent,
@@ -253,7 +254,7 @@ export default function WalkDetailPage({
       : '0.0';
 
   return (
-    <div className="paper-grain relative min-h-dvh bg-background text-foreground flex flex-col pb-28 sm:pb-16 overflow-x-clip">
+    <div className="paper-grain relative min-h-dvh bg-background text-foreground flex flex-col overflow-x-clip">
       <PageAmbience pageWidth={896} />
       {/* Sticky Header */}
       <header className="relative z-10 mx-auto w-full max-w-4xl px-5 pt-10 sm:px-8 sm:pt-24">
@@ -510,6 +511,11 @@ export default function WalkDetailPage({
           />
         </section>
       </main>
+
+      {/* mt-auto keeps the footer at the foot of short pages; it paints over the side vines */}
+      <div className="mt-auto pt-14 sm:pt-20">
+        <SignatureFooter className="max-sm:pb-24" />
+      </div>
 
       {/* Safe Delete Confirmation Dialog (D-12, Copywriting Contract) */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

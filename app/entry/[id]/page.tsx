@@ -14,6 +14,7 @@ import { TegakiText } from '@/components/motion/tegaki-text';
 import { cn } from '@/lib/utils';
 import { blobToBase64 } from '@/lib/camera';
 import { PageAmbience } from '@/components/nature/page-ambience';
+import { SignatureFooter } from '@/components/landing/signature-footer';
 
 export default function EntryDetailPage({
   params,
@@ -277,7 +278,7 @@ export default function EntryDetailPage({
   });
 
   return (
-    <div className="paper-grain relative min-h-dvh bg-background pb-28 sm:pb-12 overflow-x-clip">
+    <div className="paper-grain relative flex min-h-dvh flex-col bg-background overflow-x-clip">
       <PageAmbience pageWidth={672} />
       {/* Top Navigation Bar */}
       <header className="relative z-10 mx-auto flex w-full max-w-md items-center justify-between px-5 pt-10 sm:pt-24">
@@ -565,6 +566,11 @@ export default function EntryDetailPage({
           )}
         </div>
       </main>
+
+      {/* mt-auto keeps the footer at the foot of short pages; it paints over the side vines */}
+      <div className="mt-auto pt-14 sm:pt-20">
+        <SignatureFooter className="max-sm:pb-24" />
+      </div>
 
       {/* Voice Recorder Bottom Sheet */}
       <VoiceRecorderSheet

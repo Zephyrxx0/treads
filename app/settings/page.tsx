@@ -186,7 +186,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <PageShell eyebrow="Preferences" title="Settings">
+    <PageShell eyebrow="Preferences" title="Settings" signature>
       {/* Main Content */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Storage & Backups Card */}

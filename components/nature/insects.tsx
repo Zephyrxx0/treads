@@ -33,6 +33,33 @@ export function Bee({ className, style }: { className?: string; style?: React.CS
   );
 }
 
+const LADYBUG_RED = 'oklch(0.58 0.22 28)';
+
+/** Side view, facing left, feet on the bottom edge of the box so it can stand on a line. */
+export function Ladybug({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <svg
+      viewBox="0 0 20 14"
+      className={cn('overflow-visible', className)}
+      style={style}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 12.4 L5.4 14 M10 12.8 L10 14 M14 12.4 L14.6 14" stroke={BEE_INK} strokeWidth="0.9" />
+      <path d="M4.4 12.6 C3.6 4 8 1.2 12 1.2 C16.4 1.2 18.6 6 18 12.6 Z" fill={LADYBUG_RED} stroke={BEE_INK} strokeWidth="0.7" />
+      <path d="M11.4 1.4 C12.6 5 12.6 9 11.8 12.6" stroke={BEE_INK} strokeWidth="0.7" />
+      <circle cx="8" cy="6.2" r="1.35" fill={BEE_INK} stroke="none" />
+      <circle cx="15" cy="5.6" r="1.25" fill={BEE_INK} stroke="none" />
+      <circle cx="14.4" cy="9.8" r="1.1" fill={BEE_INK} stroke="none" />
+      <circle cx="7.6" cy="10" r="1" fill={BEE_INK} stroke="none" />
+      <path d="M4.6 6.4 C1.4 6 0.4 8.6 1.2 11.2 C2.2 12.6 4.2 12.6 4.8 11.2 Z" fill={BEE_INK} stroke="none" />
+      <path d="M2.6 6.2 Q1.2 3.8 -0.4 3.6" stroke={BEE_INK} strokeWidth="0.6" />
+    </svg>
+  );
+}
+
 export function Butterfly({
   className,
   style,

@@ -498,6 +498,65 @@
   .nature-cross { display: none; }
 }
 
+/* ------------------------------------------------------------------ */
+/* Signature footer: vines grow through the wordmark, blooms open.      */
+/* Everything starts hidden and plays once when [data-in] is set.       */
+/* ------------------------------------------------------------------ */
+.sig {
+  /* The footer is the inverse of the page: on ink in light mode, so the vine runs light... */
+  --vine: oklch(0.72 0.13 145);
+  --vine-leaf: oklch(0.6 0.13 145);
+  --vine-leaf-edge: oklch(0.82 0.12 140);
+}
+.dark .sig {
+  /* ...and on paper in dark mode, so it runs deep. */
+  --vine: oklch(0.5 0.115 150);
+  --vine-leaf: oklch(0.7 0.15 140);
+  --vine-leaf-edge: oklch(0.4 0.09 152);
+}
+
+@keyframes sig-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes sig-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes sig-crawl {
+  0% { transform: translateX(0) scaleX(-1); }
+  40% { transform: translateX(var(--dist)) scaleX(-1); }
+  50% { transform: translateX(var(--dist)) scaleX(1); }
+  90% { transform: translateX(0) scaleX(1); }
+  100% { transform: translateX(0) scaleX(-1); }
+}
+@keyframes sig-wobble {
+  from { transform: rotate(-2.5deg) translateY(0); }
+  to { transform: rotate(2.5deg) translateY(-0.6px); }
+}
+
+.sig-draw { stroke-dasharray: 1 2; stroke-dashoffset: 1; }
+.sig-pop, .sig-pop-c { transform: scale(0); opacity: 0; transform-box: fill-box; }
+.sig-pop { transform-origin: 50% 100%; }
+.sig-pop-c { transform-origin: 50% 50%; }
+.sig-fade { opacity: 0; transition: opacity 1.2s ease-out var(--delay, 0s); }
+
+.sig[data-in] .sig-draw { animation: sig-draw var(--len, 0.55s) cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s) forwards; }
+.sig[data-in] .sig-pop { animation: sig-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) forwards; }
+.sig[data-in] .sig-pop-c { animation: sig-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) forwards; }
+.sig[data-in] .sig-fade { opacity: 1; }
+
+.sig-crawl { animation: sig-crawl var(--dur, 16s) ease-in-out var(--delay, 0s) infinite; }
+.sig-wobble { animation: sig-wobble 0.32s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sig-draw { stroke-dashoffset: 0; animation: none !important; }
+  .sig-pop, .sig-pop-c { transform: none; opacity: 1; animation: none !important; }
+  .sig-fade { opacity: 1; transition: none; }
+  .sig-crawl, .sig-wobble { animation: none; }
+}
+
 /* Message action circles: a staggered pop with slight overshoot in, quick scale-out on close */
 @keyframes msg-action-in {
   0% {

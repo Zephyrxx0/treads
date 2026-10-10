@@ -7,6 +7,7 @@ import type { Walk, Entry } from '@/lib/db';
 import { Bee } from '@/components/nature/insects';
 import { Bloom } from '@/components/journal/garden-blooms';
 import { HedgeLayer, type HedgeSlot } from '@/components/journal/garden-hedge';
+import { calculateHaversineDistance } from '@/lib/geo';
 
 export interface FlowerGardenProps {
   walks: Walk[];
@@ -83,8 +84,29 @@ interface Day {
 }
 
 const WEEKS = 13;
-const STAGE_NAMES = ['no walk', 'a few steps', 'a short walk', 'a good walk', 'a long walk'];
+const STAGE_NAMES = [
+  'no walk',
+  'sprout (< 500 m)',
+  'opening bud (500 m \u2013 2 km)',
+  'full bloom (2 \u2013 5 km)',
+  'flourishing (5+ km)',
+];
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function getWalkDistanceMeters(walk: Walk): number {
+  let d = walk.distance || 0;
+  if (d === 0 && walk.trackPoints && walk.trackPoints.length > 1) {
+    for (let i = 1; i < walk.trackPoints.length; i++) {
+      d += calculateHaversineDistance(
+        walk.trackPoints[i - 1].lat,
+        walk.trackPoints[i - 1].lng,
+        walk.trackPoints[i].lat,
+        walk.trackPoints[i].lng
+      );
+    }
+  }
+  return d;
+}
 const CELL = 28;
 const GAP = 4;
 const MONTH_ROW = 20;
@@ -168,12 +190,9 @@ function GardenBee({ from, to, durationSec = 7.5, delaySec = 0 }: GardenBeeProps
 }
 
 export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
-  // Debug stage overrides (clicking days to preview flowers)
-  const [debugStages, setDebugStages] = React.useState<Record<string, Stage>>({});
-  // Debug species overrides (shift/alt click)
-  const [debugSpecies, setDebugSpecies] = React.useState<Record<string, FlowerSpecies>>({});
-  // Global species filter for testing ('all' = mixed meadow)
+  // Garden flower theme: 'all' = mixed meadow, or single species filter
   const [selectedSpecies, setSelectedSpecies] = React.useState<'all' | FlowerSpecies>('all');
+  const [focus, setFocus] = React.useState<Day | null>(null);
 
   const stats = React.useMemo(() => {
     const map = new Map<string, { walkCount: number; distanceMeters: number; species: Set<string> }>();
@@ -185,7 +204,7 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
       if (!walk.startedAt) continue;
       const s = slot(new Date(walk.startedAt).toLocaleDateString('en-CA'));
       s.walkCount += 1;
-      s.distanceMeters += walk.distance || 0;
+      s.distanceMeters += getWalkDistanceMeters(walk);
     }
     for (const entry of entries) {
       if ((entry.status !== 'confirmed' && entry.status !== 'identified') || !entry.confirmed) continue;
@@ -206,17 +225,19 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
       const walkCount = s?.walkCount ?? 0;
       const distanceMeters = s?.distanceMeters ?? 0;
       const speciesCount = s?.species.size ?? 0;
+
+      // Flower bloom state strictly based on distance walked
       let stage: Stage = 0;
-      if (walkCount > 0 || speciesCount > 0) {
-        stage =
-          distanceMeters > 5000 || speciesCount > 5
-            ? 4
-            : distanceMeters > 2500 || speciesCount >= 4
-              ? 3
-              : distanceMeters > 1000 || speciesCount >= 2
-                ? 2
-                : 1;
+      if (distanceMeters >= 5000) {
+        stage = 4; // 5+ km: flourishing full bloom
+      } else if (distanceMeters >= 2000) {
+        stage = 3; // 2 – 5 km: full bloom
+      } else if (distanceMeters >= 500) {
+        stage = 2; // 500 m – 2 km: opening bud
+      } else if (distanceMeters > 0 || walkCount > 0) {
+        stage = 1; // under 500 m: sprout / first state
       }
+
       const defaultSpecies = getSpeciesForDay(dateStr);
       days.push({
         dateStr,
@@ -229,11 +250,7 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
       });
     }
 
-    // Streak and active check that respects both real walks and previewed active days
-    const isDayActive = (d: Day) => {
-      const stage = debugStages[d.dateStr] ?? d.stage;
-      return stage > 0 || d.walkCount > 0 || d.speciesCount > 0;
-    };
+    const isDayActive = (d: Day) => d.stage > 0 || d.walkCount > 0;
 
     let streak = 0;
     let i = days.length - 1;
@@ -279,49 +296,29 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
       activeDays: days.filter(isDayActive).length,
       km: (days.reduce((n, d) => n + d.distanceMeters, 0) / 1000).toFixed(1),
     };
-  }, [walks, entries, debugStages]);
-
-  const [focus, setFocus] = React.useState<Day | null>(null);
-
-  // Click day to cycle stage: 0 -> 1 -> 2 -> 3 -> 4 -> 0
-  const cycleDebugStage = (d: Day, shiftKey = false) => {
-    if (shiftKey) {
-      // Shift-click cycles flower species
-      setDebugSpecies((prev) => {
-        const cur = prev[d.dateStr] ?? d.defaultSpecies;
-        const next: FlowerSpecies = cur === 'orange' ? 'purple' : cur === 'purple' ? 'pink' : 'orange';
-        return { ...prev, [d.dateStr]: next };
-      });
-      return;
-    }
-    setDebugStages((prev) => ({
-      ...prev,
-      [d.dateStr]: (((prev[d.dateStr] ?? d.stage) + 1) % 5) as Stage,
-    }));
-  };
-
-  const getShownDay = (d: Day): Day => (d.dateStr in debugStages ? { ...d, stage: debugStages[d.dateStr] } : d);
+  }, [walks, entries]);
 
   const getDayPalette = (d: Day): FlowerSpecies => {
     if (selectedSpecies !== 'all') return selectedSpecies;
-    return debugSpecies[d.dateStr] ?? d.defaultSpecies;
+    return d.defaultSpecies;
   };
 
-  const focused = focus ? getShownDay(focus) : null;
-  const focusedPalette = focused ? getDayPalette(focused) : 'orange';
+  const focusedPalette = focus ? getDayPalette(focus) : 'orange';
   const focusedSpeciesName = FLOWER_PALETTES[focusedPalette]?.name || 'Bloom';
 
-  const caption = focused
-    ? `${fmtDate(focused.date)} \u2014 ${
-        focused.stage === 0
-          ? 'no walk'
-          : `${focusedSpeciesName} (${STAGE_NAMES[focused.stage]}): ${
-              focus && focus.dateStr in debugStages && focused.walkCount === 0
-                ? 'Preview'
-                : `${focused.walkCount} walk${focused.walkCount === 1 ? '' : 's'}, ${(focused.distanceMeters / 1000).toFixed(1)} km, ${focused.speciesCount} species`
-            }`
+  const caption = focus
+    ? `${fmtDate(focus.date)} \u2014 ${
+        focus.stage === 0
+          ? 'no walk recorded'
+          : `${focusedSpeciesName} (${STAGE_NAMES[focus.stage]}): ${
+              focus.walkCount
+            } walk${focus.walkCount === 1 ? '' : 's'}, ${
+              focus.distanceMeters < 1000
+                ? `${Math.round(focus.distanceMeters)} m`
+                : `${(focus.distanceMeters / 1000).toFixed(2)} km`
+            }${focus.speciesCount > 0 ? `, ${focus.speciesCount} species found` : ''}`
       }`
-    : `${stats.activeDays} active day${stats.activeDays === 1 ? '' : 's'} in the past ${WEEKS} weeks`;
+    : `${stats.activeDays} active day${stats.activeDays === 1 ? '' : 's'} in the past ${WEEKS} weeks \u2022 ${stats.km} km total`;
 
   return (
     <section
@@ -375,8 +372,7 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
                 y: number;
                 stage: Stage;
               }> = [];
-              m.days.forEach(({ day: raw, idx }) => {
-                const d = getShownDay(raw);
+              m.days.forEach(({ day: d, idx }) => {
                 if (d.stage > 0) {
                   const pos = m.offset + idx;
                   const col = Math.floor(pos / 7);
@@ -442,23 +438,28 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
                     {hasBlooms && <GardenBee from={bee1From} to={bee1To} durationSec={7.2} delaySec={0} />}
                     {hasMultiBlooms && <GardenBee from={bee2From} to={bee2To} durationSec={9.5} delaySec={-4.2} />}
 
-                    {m.days.map(({ day: raw, idx }) => {
-                      const d = getShownDay(raw);
+                    {m.days.map(({ day: d, idx }) => {
                       const pos = m.offset + idx;
                       const palette = getDayPalette(d);
+                      const isFocused = focus?.dateStr === d.dateStr;
 
                       return (
                         <button
                           key={d.dateStr}
                           type="button"
-                          onClick={(e) => cycleDebugStage(raw, e.shiftKey)}
-                          onMouseEnter={() => setFocus(raw)}
-                          onFocus={() => setFocus(raw)}
+                          onClick={() => setFocus((prev) => (prev?.dateStr === d.dateStr ? null : d))}
+                          onMouseEnter={() => setFocus(d)}
+                          onFocus={() => setFocus(d)}
                           onBlur={() => setFocus(null)}
-                          aria-label={`${fmtDate(d.date)}: ${STAGE_NAMES[d.stage]}, ${d.walkCount} walks, ${d.speciesCount} species`}
+                          aria-label={`${fmtDate(d.date)}: ${STAGE_NAMES[d.stage]}, ${d.walkCount} walks, ${
+                            d.distanceMeters < 1000
+                              ? `${Math.round(d.distanceMeters)} m`
+                              : `${(d.distanceMeters / 1000).toFixed(1)} km`
+                          }`}
                           className={cn(
-                            'group relative z-10 rounded-[6px] outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                            d.stage === 0 && 'bg-muted transition-[box-shadow] hover:ring-2 hover:ring-foreground/30'
+                            'group relative z-10 rounded-[6px] outline-none focus-visible:ring-2 focus-visible:ring-ring transition-transform hover:scale-110',
+                            d.stage === 0 && 'bg-muted transition-[box-shadow] hover:ring-2 hover:ring-foreground/30',
+                            isFocused && 'ring-2 ring-primary ring-offset-1 ring-offset-background'
                           )}
                           style={{
                             gridColumn: Math.floor(pos / 7) + 1,
@@ -529,23 +530,29 @@ export function FlowerGarden({ walks, entries, className }: FlowerGardenProps) {
         <p className="min-h-4 font-serif text-xs" aria-live="polite">
           {caption}
         </p>
-        <div className="flex items-center gap-1.5" aria-hidden="true">
-          <span className="text-[10px]">Less</span>
-          <span className="h-3 w-3 rounded-[3px] bg-muted" />
-          {[1, 2, 3, 4].map((n) => {
+        <div className="flex items-center gap-2" aria-hidden="true">
+          <span className="text-[10px]">0 km</span>
+          <span className="h-3 w-3 rounded-[3px] bg-muted" title="0 km: No walk" />
+          {[
+            { stage: 1, label: '< 500 m' },
+            { stage: 2, label: '500 m \u2013 2 km' },
+            { stage: 3, label: '2 \u2013 5 km' },
+            { stage: 4, label: '5+ km' },
+          ].map(({ stage, label }) => {
             const currentColors =
               selectedSpecies === 'all'
                 ? FLOWER_PALETTES.orange.stageColors
                 : FLOWER_PALETTES[selectedSpecies].stageColors;
             return (
               <span
-                key={n}
+                key={stage}
+                title={`${label} (${STAGE_NAMES[stage]})`}
                 className="h-3 w-3 rounded-[3px]"
-                style={{ backgroundColor: currentColors[n as 1 | 2 | 3 | 4] }}
+                style={{ backgroundColor: currentColors[stage as 1 | 2 | 3 | 4] }}
               />
             );
           })}
-          <span className="text-[10px]">More</span>
+          <span className="text-[10px]">5+ km</span>
         </div>
       </div>
     </section>

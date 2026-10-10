@@ -134,10 +134,14 @@ async function handleAiSpike(req: NextRequest) {
     const latencyMs = Date.now() - startTime;
     console.error('[AI Spike Error]', error);
 
+    const safeError = typeof error?.message === 'string'
+      ? error.message.replace(/key=[^&\s]+/gi, 'key=[REDACTED]').replace(/AIza[0-9A-Za-z-_]{35}/g, '[REDACTED]')
+      : 'Google AI Studio request failed';
+
     return NextResponse.json(
       {
         success: false,
-        error: error?.message || 'Google AI Studio request failed',
+        error: safeError,
         mockFallback: MOCK_RESPONSE,
         latencyMs,
       },
