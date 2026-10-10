@@ -1,0 +1,74 @@
+Download the React DevTools for a better development experience: https://react.dev/link/react-devtools 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+[HMR] connected 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Loading Worker from “http://localhost:3000/walk” was blocked because of a disallowed MIME type (“text/html”). walk
+Error: Worker failed to load. Check that the worker URL is correct.
+    actors dispatcher.ts:39
+1jtx_next_dist_0xxh72tjnquy-._.js:996:32
+Error: Worker failed to load. Check that the worker URL is correct.
+    actors dispatcher.ts:39
+1jtx_next_dist_0xxh72tjnquy-._.js:996:32
+
+
+
+
+[Fast Refresh] rebuilding 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+[Fast Refresh] done in 103ms 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+The resource at “http://localhost:3000/_next/static/media/a85fe84266768609-s.p.0h6ig86gwutp4.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. walk
+The resource at “http://localhost:3000/_next/static/media/70bc3e132a0a741e-s.p.3t6q91iet4nsy.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. walk
+The resource at “http://localhost:3000/_next/static/media/b67966e0b83b2cd0-s.p.0fuf3937kiol3.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. walk
+The resource at “http://localhost:3000/_next/static/media/c47649aa31f9e140-s.p.3lxpqujs87tck.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. walk
+Security Error: Content at http://localhost:3000/ may not load or link to file:///.
+
+
+i have configured the required keys , but the maps dont load
+https://openrouteservice.org/dev/#/api-docs
+for reference
+
+---
+
+## Page Feedback: /walk
+**Viewport:** 1892×1012
+
+### 1. <WalkPage> <WalkControls> button [Hold button to finalize and save your walk session]
+**Location:** .absolute > .pointer-events-auto > .relative > .relative
+**React:** <WalkPage> <WalkControls>
+**Feedback:** button doesnt work
+
+Download the React DevTools for a better development experience: https://react.dev/link/react-devtools 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+[HMR] connected 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+layers[highway-shield-non-us].filter[1]: Expected value to be of type number, but found null instead. Falling back to false. maplibre-gl-worker.mjs:5:114672
+layers[highway-shield-us-interstate].filter[1]: Expected value to be of type number, but found null instead. Falling back to false. maplibre-gl-worker.mjs:5:114672
+layers[road_shield_us].filter[1]: Expected value to be of type number, but found null instead. Falling back to false. maplibre-gl-worker.mjs:5:114672
+Image "bollard" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "sports_centre" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "gate" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "atm" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "swimming_pool" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "office" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+Image "gymnastics" could not be loaded. Please make sure you have added the image before it is needed with map.addImage(), resolved it with map.setMissingStyleImageResolver(), or included it in a "sprite" property in your style. 1jtx_next_dist_0xxh72tjnquy-._.js:720:28
+
+---
+
+okay gps works , 
+A. On loop route,
+A.1.  on larger kms , loops are bigger, but some have too many turns, if code allows it, I would prefer the least turns for a loop. 
+A.2. the route automatically updates, wasting api calls, only show 1 route, and add 2 buttons, to refresh (new route) and previous (cycle between all generated routes) 
+A. 3. Allow user to maybe add custom stops on the map , or start / finish locations (default is current system) 
+A. 4. Dark/light mode in map if possible
+
+---
+
+some caveates 
+1. map text doesnt show in dark mode, nothing beside path and roads shows in dark mode (icons etc), check and update 
+2. some time route calculation shows route length larger than set (eg : set 1 , calculated 4.3)
+3.## Page Feedback: /walk
+**Viewport:** 1892×1012
+
+### 1. <WalkPage> <ThemeToggle> <Moon> button icon
+**Location:** .absolute > .rounded-full > .inline-flex > svg
+**React:** <WalkPage> <ThemeToggle> <Moon>
+**Feedback:** nested in a div, redundant , remove the circular container
+
+---
+
+1. rendering building in white is ugly in dark mode, make them dark mode friendly
