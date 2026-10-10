@@ -193,7 +193,7 @@ export const WalkControls = React.forwardRef<WalkControlsHandle, WalkControlsPro
 
     return (
       <div className="select-none">
-        <div className="flex items-center gap-3 rounded-3xl border border-border/60 bg-muted/50 p-2">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-3xl border border-border/60 bg-muted/50 p-2">
           {/* Three circular actions, grouped on the left */}
           <div className="flex shrink-0 items-center gap-2">
             {/* Hidden Camera Input with environment capture */}
@@ -307,7 +307,7 @@ export const WalkControls = React.forwardRef<WalkControlsHandle, WalkControlsPro
               e.preventDefault();
               submitNote();
             }}
-            className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-border/60 bg-background px-3 py-1.5 focus-within:ring-2 focus-within:ring-ring"
+            className="flex min-w-[9rem] flex-1 items-center gap-2 rounded-full border border-border/60 bg-background px-3 py-1.5 focus-within:ring-2 focus-within:ring-ring"
           >
             <input
               type="text"

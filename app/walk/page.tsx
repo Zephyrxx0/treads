@@ -102,6 +102,7 @@ export default function WalkPage() {
   } | null>(null);
   const [isSummaryOpen, setIsSummaryOpen] = useState<boolean>(false);
   const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState<boolean>(false);
+  const [discardReason, setDiscardReason] = useState<'time' | 'distance'>('time');
   const [isEndConfirmOpen, setIsEndConfirmOpen] = useState<boolean>(false);
   const [isVoiceSheetOpen, setIsVoiceSheetOpen] = useState<boolean>(false);
 
@@ -428,8 +429,13 @@ export default function WalkPage() {
   // Hold-to-confirm or tap End Walk trigger (per D-13)
   const handleEndWalkAttempt = useCallback(
     (options?: { fromHold?: boolean }) => {
-      // Check short walk condition: < 1 minute (60s) or < 25 meters (per D-15)
-      if (elapsedSeconds < 60 || distanceMeters < 25) {
+      // Short walk (per D-15): under a minute, or under 25 m with nothing logged.
+      // A walk with finds or notes is worth keeping even if the walker stood still.
+      const tooShortInTime = elapsedSeconds < 60;
+      const tooShortInDistance = distanceMeters < 25;
+      const hasContent = walkSpecimens.length > 0 || walkNotes.length > 0;
+      if (tooShortInTime || (tooShortInDistance && !hasContent)) {
+        setDiscardReason(tooShortInTime ? 'time' : 'distance');
         setIsDiscardDialogOpen(true);
         return;
       }
@@ -440,7 +446,7 @@ export default function WalkPage() {
         setIsEndConfirmOpen(true);
       }
     },
-    [elapsedSeconds, distanceMeters, finalizeWalk],
+    [elapsedSeconds, distanceMeters, walkSpecimens.length, walkNotes.length, finalizeWalk],
   );
 
   // Discard walk confirm (per D-15)
@@ -478,11 +484,19 @@ export default function WalkPage() {
   }, [showRoutePanel]);
 
   return (
-    <div className="flex h-dvh w-screen flex-col gap-3 overflow-hidden bg-background p-3 lg:flex-row lg:gap-4 lg:p-4">
-      {/* Map panel: top on mobile, left two-thirds on desktop */}
+    <div
+      className={cn(
+        // Held upright (phones, tablets): the map stacks above the panel. Before the walk the page
+        // itself scrolls and the setup cards keep their full height; during a walk the screen is
+        // fixed so the log scrolls above its dock. Held sideways (landscape): map beside the panel.
+        'flex w-full flex-col gap-3 bg-background p-3 landscape:h-dvh landscape:flex-row landscape:overflow-hidden lg:gap-4 lg:p-4',
+        showRoutePanel ? 'min-h-dvh' : 'h-dvh overflow-hidden',
+      )}
+    >
+      {/* Map panel: top when upright, left of the panel when landscape */}
       <section
         aria-label="Map"
-        className="relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm lg:h-full lg:min-h-0 lg:flex-1"
+        className="relative h-[46dvh] min-h-[260px] shrink-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-border/70 bg-background shadow-sm landscape:h-full landscape:min-h-0 landscape:flex-1"
       >
         {/* Top Left Home Back Link */}
         <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-20">
@@ -555,7 +569,10 @@ export default function WalkPage() {
       {/* Side panel: route setup before the walk, activity log + dock during it */}
       <aside
         aria-label={showRoutePanel ? 'Walk setup' : 'Walk activity'}
-        className="flex min-h-0 flex-1 flex-col lg:w-[380px] lg:flex-none xl:w-[420px]"
+        className={cn(
+          'flex flex-col landscape:min-h-0 landscape:w-[min(22rem,44vw)] landscape:flex-none lg:w-[380px] xl:w-[420px]',
+          !showRoutePanel && 'min-h-0 flex-1',
+        )}
       >
         {showRoutePanel ? (
           <RoutePreviewSheet
@@ -657,6 +674,7 @@ export default function WalkPage() {
       <WalkDiscardDialog
         open={isDiscardDialogOpen}
         onOpenChange={setIsDiscardDialogOpen}
+        reason={discardReason}
         onConfirmDiscard={handleConfirmDiscard}
         onSaveAnyway={handleSaveAnyway}
       />

@@ -120,7 +120,7 @@ export function CaptureFlowCard({
         </DialogDescription>
 
         {/* The photo stays put through all three steps */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border/70 bg-muted/40">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg landscape:not-tall:aspect-video border border-border/70 bg-muted/40">
           {photoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

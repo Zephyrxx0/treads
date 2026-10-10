@@ -17,6 +17,8 @@ export interface WalkDiscardDialogProps {
   onOpenChange: (open: boolean) => void;
   onConfirmDiscard: () => void;
   onSaveAnyway: () => void;
+  /** Why the walk counts as short: under a minute, or barely any ground covered */
+  reason?: 'time' | 'distance';
 }
 
 export function WalkDiscardDialog({
@@ -24,6 +26,7 @@ export function WalkDiscardDialog({
   onOpenChange,
   onConfirmDiscard,
   onSaveAnyway,
+  reason = 'time',
 }: WalkDiscardDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,7 +41,9 @@ export function WalkDiscardDialog({
             </DialogTitle>
           </div>
           <DialogDescription className="text-sm text-muted-foreground pt-1">
-            Walk was under 1 minute. Discard this test session without saving?
+            {reason === 'time'
+              ? 'This walk was under 1 minute. Discard this test session without saving?'
+              : 'You covered less than 25 m, and nothing was logged. Discard this session without saving?'}
           </DialogDescription>
         </DialogHeader>
 

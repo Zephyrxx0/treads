@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+/* Enough vertical room for stacked panels; phones held sideways are not `tall` */
+@custom-variant tall (@media (min-height: 640px));
 
 /*
  * Treads — field-journal palette.

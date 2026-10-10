@@ -576,7 +576,9 @@ export function RoutePreviewSheet({
     // Side panel (desktop) / stacked section under the map (mobile):
     // a compact "config box" on top, "the rest of the options" below.
     return (
-      <div className="flex h-full min-h-0 flex-col gap-3">
+      // Upright: plain stacked cards, the page scrolls. Landscape: the column fills the height; on
+      // tall screens the lower card scrolls on its own, on short ones (phones) the whole column does.
+      <div className="flex flex-col gap-3 landscape:h-full landscape:min-h-0 landscape:overflow-y-auto landscape:tall:overflow-visible">
         <div className="shrink-0 space-y-3.5 rounded-3xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-md">
           {modePicker}
           {statusRow}
@@ -584,12 +586,12 @@ export function RoutePreviewSheet({
           {cta}
         </div>
         {walkMode === 'loop' ? (
-          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto rounded-3xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-md">
+          <div className="space-y-3 rounded-3xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-md landscape:tall:min-h-0 landscape:tall:flex-1 landscape:tall:overflow-y-auto">
             {loopOptions}
           </div>
         ) : (
           extras && (
-            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto rounded-3xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-md">
+            <div className="space-y-3 rounded-3xl border border-border/80 bg-card/80 p-4 shadow-sm backdrop-blur-md landscape:tall:min-h-0 landscape:tall:flex-1 landscape:tall:overflow-y-auto">
               {extras}
             </div>
           )
