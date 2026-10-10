@@ -87,7 +87,7 @@ export function FixtureCard({ fixture, result }: FixtureCardProps) {
             </span>
           </div>
 
-          <p className="font-serif italic text-[11px] text-muted-foreground truncate mt-0.5">
+          <p className="font-sans italic text-[11px] text-muted-foreground truncate mt-0.5">
             {fixture.expectedScientificName ?? (fixture.expectRefusal ? 'Honest Refusal Expected' : 'Taxon unassigned')}
           </p>
 

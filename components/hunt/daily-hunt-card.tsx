@@ -1,12 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import { Calendar, Check, Sparkles, Award, Compass, Sprout, Bird, Bug, TreePine, Flower2 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import {
+  Check,
+  Sparkles,
+  Sprout,
+  Bird,
+  Bug,
+  TreePine,
+  Flower2,
+  Compass,
+  Leaf,
+  Sun,
+  Wind,
+  Snowflake,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { HuntProgress } from '@/lib/hunt';
+import type { HuntProgress, Season } from '@/lib/hunt';
 import { DailyHuntCelebrationDialog } from './daily-hunt-celebration-dialog';
 
 export interface DailyHuntCardProps {
@@ -26,6 +36,23 @@ function getKindIcon(kind: string) {
       return Bird;
     case 'insect':
       return Bug;
+    case 'fungus':
+      return Leaf;
+    default:
+      return Sparkles;
+  }
+}
+
+function getSeasonIcon(season?: Season) {
+  switch (season) {
+    case 'spring':
+      return Leaf;
+    case 'summer':
+      return Sun;
+    case 'autumn':
+      return Wind;
+    case 'winter':
+      return Snowflake;
     default:
       return Sparkles;
   }
@@ -44,151 +71,96 @@ export function DailyHuntCard({ progress, className }: DailyHuntCardProps) {
   }, [progress.completed]);
 
   const { hunt, completed, targetProgress } = progress;
+  const SeasonIcon = getSeasonIcon(hunt.season);
 
   return (
     <>
-      <Card
+      <section
         className={cn(
-          'relative overflow-hidden border transition-all duration-300',
-          completed
-            ? 'border-amber-500/50 bg-gradient-to-br from-card via-card to-amber-500/5 shadow-md shadow-amber-500/5'
-            : 'border-border bg-card shadow-sm',
+          'rounded-[1.5rem] border bg-card p-5 shadow-sm transition-colors',
+          completed ? 'border-primary/60' : 'border-border',
           className
         )}
+        aria-label="Daily species hunt"
       >
-        <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Badge
-                variant="outline"
-                className={cn(
-                  'gap-1 text-xs font-medium',
-                  completed
-                    ? 'border-amber-500/50 bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                    : 'border-[#F35C2B]/40 bg-[#F35C2B]/10 text-[#F35C2B]'
-                )}
-              >
-                <Calendar className="w-3 h-3" />
-                <span>{hunt.date}</span>
-              </Badge>
-
-              <Badge variant="outline" className="text-[11px] font-mono text-muted-foreground">
-                Daily Species Hunt
-              </Badge>
-            </div>
-
-            {completed ? (
-              <Badge
-                variant="default"
-                className="bg-amber-500 hover:bg-amber-600 text-white gap-1 text-xs cursor-pointer shadow-sm"
-                onClick={() => setShowCelebration(true)}
-              >
-                <Award className="w-3.5 h-3.5" />
-                <span>Completed</span>
-              </Badge>
-            ) : (
-              <span className="text-xs font-medium text-muted-foreground">
-                In Progress
+        <div className="flex items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <span>Today&rsquo;s hunt</span>
+            {hunt.season && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-medium tracking-wider text-primary capitalize">
+                <SeasonIcon className="h-2.5 w-2.5" />
+                {hunt.season}
+              </span>
+            )}
+            {hunt.difficulty && (
+              <span className="hidden sm:inline-block text-[9px] tracking-wider text-muted-foreground/75">
+                &bull; {hunt.difficulty}
               </span>
             )}
           </div>
+          {completed ? (
+            <button
+              type="button"
+              onClick={() => setShowCelebration(true)}
+              className="flex items-center gap-1 text-primary underline-offset-4 hover:underline"
+            >
+              <Check className="h-3 w-3" strokeWidth={2.5} /> Found
+            </button>
+          ) : (
+            <span>{hunt.date}</span>
+          )}
+        </div>
 
-          <CardTitle className="text-xl sm:text-2xl font-sans font-bold tracking-tight text-foreground pt-1">
-            {hunt.title}
-          </CardTitle>
+        <h2 className="mt-4 font-serif text-2xl font-normal leading-tight tracking-tight">{hunt.title}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{hunt.description}</p>
 
-          <CardDescription className="font-serif text-sm text-muted-foreground leading-relaxed">
-            {hunt.description}
-          </CardDescription>
-        </CardHeader>
+        {hunt.fieldTip && (
+          <div className="mt-3.5 flex items-start gap-2.5 rounded-xl border border-primary/20 bg-primary/5 p-3 text-xs text-muted-foreground">
+            <Compass className="h-4 w-4 shrink-0 text-primary mt-0.5" strokeWidth={1.75} />
+            <p className="leading-relaxed">
+              <span className="font-semibold text-foreground">Field Lore: </span>
+              {hunt.fieldTip}
+            </p>
+          </div>
+        )}
 
-        <CardContent className="space-y-4 pt-1">
-          {/* Target Pips Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {targetProgress.map((tp) => {
-              const TargetIcon = getKindIcon(tp.target.kind);
-              const isTargetComplete = tp.completed;
-
-              return (
-                <div
-                  key={tp.target.id}
-                  className={cn(
-                    'flex items-center justify-between p-3 rounded-xl border transition-colors',
-                    isTargetComplete
-                      ? 'border-emerald-500/40 bg-emerald-500/5'
-                      : 'border-border bg-muted/20'
-                  )}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className={cn(
-                        'flex items-center justify-center w-8 h-8 rounded-lg shadow-sm',
-                        isTargetComplete
-                          ? 'bg-emerald-500 text-white'
-                          : 'bg-muted text-foreground'
-                      )}
-                    >
-                      <TargetIcon className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-sans font-semibold text-foreground">
-                        {tp.target.label}
-                      </p>
-                      <p className="text-xs text-muted-foreground capitalize">
-                        {tp.target.kind} category
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Progress Pip Display */}
-                  <div className="flex items-center gap-1.5">
-                    {Array.from({ length: tp.target.count }).map((_, idx) => {
-                      const isPipFilled = idx < tp.current;
-                      return (
-                        <div
-                          key={idx}
-                          className={cn(
-                            'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all',
-                            isPipFilled
-                              ? 'bg-[#F35C2B] text-white border-[#F35C2B] shadow-sm'
-                              : 'bg-muted/40 border-border text-muted-foreground'
-                          )}
-                        >
-                          {isPipFilled ? <Check className="w-3 h-3 stroke-[3]" /> : idx + 1}
-                        </div>
-                      );
-                    })}
+        <ul className="mt-5 divide-y divide-border border-t border-border">
+          {targetProgress.map((tp) => {
+            const TargetIcon = getKindIcon(tp.target.kind);
+            return (
+              <li key={tp.target.id} className="flex items-center justify-between gap-3 py-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <TargetIcon
+                    className={cn('h-4 w-4 shrink-0', tp.completed ? 'text-primary' : 'text-muted-foreground')}
+                    strokeWidth={1.5}
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{tp.target.label}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{tp.target.kind}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: tp.target.count }).map((_, idx) => (
+                    <span
+                      key={idx}
+                      className={cn(
+                        'flex h-5 w-5 items-center justify-center rounded-full border text-[10px] transition-colors',
+                        idx < tp.current
+                          ? 'border-primary bg-primary text-primary-foreground'
+                          : 'border-border text-muted-foreground'
+                      )}
+                    >
+                      {idx < tp.current ? <Check className="h-3 w-3" strokeWidth={3} /> : idx + 1}
+                    </span>
+                  ))}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
-          {completed && (
-            <div className="flex items-center justify-between pt-1">
-              <p className="text-xs font-serif text-muted-foreground italic">
-                All daily field criteria satisfied. Your nature journal celebrates this sighting.
-              </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowCelebration(true)}
-                className="text-xs gap-1.5 border-amber-500/40 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
-              >
-                <Award className="w-3.5 h-3.5" />
-                View Badge
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <DailyHuntCelebrationDialog
-        open={showCelebration}
-        onOpenChange={setShowCelebration}
-        hunt={hunt}
-      />
+      <DailyHuntCelebrationDialog open={showCelebration} onOpenChange={setShowCelebration} hunt={hunt} />
     </>
   );
 }
-

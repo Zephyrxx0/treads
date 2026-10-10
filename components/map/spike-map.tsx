@@ -57,9 +57,16 @@ export function SpikeMap({
       const maplibreglModule = await import('maplibre-gl');
       const maplibregl = (maplibreglModule as any).default || maplibreglModule;
 
+      if (typeof window !== 'undefined' && maplibregl.setWorkerUrl) {
+        maplibregl.setWorkerUrl('/maplibre-gl-worker.mjs');
+      }
+
+      const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+      const initialStyle = isDark ? 'https://tiles.openfreemap.org/styles/dark' : 'https://tiles.openfreemap.org/styles/liberty';
+
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: 'https://tiles.openfreemap.org/styles/liberty',
+        style: initialStyle,
         center: initialCenter,
         zoom: initialZoom,
         attributionControl: {

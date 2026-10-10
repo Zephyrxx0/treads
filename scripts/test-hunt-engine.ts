@@ -80,35 +80,54 @@ console.assert(progressPart.targetProgress[0].current >= 1, 'Target 1 should hav
 console.assert(!progressPart.matchingEntryIds.includes('entry-old'), 'Old entry must be excluded');
 console.log('✓ Daily progress accurately filtered by date window');
 
-// Fulfill second target if exists
-if (huntA.targets.length > 1) {
-  const secondTarget = huntA.targets[1];
-  mockEntries.push({
-    id: 'entry-2',
-    walkId: 'walk-1',
-    createdAt: todayTimestamp + 1000,
-    timestamp: todayTimestamp + 1000,
-    photo: 'blob:mock',
-    lat: 51.5,
-    lng: -0.1,
-    accuracy: 10,
-    status: 'confirmed',
-    candidates: [],
-    confirmed: {
-      scientificName: 'Second Species',
-      commonName: 'Second Specimen',
-      kind: secondTarget.kind,
-      confidence: 'Likely',
-      wikipediaTitle: 'Second',
-      verified: true,
-    },
-    verified: true,
-  });
+// Fulfill remaining target requirements to verify full completion
+const remainingTarget = huntA.targets.find((t, idx) => {
+  const current = progressPart.targetProgress[idx].current;
+  return current < t.count;
+}) || huntA.targets[0];
 
-  const progressFull = evaluateHuntProgress(huntA, mockEntries);
-  console.assert(progressFull.completed === true, 'All targets should now be fulfilled');
-  console.log('✓ Challenge successfully completed upon all target criteria satisfied');
+mockEntries.push({
+  id: 'entry-2',
+  walkId: 'walk-1',
+  createdAt: todayTimestamp + 1000,
+  timestamp: todayTimestamp + 1000,
+  photo: 'blob:mock',
+  lat: 51.5,
+  lng: -0.1,
+  accuracy: 10,
+  status: 'confirmed',
+  candidates: [],
+  confirmed: {
+    scientificName: 'Second Species',
+    commonName: 'Second Specimen',
+    kind: remainingTarget.kind,
+    confidence: 'Likely',
+    wikipediaTitle: 'Second',
+    verified: true,
+  },
+  verified: true,
+});
+
+const progressFull = evaluateHuntProgress(huntA, mockEntries);
+console.assert(progressFull.completed === true, 'All targets should now be fulfilled');
+console.log('✓ Challenge successfully completed upon all target criteria satisfied');
+
+// Test 5: Verify all seasons are populated correctly
+const seasonalDates = [
+  { date: '2026-04-15', expectedSeason: 'spring' },
+  { date: '2026-07-20', expectedSeason: 'summer' },
+  { date: '2026-10-10', expectedSeason: 'autumn' },
+  { date: '2027-01-15', expectedSeason: 'winter' },
+];
+
+for (const { date, expectedSeason } of seasonalDates) {
+  const seasonalHunt = getDailyHunt(date);
+  console.assert(seasonalHunt.season === expectedSeason, `Expected ${expectedSeason} for ${date}, got ${seasonalHunt.season}`);
+  console.assert(typeof seasonalHunt.fieldTip === 'string' && seasonalHunt.fieldTip.length > 0, `Missing fieldTip for ${date}`);
+  console.assert(['Gentle', 'Moderate', 'Explorer'].includes(seasonalHunt.difficulty), `Invalid difficulty for ${date}: ${seasonalHunt.difficulty}`);
+  console.log(`✓ Verified ${expectedSeason.toUpperCase()} hunt (${date}): "${seasonalHunt.title}" [${seasonalHunt.difficulty}] - Tip: "${seasonalHunt.fieldTip.slice(0, 40)}..."`);
 }
 
 console.log('--- ALL HUNT ENGINE TESTS PASSED ---');
+
 

@@ -1,0 +1,281 @@
+/*
+ * Journal cover motion.
+ *
+ * The 25 natural covers (natural-covers.tsx) are static line drawings. This
+ * file gives each one a slow, looping life by animating the shapes that are
+ * already there, picked by position: `[data-cover='x'] > :nth-child(n)`
+ * follows the order of the shapes in that cover's <svg> (a comment above
+ * each cover below says what they are).
+ *
+ * Rules of the house:
+ *  - transform, opacity and dash offset only; the stroke stays one stroke.
+ *  - motion uses the individual `rotate` / `translate` / `scale` properties, so
+ *    it composes with any `transform` attribute a shape already carries.
+ *  - everything is behind prefers-reduced-motion: no-preference.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .cover-anim :is(path, ellipse, circle, polygon, rect, g) {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* ---------- shared keyframes (amplitudes come from custom properties) ---------- */
+  @keyframes cv-sway { 0%, 100% { rotate: calc(var(--a, 2deg) * -1); } 50% { rotate: var(--a, 2deg); } }
+  @keyframes cv-bob { 0%, 100% { translate: 0 0; } 50% { translate: var(--x, 0px) var(--y, -4px); } }
+  @keyframes cv-breathe { 0%, 100% { scale: 1; } 50% { scale: var(--s, 1.04); } }
+  @keyframes cv-twinkle { 0%, 100% { opacity: 0.25; scale: 0.7; } 50% { opacity: 1; scale: 1.3; } }
+  @keyframes cv-wave { 0%, 100% { opacity: 0.18; } 50% { opacity: 0.9; } }
+  @keyframes cv-march { to { stroke-dashoffset: -16; } }
+  @keyframes cv-spin { to { rotate: 360deg; } }
+  @keyframes cv-ripple { 0% { scale: 0.25; opacity: 0.9; } 100% { scale: 1.5; opacity: 0; } }
+  @keyframes cv-rise { 0% { translate: 0 0; opacity: 0; } 15% { opacity: 1; } 100% { translate: var(--x, 6px) var(--y, -34px); opacity: 0; } }
+  @keyframes cv-fall { 0% { translate: 0 -8px; opacity: 0; } 12% { opacity: 1; } 100% { translate: var(--x, 14px) 300px; opacity: 0.8; } }
+  @keyframes cv-drift { 0% { translate: -120px 0; opacity: 0; } 10%, 90% { opacity: 1; } 100% { translate: 260px 0; opacity: 0; } }
+  @keyframes cv-float { 0%, 100% { translate: 0 0; rotate: calc(var(--a, 3deg) * -1); } 50% { translate: var(--x, 2px) var(--y, -7px); rotate: var(--a, 3deg); } }
+  @keyframes cv-flutter { 0%, 62%, 100% { rotate: 0deg; } 68% { rotate: -3.2deg; } 74% { rotate: 2.4deg; } 80% { rotate: -1.8deg; } 88% { rotate: 0.8deg; } }
+  @keyframes cv-stream { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 0.9; } 92% { opacity: 0.9; } 100% { offset-distance: 100%; opacity: 0; } }
+  @keyframes cv-drop { 0%, 55% { translate: 0 0; opacity: 0; scale: 0.4; } 62% { opacity: 1; scale: 1; } 100% { translate: 0 120px; opacity: 0.9; scale: 1; } }
+
+  /* ---------- 1 · pebbles: 1 bed · 2-4 big pebble · 5-6 left · 7-8 back · 9-10 egg · 11-12 dots · 13 drip ring ---------- */
+  [data-cover='pebbles'] > :nth-child(1) { animation: cv-march 7s linear infinite; }
+  [data-cover='pebbles'] > :nth-child(-n + 4):nth-child(n + 2) { --s: 1.012; animation: cv-breathe 6s ease-in-out infinite; }
+  [data-cover='pebbles'] > :nth-child(5), [data-cover='pebbles'] > :nth-child(6) { --a: 2.4deg; transform-origin: 50% 100%; animation: cv-sway 5.4s ease-in-out infinite; }
+  [data-cover='pebbles'] > :nth-child(7), [data-cover='pebbles'] > :nth-child(8) { --a: -1.8deg; transform-origin: 50% 100%; animation: cv-sway 6.6s ease-in-out -2s infinite; }
+  [data-cover='pebbles'] > :nth-child(9), [data-cover='pebbles'] > :nth-child(10) { --y: -1.8px; animation: cv-bob 3.8s ease-in-out infinite; }
+  [data-cover='pebbles'] > :nth-child(11) { animation: cv-twinkle 3.2s ease-in-out infinite; }
+  [data-cover='pebbles'] > :nth-child(12) { animation: cv-twinkle 3.2s ease-in-out -1.5s infinite; }
+  [data-cover='pebbles'] > :nth-child(13) { animation: cv-ripple 4.4s ease-out infinite; }
+
+  /* ---------- 2 · nest: 1 ground · 4 hollow · 10-12 twig ends · 13-15 eggs · 16-18 egg glints ---------- */
+  [data-cover='nest'] > :nth-child(1) { animation: cv-march 8s linear infinite; }
+  [data-cover='nest'] > :nth-child(4) { --s: 1.03; animation: cv-breathe 5s ease-in-out infinite; }
+  [data-cover='nest'] > :nth-child(n + 10):nth-child(-n + 12) { --a: 3deg; animation: cv-sway 5.5s ease-in-out infinite; }
+  [data-cover='nest'] > :nth-child(11) { animation-delay: -1.8s; }
+  [data-cover='nest'] > :nth-child(12) { animation-delay: -3.4s; }
+  [data-cover='nest'] > :nth-child(13) { --a: 4deg; transform-origin: 50% 100%; animation: cv-sway 4.6s ease-in-out infinite; }
+  [data-cover='nest'] > :nth-child(14) { --a: 4deg; transform-origin: 50% 100%; animation: cv-sway 5.2s ease-in-out -1.6s infinite; }
+  [data-cover='nest'] > :nth-child(15) { --a: 3deg; transform-origin: 50% 100%; animation: cv-sway 5.9s ease-in-out -3.1s infinite; }
+  [data-cover='nest'] > :nth-child(16), [data-cover='nest'] > :nth-child(17), [data-cover='nest'] > :nth-child(18) { animation: cv-twinkle 3.4s ease-in-out infinite; }
+  [data-cover='nest'] > :nth-child(17) { animation-delay: -1.1s; }
+  [data-cover='nest'] > :nth-child(18) { animation-delay: -2.2s; }
+
+  /* ---------- 3 · acorn: 1-2 stalk · 3-12 cap, nut, scales, sheen (all hang from the stalk) ---------- */
+  [data-cover='acorn'] > :nth-child(n + 3) {
+    transform-box: view-box;
+    transform-origin: 190px 64px;
+    --a: 2.6deg;
+    animation: cv-sway 5.6s ease-in-out infinite;
+  }
+  [data-cover='acorn'] > :nth-child(1), [data-cover='acorn'] > :nth-child(2) { transform-box: view-box; transform-origin: 186px 62px; --a: 0.8deg; animation: cv-sway 5.6s ease-in-out infinite; }
+  [data-cover='acorn'] > :nth-child(9), [data-cover='acorn'] > :nth-child(10) { animation: cv-sway 5.6s ease-in-out infinite, cv-wave 5.6s ease-in-out infinite; }
+  [data-cover='acorn'] > :nth-child(12) { animation: cv-sway 5.6s ease-in-out infinite, cv-twinkle 3s ease-in-out infinite; }
+
+  /* ---------- 4 · pinecone: 1 stem · 2 apex · 3-4 tier1 · 5-6 tier2 · 7-8 tier3 · 9-10 tier4 · 11 base · 12-13 dots ---------- */
+  [data-cover='pinecone'] > :nth-child(n + 2):nth-child(-n + 11) { --x: 2px; --y: 0px; animation: cv-bob 4.8s ease-in-out infinite; }
+  [data-cover='pinecone'] > :nth-child(2) { animation-delay: 0s; }
+  [data-cover='pinecone'] > :nth-child(3), [data-cover='pinecone'] > :nth-child(4) { animation-delay: -0.5s; }
+  [data-cover='pinecone'] > :nth-child(5), [data-cover='pinecone'] > :nth-child(6) { animation-delay: -1s; }
+  [data-cover='pinecone'] > :nth-child(7), [data-cover='pinecone'] > :nth-child(8) { animation-delay: -1.5s; }
+  [data-cover='pinecone'] > :nth-child(9), [data-cover='pinecone'] > :nth-child(10) { animation-delay: -2s; }
+  [data-cover='pinecone'] > :nth-child(11) { animation-delay: -2.5s; }
+  [data-cover='pinecone'] > :nth-child(12) { animation: cv-twinkle 3s ease-in-out infinite; }
+  [data-cover='pinecone'] > :nth-child(13) { animation: cv-twinkle 3s ease-in-out -1.5s infinite; }
+
+  /* ---------- 5 · mushroom: 1 ground · 2-4 cap · 12-13 button mushroom · 14 navel dot · 15-17 spores ---------- */
+  [data-cover='mushroom'] > :nth-child(1) { animation: cv-march 8s linear infinite; }
+  [data-cover='mushroom'] > :nth-child(-n + 4):nth-child(n + 2) { transform-origin: 50% 100%; --s: 1.025; animation: cv-breathe 5s ease-in-out infinite; }
+  [data-cover='mushroom'] > :nth-child(12), [data-cover='mushroom'] > :nth-child(13) { --a: 3deg; transform-origin: 50% 100%; animation: cv-sway 4.4s ease-in-out infinite; }
+  [data-cover='mushroom'] > :nth-child(14) { animation: cv-twinkle 2.6s ease-in-out infinite; }
+  [data-cover='mushroom'] > :nth-child(15) { --x: -10px; --y: -44px; animation: cv-rise 5.2s ease-out infinite; }
+  [data-cover='mushroom'] > :nth-child(16) { --x: 12px; --y: -52px; animation: cv-rise 6s ease-out -2.4s infinite; }
+  [data-cover='mushroom'] > :nth-child(17) { --x: 3px; --y: -40px; animation: cv-rise 4.6s ease-out -3.6s infinite; }
+
+  /* ---------- 6 · fern: 1 stem · 2 coil · 3-5 right pinnae · 6-8 left pinnae · 9-11 curls · 12 crosier dot ---------- */
+  [data-cover='fern'] > * { transform-box: view-box; transform-origin: 198px 268px; --a: 1.6deg; animation: cv-sway 6.4s ease-in-out infinite; }
+  [data-cover='fern'] > :nth-child(2), [data-cover='fern'] > :nth-child(12) { animation: cv-sway 6.4s ease-in-out infinite, cv-breathe 3.6s ease-in-out infinite; --s: 1.1; }
+  [data-cover='fern'] > :nth-child(n + 3):nth-child(-n + 8) { animation: cv-sway 6.4s ease-in-out infinite, cv-bob 3.2s ease-in-out infinite; --y: -2.4px; }
+  [data-cover='fern'] > :nth-child(4), [data-cover='fern'] > :nth-child(7) { animation-delay: 0s, -0.8s; }
+  [data-cover='fern'] > :nth-child(5), [data-cover='fern'] > :nth-child(8) { animation-delay: 0s, -1.6s; }
+  [data-cover='fern'] > :nth-child(n + 9):nth-child(-n + 11) { animation: cv-sway 6.4s ease-in-out infinite, cv-twinkle 3s ease-in-out infinite; }
+  [data-cover='fern'] > :nth-child(10) { animation-delay: 0s, -1s; }
+  [data-cover='fern'] > :nth-child(11) { animation-delay: 0s, -2s; }
+
+  /* ---------- 7 · oak-leaf: 1 midrib · 2-3 lobes · 4-11 veins (pairs, base to tip) · 12 apex dot ---------- */
+  [data-cover='oak-leaf'] > * { transform-box: view-box; transform-origin: 200px 268px; --a: 2.4deg; animation: cv-sway 6s ease-in-out infinite; }
+  [data-cover='oak-leaf'] > :nth-child(n + 4):nth-child(-n + 11) { animation: cv-sway 6s ease-in-out infinite, cv-wave 3.6s ease-in-out infinite; }
+  [data-cover='oak-leaf'] > :nth-child(10), [data-cover='oak-leaf'] > :nth-child(11) { animation-delay: 0s, 0s; }
+  [data-cover='oak-leaf'] > :nth-child(8), [data-cover='oak-leaf'] > :nth-child(9) { animation-delay: 0s, -0.45s; }
+  [data-cover='oak-leaf'] > :nth-child(6), [data-cover='oak-leaf'] > :nth-child(7) { animation-delay: 0s, -0.9s; }
+  [data-cover='oak-leaf'] > :nth-child(4), [data-cover='oak-leaf'] > :nth-child(5) { animation-delay: 0s, -1.35s; }
+  [data-cover='oak-leaf'] > :nth-child(12) { animation: cv-sway 6s ease-in-out infinite, cv-twinkle 2.8s ease-in-out infinite; }
+
+  /* ---------- 8 · ripples: 1 outer dash · 2-5 rings · 6 jet · 7-8 droplet · 9-10 glints ---------- */
+  [data-cover='ripples'] > :nth-child(1) { animation: cv-march 9s linear infinite; }
+  [data-cover='ripples'] > :nth-child(n + 2):nth-child(-n + 5) { animation: cv-ripple 5.6s ease-out infinite; }
+  [data-cover='ripples'] > :nth-child(5) { animation-delay: 0s; }
+  [data-cover='ripples'] > :nth-child(4) { animation-delay: 1.4s; }
+  [data-cover='ripples'] > :nth-child(3) { animation-delay: 2.8s; }
+  [data-cover='ripples'] > :nth-child(2) { animation-delay: 4.2s; }
+  [data-cover='ripples'] > :nth-child(6) { transform-origin: 50% 100%; --s: 1.12; animation: cv-breathe 2.8s ease-in-out infinite; }
+  [data-cover='ripples'] > :nth-child(7), [data-cover='ripples'] > :nth-child(8) { --y: -7px; animation: cv-bob 2.8s ease-in-out infinite; }
+  [data-cover='ripples'] > :nth-child(9) { --x: 10px; --y: 0px; animation: cv-bob 5s ease-in-out infinite, cv-wave 5s ease-in-out infinite; }
+  [data-cover='ripples'] > :nth-child(10) { --x: -10px; --y: 0px; animation: cv-bob 5s ease-in-out -2.5s infinite, cv-wave 5s ease-in-out -2.5s infinite; }
+
+  /* ---------- 9 · shell: 1 spiral · 2-7 septa (outside in) · 8 core ---------- */
+  [data-cover='shell'] > * { transform-box: view-box; transform-origin: 208px 184px; --s: 1.025; animation: cv-breathe 6s ease-in-out infinite; }
+  [data-cover='shell'] > :nth-child(n + 2):nth-child(-n + 7) { animation: cv-breathe 6s ease-in-out infinite, cv-wave 4.8s ease-in-out infinite; }
+  [data-cover='shell'] > :nth-child(2) { animation-delay: 0s, 0s; }
+  [data-cover='shell'] > :nth-child(3) { animation-delay: 0s, -0.8s; }
+  [data-cover='shell'] > :nth-child(4) { animation-delay: 0s, -1.6s; }
+  [data-cover='shell'] > :nth-child(5) { animation-delay: 0s, -2.4s; }
+  [data-cover='shell'] > :nth-child(6) { animation-delay: 0s, -3.2s; }
+  [data-cover='shell'] > :nth-child(7) { animation-delay: 0s, -4s; }
+  [data-cover='shell'] > :nth-child(8) { animation: cv-twinkle 2.4s ease-in-out infinite; }
+
+  /* ---------- 10 · tree-rings: 1-2 bark · 3-7 rings (out to in) · 8-11 checks · 12 pith ---------- */
+  [data-cover='tree-rings'] > :nth-child(2) { animation: cv-march 10s linear infinite; }
+  [data-cover='tree-rings'] > :nth-child(n + 3):nth-child(-n + 7) { --s: 1.045; animation: cv-breathe 5s ease-in-out infinite; }
+  [data-cover='tree-rings'] > :nth-child(7) { animation-delay: 0s; }
+  [data-cover='tree-rings'] > :nth-child(6) { animation-delay: -0.4s; }
+  [data-cover='tree-rings'] > :nth-child(5) { animation-delay: -0.8s; }
+  [data-cover='tree-rings'] > :nth-child(4) { animation-delay: -1.2s; }
+  [data-cover='tree-rings'] > :nth-child(3) { animation-delay: -1.6s; }
+  [data-cover='tree-rings'] > :nth-child(n + 8):nth-child(-n + 11) { animation: cv-wave 4.6s ease-in-out infinite; }
+  [data-cover='tree-rings'] > :nth-child(9) { animation-delay: -1.1s; }
+  [data-cover='tree-rings'] > :nth-child(10) { animation-delay: -2.3s; }
+  [data-cover='tree-rings'] > :nth-child(11) { animation-delay: -3.4s; }
+  [data-cover='tree-rings'] > :nth-child(12) { animation: cv-twinkle 2.6s ease-in-out infinite; }
+
+  /* ---------- 11 · clover: 1 stem · 2-3 top · 4-5 bottom · 6-7 left · 8-9 right · 10 eye ---------- */
+  [data-cover='clover'] > :nth-child(n + 2):nth-child(-n + 9) { transform-box: view-box; transform-origin: 200px 162px; --s: 1.05; animation: cv-breathe 4.8s ease-in-out infinite, cv-sway 7s ease-in-out infinite; --a: 2.4deg; }
+  [data-cover='clover'] > :nth-child(4), [data-cover='clover'] > :nth-child(5) { animation-delay: -1.2s, -1.7s; }
+  [data-cover='clover'] > :nth-child(6), [data-cover='clover'] > :nth-child(7) { animation-delay: -2.4s, -3.5s; }
+  [data-cover='clover'] > :nth-child(8), [data-cover='clover'] > :nth-child(9) { animation-delay: -3.6s, -5.2s; }
+  [data-cover='clover'] > :nth-child(1) { transform-origin: 50% 0; --a: 1.2deg; animation: cv-sway 7s ease-in-out infinite; }
+  [data-cover='clover'] > :nth-child(10) { animation: cv-twinkle 3s ease-in-out infinite; }
+
+  /* ---------- 12 · feather: 1-2 shaft · 3-4 vanes · 5-10 barbs · 11-12 ends ---------- */
+  [data-cover='feather'] > * { transform-box: view-box; transform-origin: 112px 258px; --a: 3deg; --x: 3px; --y: -8px; animation: cv-float 7s ease-in-out infinite; }
+  [data-cover='feather'] > :nth-child(n + 5):nth-child(-n + 10) { animation: cv-float 7s ease-in-out infinite, cv-wave 3.6s ease-in-out infinite; }
+  [data-cover='feather'] > :nth-child(6) { animation-delay: 0s, -0.6s; }
+  [data-cover='feather'] > :nth-child(7) { animation-delay: 0s, -1.2s; }
+  [data-cover='feather'] > :nth-child(8) { animation-delay: 0s, -1.8s; }
+  [data-cover='feather'] > :nth-child(9) { animation-delay: 0s, -2.4s; }
+  [data-cover='feather'] > :nth-child(10) { animation-delay: 0s, -3s; }
+  [data-cover='feather'] > :nth-child(11) { animation: cv-float 7s ease-in-out infinite, cv-twinkle 3s ease-in-out infinite; }
+
+  /* ---------- 13 · honeycomb: 1-2 centre · 3 TR · 4 TL · 5 R · 6 BR · 7 BL · 8 L · 9-10 honey ---------- */
+  [data-cover='honeycomb'] > :nth-child(1), [data-cover='honeycomb'] > :nth-child(2) { --s: 1.035; animation: cv-breathe 4.8s ease-in-out infinite; }
+  [data-cover='honeycomb'] > :nth-child(n + 3):nth-child(-n + 8) { --s: 1.06; animation: cv-breathe 4.8s ease-in-out infinite; }
+  [data-cover='honeycomb'] > :nth-child(3) { animation-delay: 0s; }
+  [data-cover='honeycomb'] > :nth-child(5) { animation-delay: -0.8s; }
+  [data-cover='honeycomb'] > :nth-child(6) { animation-delay: -1.6s; }
+  [data-cover='honeycomb'] > :nth-child(7) { animation-delay: -2.4s; }
+  [data-cover='honeycomb'] > :nth-child(8) { animation-delay: -3.2s; }
+  [data-cover='honeycomb'] > :nth-child(4) { animation-delay: -4s; }
+  [data-cover='honeycomb'] > :nth-child(9) { transform-origin: 50% 0; --s: 1.1; animation: cv-breathe 3.2s ease-in-out infinite; }
+  [data-cover='honeycomb'] > :nth-child(10) { animation: cv-twinkle 3.2s ease-in-out infinite; }
+
+  /* ---------- 14 · mountain: 6-7 sun contours · 10 peak dot · 11 passing cloud ---------- */
+  [data-cover='mountain'] > :nth-child(6), [data-cover='mountain'] > :nth-child(7) { animation: cv-wave 4.4s ease-in-out infinite; }
+  [data-cover='mountain'] > :nth-child(7) { animation-delay: -1.5s; }
+  [data-cover='mountain'] > :nth-child(9) { animation: cv-wave 6s ease-in-out -2s infinite; }
+  [data-cover='mountain'] > :nth-child(10) { animation: cv-twinkle 2.8s ease-in-out infinite; }
+  [data-cover='mountain'] > :nth-child(11) { animation: cv-drift 26s linear infinite; }
+
+  /* ---------- 15 · seedling: 2 soil ring · 3 stem · 4-5 left leaf · 6-7 right leaf · 8-9 bud ---------- */
+  [data-cover='seedling'] > :nth-child(2) { animation: cv-march 8s linear infinite; }
+  [data-cover='seedling'] > :nth-child(n + 3) { transform-box: view-box; transform-origin: 200px 242px; --a: 1.6deg; animation: cv-sway 5.4s ease-in-out infinite; }
+  [data-cover='seedling'] > :nth-child(4), [data-cover='seedling'] > :nth-child(5) { transform-origin: 198px 142px; --a: 3.2deg; --s: 1.05; animation: cv-sway 5.4s ease-in-out infinite, cv-breathe 4s ease-in-out infinite; }
+  [data-cover='seedling'] > :nth-child(6), [data-cover='seedling'] > :nth-child(7) { transform-origin: 198px 142px; --a: 3.2deg; --s: 1.05; animation: cv-sway 5.4s ease-in-out -2.7s infinite, cv-breathe 4s ease-in-out -2s infinite; }
+  [data-cover='seedling'] > :nth-child(9) { animation: cv-sway 5.4s ease-in-out infinite, cv-twinkle 2.6s ease-in-out infinite; }
+
+  /* ---------- 16 · crystals: 1 plateau · 8-11 striations · 12 apex · 13-15 glints ---------- */
+  [data-cover='crystals'] > :nth-child(1) { animation: cv-march 9s linear infinite; }
+  [data-cover='crystals'] > :nth-child(n + 8):nth-child(-n + 11) { animation: cv-wave 3.2s ease-in-out infinite; }
+  [data-cover='crystals'] > :nth-child(11) { animation-delay: 0s; }
+  [data-cover='crystals'] > :nth-child(10) { animation-delay: -0.4s; }
+  [data-cover='crystals'] > :nth-child(9) { animation-delay: -0.8s; }
+  [data-cover='crystals'] > :nth-child(8) { animation-delay: -1.2s; }
+  [data-cover='crystals'] > :nth-child(12) { animation: cv-twinkle 2.4s ease-in-out infinite; }
+  [data-cover='crystals'] > :nth-child(13) { animation: cv-twinkle 3.4s ease-in-out infinite; }
+  [data-cover='crystals'] > :nth-child(14) { animation: cv-twinkle 3.4s ease-in-out -1.1s infinite; }
+  [data-cover='crystals'] > :nth-child(15) { animation: cv-twinkle 3.4s ease-in-out -2.2s infinite; }
+
+  /* ---------- 17 · dewdrop: 1-3 blade · 4-6 drop · 7-8 tip bead · 9 falling bead ---------- */
+  [data-cover='dewdrop'] > :nth-child(-n + 8) { transform-box: view-box; transform-origin: 94px 264px; --a: 1.1deg; animation: cv-sway 6s ease-in-out infinite; }
+  [data-cover='dewdrop'] > :nth-child(n + 4):nth-child(-n + 6) { transform-origin: 232px 94px; --s: 1.1; animation: cv-sway 6s ease-in-out infinite, cv-breathe 3.6s ease-in-out infinite; }
+  [data-cover='dewdrop'] > :nth-child(7), [data-cover='dewdrop'] > :nth-child(8) { animation: cv-sway 6s ease-in-out infinite, cv-twinkle 3.2s ease-in-out infinite; }
+  [data-cover='dewdrop'] > :nth-child(9) { transform-box: fill-box; transform-origin: center; animation: cv-drop 5.2s cubic-bezier(0.5, 0, 0.9, 0.4) infinite; }
+
+  /* ---------- 18 · twig: 1-11 twig & buds · 12-16 snow ---------- */
+  [data-cover='twig'] > :nth-child(-n + 11) { transform-box: view-box; transform-origin: 116px 254px; --a: 0.9deg; animation: cv-sway 7s ease-in-out infinite; }
+  [data-cover='twig'] > :nth-child(4), [data-cover='twig'] > :nth-child(8), [data-cover='twig'] > :nth-child(10) { animation: cv-sway 7s ease-in-out infinite, cv-breathe 4.2s ease-in-out infinite; --s: 1.08; }
+  [data-cover='twig'] > :nth-child(8) { animation-delay: 0s, -1.4s; }
+  [data-cover='twig'] > :nth-child(10) { animation-delay: 0s, -2.8s; }
+  [data-cover='twig'] > :nth-child(12) { --x: 16px; animation: cv-fall 8.5s linear infinite; }
+  [data-cover='twig'] > :nth-child(13) { --x: -14px; animation: cv-fall 10.5s linear -3s infinite; }
+  [data-cover='twig'] > :nth-child(14) { --x: 18px; animation: cv-fall 7.5s linear -5.5s infinite; }
+  [data-cover='twig'] > :nth-child(15) { --x: -10px; animation: cv-fall 9.5s linear -1.5s infinite; }
+  [data-cover='twig'] > :nth-child(16) { --x: 12px; animation: cv-fall 11s linear -7s infinite; }
+
+  /* ---------- 19 · blossom: 1 stem · 2-6 petals · 7 anther crown · 8-9 centre ---------- */
+  [data-cover='blossom'] > :nth-child(n + 2):nth-child(-n + 6) { transform-box: view-box; transform-origin: 200px 162px; --s: 1.05; --a: 3deg; animation: cv-breathe 4.8s ease-in-out infinite, cv-sway 9s ease-in-out infinite; }
+  [data-cover='blossom'] > :nth-child(7) { animation: cv-spin 22s linear infinite; }
+  [data-cover='blossom'] > :nth-child(8), [data-cover='blossom'] > :nth-child(9) { animation: cv-twinkle 3s ease-in-out infinite; }
+  [data-cover='blossom'] > :nth-child(9) { animation-delay: -1.5s; }
+  [data-cover='blossom'] > :nth-child(1) { transform-origin: 50% 0; --a: 1deg; animation: cv-sway 9s ease-in-out infinite; }
+
+  /* ---------- 20 · pine-needles: 1-3 sheath · 4-5 left needle · 6-7 right needle · 8-9 droplets ---------- */
+  [data-cover='pine-needles'] > :nth-child(n + 4):nth-child(-n + 9) { transform-box: view-box; transform-origin: 200px 244px; --a: 2.2deg; animation: cv-sway 5s ease-in-out infinite; }
+  [data-cover='pine-needles'] > :nth-child(n + 6):nth-child(-n + 7), [data-cover='pine-needles'] > :nth-child(9) { animation-direction: reverse; }
+  [data-cover='pine-needles'] > :nth-child(8), [data-cover='pine-needles'] > :nth-child(9) { animation: cv-sway 5s ease-in-out infinite, cv-breathe 3.4s ease-in-out infinite; --s: 1.45; }
+  [data-cover='pine-needles'] > :nth-child(9) { animation-direction: reverse, normal; animation-delay: 0s, -1.7s; }
+
+  /* ---------- 21 · lichen: 1 lobes · 2 growth ring · 3-4, 5-6, 7-8 fruiting disks ---------- */
+  [data-cover='lichen'] > :nth-child(-n + 2) { transform-box: view-box; transform-origin: 200px 150px; --s: 1.03; animation: cv-breathe 7s ease-in-out infinite; }
+  [data-cover='lichen'] > :nth-child(2) { animation-delay: -1.2s; }
+  [data-cover='lichen'] > :nth-child(3), [data-cover='lichen'] > :nth-child(4) { --s: 1.12; animation: cv-breathe 4.2s ease-in-out infinite; }
+  [data-cover='lichen'] > :nth-child(5), [data-cover='lichen'] > :nth-child(6) { --s: 1.12; animation: cv-breathe 4.2s ease-in-out -1.4s infinite; }
+  [data-cover='lichen'] > :nth-child(7), [data-cover='lichen'] > :nth-child(8) { --s: 1.12; animation: cv-breathe 4.2s ease-in-out -2.8s infinite; }
+  [data-cover='lichen'] > :nth-child(4), [data-cover='lichen'] > :nth-child(6), [data-cover='lichen'] > :nth-child(8) { animation-name: cv-twinkle; }
+
+  /* ---------- 22 · dragonfly-wing: 1-8 whole wing · 3-6 cross-veins · 7-8 pterostigma ---------- */
+  [data-cover='dragonfly-wing'] > * { transform-box: view-box; transform-origin: 96px 224px; --y: -6px; animation: cv-flutter 5.5s ease-in-out infinite, cv-bob 5.5s ease-in-out infinite; }
+  [data-cover='dragonfly-wing'] > :nth-child(n + 3):nth-child(-n + 6) { animation: cv-flutter 5.5s ease-in-out infinite, cv-bob 5.5s ease-in-out infinite, cv-wave 3s ease-in-out infinite; }
+  [data-cover='dragonfly-wing'] > :nth-child(4) { animation-delay: 0s, 0s, -0.7s; }
+  [data-cover='dragonfly-wing'] > :nth-child(5) { animation-delay: 0s, 0s, -1.4s; }
+  [data-cover='dragonfly-wing'] > :nth-child(6) { animation-delay: 0s, 0s, -2.1s; }
+  [data-cover='dragonfly-wing'] > :nth-child(8) { animation: cv-flutter 5.5s ease-in-out infinite, cv-bob 5.5s ease-in-out infinite, cv-twinkle 2.6s ease-in-out infinite; }
+
+  /* ---------- 23 · sunburst-seed: 1-7 rays · 8-12 ray dots · 13-17 seed ---------- */
+  [data-cover='sunburst-seed'] > * { transform-box: view-box; transform-origin: 200px 200px; --a: 3.4deg; --y: -7px; animation: cv-float 6.5s ease-in-out infinite; }
+  [data-cover='sunburst-seed'] > :nth-child(-n + 12) { transform-origin: 200px 128px; --s: 1.07; animation: cv-float 6.5s ease-in-out infinite, cv-breathe 3.8s ease-in-out infinite; }
+  [data-cover='sunburst-seed'] > :nth-child(n + 8):nth-child(-n + 12) { animation: cv-float 6.5s ease-in-out infinite, cv-breathe 3.8s ease-in-out infinite, cv-wave 3s ease-in-out infinite; }
+  [data-cover='sunburst-seed'] > :nth-child(9) { animation-delay: 0s, 0s, -0.6s; }
+  [data-cover='sunburst-seed'] > :nth-child(10) { animation-delay: 0s, 0s, -1.2s; }
+  [data-cover='sunburst-seed'] > :nth-child(11) { animation-delay: 0s, 0s, -1.8s; }
+  [data-cover='sunburst-seed'] > :nth-child(12) { animation-delay: 0s, 0s, -2.4s; }
+
+  /* ---------- 24 · ginkgo: 1 petiole · 2 blade · 3-6 veins · 7 sinus dot ---------- */
+  [data-cover='ginkgo'] > * { transform-box: view-box; transform-origin: 200px 272px; --a: 3.2deg; animation: cv-sway 5.2s ease-in-out infinite; }
+  [data-cover='ginkgo'] > :nth-child(2) { animation: cv-sway 5.2s ease-in-out infinite, cv-breathe 5.2s ease-in-out infinite; --s: 1.03; }
+  [data-cover='ginkgo'] > :nth-child(n + 3):nth-child(-n + 6) { animation: cv-sway 5.2s ease-in-out infinite, cv-wave 3.4s ease-in-out infinite; }
+  [data-cover='ginkgo'] > :nth-child(4) { animation-delay: 0s, -0.85s; }
+  [data-cover='ginkgo'] > :nth-child(5) { animation-delay: 0s, -1.7s; }
+  [data-cover='ginkgo'] > :nth-child(6) { animation-delay: 0s, -2.55s; }
+  [data-cover='ginkgo'] > :nth-child(7) { animation: cv-sway 5.2s ease-in-out infinite, cv-twinkle 2.8s ease-in-out infinite; }
+
+  /* ---------- 25 · river-brook: 1 boundary · 4 thalweg · 5-6 terraces · 7 dot · 8-9 leaves on the current ---------- */
+  [data-cover='river-brook'] > :nth-child(1) { animation: cv-march 9s linear infinite; }
+  [data-cover='river-brook'] > :nth-child(4) { animation: cv-march 1.6s linear infinite; }
+  [data-cover='river-brook'] > :nth-child(5), [data-cover='river-brook'] > :nth-child(6) { animation: cv-wave 5s ease-in-out infinite; }
+  [data-cover='river-brook'] > :nth-child(6) { animation-delay: -2.5s; }
+  [data-cover='river-brook'] > :nth-child(7) { animation: cv-twinkle 2.8s ease-in-out infinite; }
+  [data-cover='river-brook'] > :nth-child(8), [data-cover='river-brook'] > :nth-child(9) {
+    offset-path: path('M 148 68 C 204 108 170 162 224 212 C 254 242 244 262 244 272');
+    offset-rotate: 0deg;
+    animation: cv-stream 9s linear infinite;
+  }
+  [data-cover='river-brook'] > :nth-child(9) { animation-delay: -4.5s; }
+}

@@ -1,5 +1,11 @@
 import Dexie, { type Table } from 'dexie';
 
+export interface EcologicalConnection {
+  speciesA: string;
+  speciesB: string;
+  relationship: string;
+}
+
 export interface Walk {
   id: string; // crypto.randomUUID()
   startedAt: number;
@@ -14,12 +20,16 @@ export interface Walk {
   }>;
   distance: number; // in meters
   title?: string;
+  coverImage?: Blob | string | null;
+  coverId?: string | null;
+  dispatch?: string | null;
+  connections?: EcologicalConnection[] | null;
 }
 
 export interface Candidate {
   scientificName: string;
   commonName: string;
-  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'other';
+  kind: 'tree' | 'flower' | 'plant' | 'bird' | 'insect' | 'fungus' | 'animal' | 'other';
   confidence: 'Likely' | 'Possible' | 'Unsure';
   wikipediaTitle: string;
   verified?: boolean;
@@ -35,13 +45,17 @@ export interface Entry {
   lat: number;
   lng: number;
   accuracy: number;
-  status: 'saved' | 'identifying' | 'identified' | 'confirmed' | 'unidentified' | 'failed';
+  /** `scene`: a photo kept for the log as it is (a view, a moment), never meant to be identified */
+  status: 'saved' | 'identifying' | 'identified' | 'confirmed' | 'unidentified' | 'failed' | 'scene';
+  /** Optional one-line caption, used by scene photos */
+  caption?: string;
   candidates: Candidate[];
   confirmed?: Candidate | null;
   verified: boolean;
   facts?: {
     summary: string;
     facts: Array<{ sentenceNumber: number; text: string }>;
+    lookClosely?: string;
     sourceUrl: string;
   } | null;
 }
@@ -54,6 +68,8 @@ export interface Note {
   audio?: Blob | null;
   duration?: number;
   transcript: string;
+  /** Per-word timings from speech-to-text, when available */
+  words?: Array<{ text: string; start: number; end: number; type?: 'word' | 'spacing' | 'audio_event' }>;
   language?: string;
   lat?: number;
   lng?: number;
@@ -103,7 +119,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
   consentVersion: null,
   consentTimestamp: null,
   storagePersisted: false,
-  soundEnabled: false,
+  soundEnabled: true,
   hapticsEnabled: true,
   theme: 'system',
 };

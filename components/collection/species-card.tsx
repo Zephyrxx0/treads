@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Check, TreePine, Flower2, Sprout, Bird, Bug, Sparkles, Eye } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Check, TreePine, Flower2, Sprout, Bird, Bug, PawPrint, Sparkles } from 'lucide-react';
 import type { Entry } from '@/lib/db';
 import { cn } from '@/lib/utils';
 
@@ -31,6 +29,8 @@ function getKindIcon(kind: string) {
       return Sprout;
     case 'bird':
       return Bird;
+    case 'animal':
+      return PawPrint;
     case 'insect':
       return Bug;
     default:
@@ -60,91 +60,79 @@ export function SpeciesCard({ species, className }: SpeciesCardProps) {
     };
   }, [canonicalEntry.photo, canonicalEntry.thumbnail]);
 
-  const commonName = confirmed?.commonName || 'Unknown Organism';
+  const commonName = confirmed?.commonName || 'Unknown organism';
   const scientificName = confirmed?.scientificName || 'Taxon unassigned';
   const kind = confirmed?.kind || 'other';
   const isVerified = canonicalEntry.verified || confirmed?.verified;
   const KindIcon = getKindIcon(kind);
 
   return (
-    <Link href={`/entry/${canonicalEntry.id}`} className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl">
-      <Card
-        className={cn(
-          'overflow-hidden border border-border bg-card hover:border-[#F35C2B]/40 hover:shadow-md transition-all duration-200 group-hover:-translate-y-0.5',
-          className
+    <Link
+      href={`/entry/${canonicalEntry.id}`}
+      className={cn(
+        'group flex flex-col rounded-[1.25rem] border border-border bg-card p-3 sm:p-3.5 shadow-none transition-all duration-300 hover:border-primary/50 hover:shadow-md group-hover:-translate-y-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        className
+      )}
+    >
+      {/* Square cutout for image */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-border/50 bg-muted/30">
+        {imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={imageUrl}
+            alt={commonName}
+            className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+            <KindIcon className="h-10 w-10 opacity-30" strokeWidth={1.25} />
+          </div>
         )}
-      >
-        {/* Photo Container */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted/40">
-          {imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={imageUrl}
-              alt={commonName}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-              <KindIcon className="h-10 w-10 opacity-40" />
-            </div>
-          )}
 
-          {/* Top Badges Floating Overlay */}
-          <div className="absolute top-2.5 inset-x-2.5 flex items-center justify-between gap-1 pointer-events-none">
-            <Badge
-              variant="outline"
-              className="bg-background/85 backdrop-blur-md border-border/80 text-[11px] font-sans font-medium capitalize gap-1 shadow-sm"
-            >
-              <KindIcon className="w-3 h-3 text-[#F35C2B]" />
-              <span>{kind}</span>
-            </Badge>
+        {/* Kind badge on top left */}
+        <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-background/85 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider backdrop-blur-sm border border-border/40 shadow-xs">
+          <KindIcon className="h-3 w-3 text-primary" strokeWidth={1.75} />
+          {kind}
+        </span>
 
-            {/* Encounter Counter Badge */}
-            {encounters > 1 && (
-              <Badge
-                variant="default"
-                className="bg-[#F35C2B] text-white font-mono text-[11px] font-semibold shadow-sm"
+        {/* Encounters badge on bottom right */}
+        {encounters > 1 && (
+          <span className="absolute bottom-2 right-2 rounded-full bg-primary px-2 py-0.5 font-mono text-[10px] font-semibold text-primary-foreground shadow-xs">
+            &times;{encounters}
+          </span>
+        )}
+      </div>
+
+      {/* Under image: all other information */}
+      <div className="pt-3 flex-1 flex flex-col justify-between">
+        <div>
+          <div className="flex items-start justify-between gap-1.5">
+            <h3 className="line-clamp-2 font-serif text-lg leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
+              {commonName}
+            </h3>
+            {isVerified && (
+              <span
+                title="Verified identification"
+                className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
               >
-                Seen {encounters}x
-              </Badge>
+                <Check className="h-2.5 w-2.5" strokeWidth={3} aria-label="Verified" />
+              </span>
             )}
           </div>
+          <p className="mt-0.5 truncate text-xs italic text-muted-foreground">{scientificName}</p>
         </div>
 
-        {/* Card Body */}
-        <CardContent className="p-4 space-y-1.5">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0 flex-1">
-              <h3 className="font-sans font-bold text-base text-foreground leading-snug line-clamp-2 group-hover:text-[#F35C2B] transition-colors">
-                {commonName}
-              </h3>
-              <p className="font-serif italic text-xs text-muted-foreground truncate">
-                {scientificName}
-              </p>
-            </div>
-
-            {isVerified && (
-              <Badge
-                variant="success"
-                className="shrink-0 text-[10px] px-1.5 py-0.5 gap-0.5"
-                title="Verified biological taxon via Wikipedia"
-              >
-                <Check className="w-3 h-3 stroke-[3]" />
-                <span className="hidden sm:inline">Verified</span>
-              </Badge>
-            )}
-          </div>
-
-          <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
-            <span>First seen {new Date(species.dates[0]).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-            <span className="flex items-center gap-1 group-hover:text-foreground">
-              <Eye className="w-3 h-3" />
-              <span>Details</span>
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+        <div className="mt-3 pt-2 border-t border-border/40 flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+          <span>First found</span>
+          <span>
+            {new Date(species.dates[0]).toLocaleDateString(undefined, {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }
-

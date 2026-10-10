@@ -154,7 +154,7 @@ export function FactAudioPlayer({
 
   return (
     <div
-      className={`flex items-center gap-2 p-1.5 px-2.5 rounded-xl bg-muted/50 border border-border/60 ${className}`}
+      className={`flex flex-wrap items-center gap-x-2 gap-y-1.5 p-1.5 px-2.5 rounded-xl bg-muted/50 border border-border/60 ${className}`}
     >
       <Button
         type="button"
@@ -212,4 +212,3 @@ export function FactAudioPlayer({
     </div>
   );
 }
-

@@ -265,7 +265,7 @@ export function SpikeAiRunner() {
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <p className="font-serif italic font-medium text-sm text-foreground">
+                          <p className="font-sans italic font-medium text-sm text-foreground">
                             {cand.scientificName}
                           </p>
                           <p className="text-xs text-muted-foreground">

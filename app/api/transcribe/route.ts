@@ -69,6 +69,15 @@ export async function POST(req: NextRequest) {
           {
             transcript: data.text || '',
             language: data.language_code || languageHint || 'en',
+            // Per-word timings (Scribe), used by the transcript viewer
+            words: Array.isArray(data.words)
+              ? data.words.map((w: any) => ({
+                  text: String(w.text ?? ''),
+                  start: Number(w.start) || 0,
+                  end: Number(w.end) || 0,
+                  type: w.type,
+                }))
+              : [],
             fallback: false,
           },
           { status: 200, headers: rateLimit.headers }

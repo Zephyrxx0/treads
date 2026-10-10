@@ -40,16 +40,16 @@ export function DailyHuntCelebrationDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md p-6 overflow-hidden">
         <DialogHeader className="text-center sm:text-center items-center space-y-2">
-          <Badge variant="outline" className="border-amber-500/40 text-amber-600 dark:text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="border-amber-500/40 text-amber-600 dark:text-amber-400 bg-amber-500/10 capitalize">
             <Sparkles className="w-3 h-3 mr-1" />
-            Field Challenge Complete
+            {hunt.season ? `${hunt.season} Field Challenge Complete` : 'Field Challenge Complete'}
           </Badge>
 
           <DialogTitle className="text-2xl font-bold font-sans tracking-tight text-foreground">
             {hunt.title}
           </DialogTitle>
 
-          <DialogDescription className="font-serif text-sm text-muted-foreground max-w-xs mx-auto">
+          <DialogDescription className="font-sans text-sm text-muted-foreground max-w-xs mx-auto">
             You successfully fulfilled today&apos;s field objectives on {hunt.date}.
           </DialogDescription>
         </DialogHeader>
@@ -66,17 +66,17 @@ export function DailyHuntCelebrationDialog({
                 damping: 20,
                 mass: 0.8,
               }}
-              className="relative flex flex-col items-center justify-center w-36 h-36 rounded-full border-4 border-dashed border-[#F35C2B] bg-[#F35C2B]/10 p-4 shadow-lg shadow-[#F35C2B]/15"
+              className="relative flex flex-col items-center justify-center w-36 h-36 rounded-full border-4 border-dashed border-primary bg-primary/10 p-4 shadow-lg shadow-primary/15"
             >
-              <Award className="w-10 h-10 text-[#F35C2B] mb-1" />
-              <span className="text-[11px] font-sans font-bold tracking-widest uppercase text-[#F35C2B]">
+              <Award className="w-10 h-10 text-primary mb-1" />
+              <span className="text-[11px] font-sans font-bold tracking-widest uppercase text-primary">
                 VERIFIED
               </span>
               <span className="text-[9px] font-mono font-medium text-muted-foreground mt-0.5">
                 {hunt.date}
               </span>
-              <div className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-[#F35C2B] text-white text-[10px] font-semibold tracking-wide shadow-sm">
-                HONOR BADGE
+              <div className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold tracking-wide shadow-sm uppercase">
+                {hunt.season ? `${hunt.season} Naturalist` : 'HONOR BADGE'}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -112,7 +112,7 @@ export function DailyHuntCelebrationDialog({
         <DialogFooter className="mt-4 sm:justify-center">
           <DialogClose asChild>
             <Button
-              className="w-full bg-[#F35C2B] hover:bg-[#F35C2B]/90 text-white font-medium shadow-sm"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
             >
               Claim Daily Hunt Badge
             </Button>
@@ -122,4 +122,3 @@ export function DailyHuntCelebrationDialog({
     </Dialog>
   );
 }
-

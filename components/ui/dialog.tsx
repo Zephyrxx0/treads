@@ -67,7 +67,7 @@ export const DialogOverlay = React.forwardRef<
   <BaseDialog.Backdrop
     ref={ref}
     className={cn(
-      'fixed inset-0 z-50 bg-black/50 backdrop-blur-xs transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0',
+      'fixed inset-0 z-[70] bg-black/60 backdrop-blur-xs transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0',
       className
     )}
     {...props}
@@ -87,7 +87,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       <BaseDialog.Popup
         ref={ref}
         className={cn(
-          'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-card p-6 text-card-foreground shadow-lg duration-200 sm:rounded-[var(--radius)] transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
+          'fixed left-[50%] top-[50%] z-[70] grid w-[calc(100%-2rem)] max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-card p-6 text-card-foreground shadow-xl duration-200 rounded-[var(--radius)] transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
           className
         )}
         {...props}

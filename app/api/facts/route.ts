@@ -6,6 +6,7 @@ import {
   containsSafetyViolations,
   getFallbackFact,
   sanitizeFactText,
+  isGarbageOrDegenerate,
   FactItem,
 } from '@/lib/facts-safety';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
@@ -15,6 +16,8 @@ import { z } from 'zod';
 const FactsSchema = z.object({
   summary: z
     .string()
+    .min(10)
+    .max(350)
     .describe('A crisp, educational 2-3 sentence overview of this organism (max 40 words).'),
   facts: z
     .array(
@@ -27,18 +30,28 @@ const FactsSchema = z.object({
           ),
         text: z
           .string()
+          .min(5)
+          .max(220)
           .describe(
             'An engaging biological or ecological fact (max 20 words). Strictly avoid any claims about edibility, recipes, taste, foraging, medicinal remedies, or toxicity.'
           ),
       })
     )
     .describe('Up to 3 distinct biological facts citing source sentence numbers.'),
+  lookClosely: z
+    .string()
+    .max(200)
+    .optional()
+    .describe(
+      'A 1-sentence tactile, sensory observation prompt directing the walker to look closely at a physical feature of the organism right in front of them (e.g., leaf veins, underside texture, bark ridges, pollen sacs, wing patterns).'
+    ),
 });
 
 export interface FactsResponse {
   success: boolean;
   summary: string;
   facts: FactItem[];
+  lookClosely?: string;
   sourceUrl: string;
   sentences: Array<{ index: number; text: string }>;
   cached?: boolean;
@@ -117,6 +130,7 @@ export async function POST(req: NextRequest) {
       warning: 'GOOGLE_GENERATIVE_AI_API_KEY not configured. Returning Wikipedia extract fallback.',
       summary: sanitizeFactText(wikiData.sentences[0].text),
       facts: validateCitations(fallbackFacts, wikiData.sentences.length),
+      lookClosely: 'Examine the fine vein structure and subtle variations in texture along the margins.',
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
     };
@@ -129,7 +143,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 3. Grounded Synthesis via Gemma/Gemini
-  const modelId = process.env.FACTS_MODEL_ID || 'gemini-2.0-flash';
+  const modelId = process.env.FACTS_MODEL_ID || 'gemma-4-26b-a4b-it';
 
   try {
     const google = createGoogleGenerativeAI({ apiKey });
@@ -148,32 +162,55 @@ INSTRUCTIONS:
 1. Write a short summary (max 40 words) describing the organism.
 2. Select up to 3 interesting biological facts (max 20 words each).
 3. For each fact, cite the exact sentence index where the information was found.
-4. STRICT NEGATIVE CONSTRAINT: Do NOT include any claims about edibility, foraging, culinary recipes, taste, medicinal remedies, cures, or human toxicity. If a sentence mentions these, ignore it completely.`;
+4. "Look Closely" sensory prompt: Write 1 direct, engaging sentence instructing the walker to physically examine a specific tactile or visual detail right in front of them (e.g. leaf veins, bark grooves, petal margins, pollen sacs, wing borders).
+5. STRICT NEGATIVE CONSTRAINT: Do NOT include any claims about edibility, foraging, culinary recipes, taste, medicinal remedies, cures, or human toxicity. If a sentence mentions these, ignore it completely.`;
 
     const { object } = await generateObject({
       model,
       schema: FactsSchema,
       prompt,
+      temperature: 0.2,
     });
 
     // 4. Multi-layer safety scrubbing and citation validation
     let validFacts = validateCitations(object.facts, wikiData.sentences.length);
 
-    // If all facts were dropped or none generated, use verified Sentence #1 fallback (FACT-04)
+    // If facts were dropped due to degeneration or violation, supplement from verified Wikipedia sentences
+    if (validFacts.length < 2 && wikiData.sentences.length > 0) {
+      const usedIndices = new Set(validFacts.map((f) => f.sentenceNumber));
+      for (const s of wikiData.sentences) {
+        if (validFacts.length >= 3) break;
+        if (!usedIndices.has(s.index)) {
+          const text = sanitizeFactText(s.text);
+          if (!containsSafetyViolations(text) && !isGarbageOrDegenerate(text)) {
+            validFacts.push({ sentenceNumber: s.index, text });
+            usedIndices.add(s.index);
+          }
+        }
+      }
+    }
+
     if (validFacts.length === 0) {
       validFacts = getFallbackFact(wikiData.sentences);
     }
 
     // Clean and verify summary
     let summary = sanitizeFactText(object.summary);
-    if (containsSafetyViolations(summary) || summary.length < 10) {
+    if (containsSafetyViolations(summary) || isGarbageOrDegenerate(summary) || summary.length < 10) {
       summary = sanitizeFactText(wikiData.sentences[0].text);
+    }
+
+    // Clean and verify lookClosely prompt
+    let lookClosely = object.lookClosely ? sanitizeFactText(object.lookClosely) : undefined;
+    if (!lookClosely || containsSafetyViolations(lookClosely) || isGarbageOrDegenerate(lookClosely)) {
+      lookClosely = 'Examine the fine surface patterns and observe how light and shadow fall across its form.';
     }
 
     const responsePayload: FactsResponse = {
       success: true,
       summary,
       facts: validFacts,
+      lookClosely,
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
       cached: false,
@@ -192,6 +229,7 @@ INSTRUCTIONS:
       success: true,
       summary: sanitizeFactText(wikiData.sentences[0].text),
       facts: getFallbackFact(wikiData.sentences),
+      lookClosely: 'Examine the fine surface details and textures right in front of you.',
       sourceUrl: wikiData.sourceUrl,
       sentences: wikiData.sentences,
       warning: 'AI generation error. Reverted to verified Wikipedia extract.',

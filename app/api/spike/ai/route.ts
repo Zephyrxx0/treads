@@ -80,8 +80,8 @@ async function handleAiSpike(req: NextRequest) {
 
   const hasImage = Boolean(body.image);
   const modelId = body.model || (hasImage
-    ? process.env.IDENTIFY_MODEL_ID || 'gemini-2.0-flash'
-    : process.env.FACTS_MODEL_ID || 'gemma-2-9b-it');
+    ? process.env.IDENTIFY_MODEL_ID || 'gemma-4-26b-a4b-it'
+    : process.env.FACTS_MODEL_ID || 'gemma-4-26b-a4b-it');
 
   const startTime = Date.now();
 
@@ -134,10 +134,14 @@ async function handleAiSpike(req: NextRequest) {
     const latencyMs = Date.now() - startTime;
     console.error('[AI Spike Error]', error);
 
+    const safeError = typeof error?.message === 'string'
+      ? error.message.replace(/key=[^&\s]+/gi, 'key=[REDACTED]').replace(/AIza[0-9A-Za-z-_]{35}/g, '[REDACTED]')
+      : 'Google AI Studio request failed';
+
     return NextResponse.json(
       {
         success: false,
-        error: error?.message || 'Google AI Studio request failed',
+        error: safeError,
         mockFallback: MOCK_RESPONSE,
         latencyMs,
       },

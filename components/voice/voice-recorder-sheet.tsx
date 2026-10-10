@@ -1,20 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import {
-  Mic,
-  MicOff,
-  Trash2,
-  Play,
-  Pause,
-  AlertCircle,
-  Loader2,
-  Check,
-} from 'lucide-react';
+import { Mic, MicOff, Trash2, Play, Pause, AlertCircle, Loader2, Check } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { VoiceWaveform } from '@/components/voice/voice-waveform';
+import { LiveWaveform } from '@/components/ui/live-waveform';
+import { MicSelector } from '@/components/ui/mic-selector';
+import type { TimedWord } from '@/lib/transcript-alignment';
 import {
   createAudioContext,
   setupAudioAnalyser,
@@ -35,12 +28,7 @@ export interface VoiceRecorderSheetProps {
   onNoteSaved?: (noteId: string) => void;
 }
 
-type RecorderState =
-  | 'idle'
-  | 'recording'
-  | 'transcribing'
-  | 'review'
-  | 'permission_blocked';
+type RecorderState = 'idle' | 'recording' | 'transcribing' | 'review' | 'permission_blocked';
 
 const MAX_DURATION_SEC = 60;
 
@@ -57,6 +45,8 @@ export function VoiceRecorderSheet({
   const [secondsElapsed, setSecondsElapsed] = useState(0);
   const [isHandsFree, setIsHandsFree] = useState(false);
   const [isHolding, setIsHolding] = useState(false);
+  const [deviceId, setDeviceId] = useState<string>('');
+  const [words, setWords] = useState<TimedWord[]>([]);
 
   // Audio recording refs & state
   const streamRef = useRef<MediaStream | null>(null);
@@ -121,6 +111,7 @@ export function VoiceRecorderSheet({
       }
       setRecordedAudioBlob(null);
       setTranscript('');
+      setWords([]);
     }
   }, [open, cleanupRecording, audioUrl]);
 
@@ -163,17 +154,14 @@ export function VoiceRecorderSheet({
             const resultText =
               data.transcript || liveTranscriptRef.current || 'Field voice observation.';
             setTranscript(resultText);
+            setWords(Array.isArray(data.words) ? data.words : []);
             setDetectedLanguage(data.language === 'en' ? 'English' : data.language || 'English');
           } else {
-            setTranscript(
-              liveTranscriptRef.current || 'Recorded outdoor field observation.'
-            );
+            setTranscript(liveTranscriptRef.current || 'Recorded outdoor field observation.');
           }
         } catch (err) {
           console.warn('Transcription error, using local fallback:', err);
-          setTranscript(
-            liveTranscriptRef.current || 'Recorded outdoor field observation.'
-          );
+          setTranscript(liveTranscriptRef.current || 'Recorded outdoor field observation.');
         } finally {
           cleanupRecording();
           setRecorderState('review');
@@ -188,60 +176,65 @@ export function VoiceRecorderSheet({
   }, [recorderState, cleanupRecording]);
 
   // Handle Start Recording
-  const startRecording = useCallback(async (handsFreeMode: boolean) => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-
-      const audioCtx = createAudioContext();
-      const analyserSetup = setupAudioAnalyser(stream, audioCtx);
-      analyserSetupRef.current = analyserSetup;
-
-      const mediaRecorder = startMediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
-      liveTranscriptRef.current = '';
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      // Start client speech recognition fallback in parallel
-      const speechSession = new BrowserSpeechRecognitionSession(
-        (res) => {
-          liveTranscriptRef.current = res.transcript;
-        },
-        (err) => {
-          console.warn('Web Speech fallback notice:', err);
-        }
-      );
-      if (speechSession.isAvailable()) {
-        speechSession.start();
-        speechSessionRef.current = speechSession;
-      }
-
-      mediaRecorder.start(250); // Slice every 250ms for reliable chunks
-      setIsHandsFree(handsFreeMode);
-      setSecondsElapsed(0);
-      setRecorderState('recording');
-
-      // 60-second timer
-      timerIntervalRef.current = setInterval(() => {
-        setSecondsElapsed((prev) => {
-          if (prev + 1 >= MAX_DURATION_SEC) {
-            handleFinishRecording();
-            return MAX_DURATION_SEC;
-          }
-          return prev + 1;
+  const startRecording = useCallback(
+    async (handsFreeMode: boolean) => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: deviceId ? { deviceId: { exact: deviceId } } : true,
         });
-      }, 1000);
-    } catch (err: any) {
-      console.warn('Microphone permission or hardware error:', err);
-      setRecorderState('permission_blocked');
-    }
-  }, [handleFinishRecording]);
+        streamRef.current = stream;
+
+        const audioCtx = createAudioContext();
+        const analyserSetup = setupAudioAnalyser(stream, audioCtx);
+        analyserSetupRef.current = analyserSetup;
+
+        const mediaRecorder = startMediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunksRef.current = [];
+        liveTranscriptRef.current = '';
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
+        };
+
+        // Start client speech recognition fallback in parallel
+        const speechSession = new BrowserSpeechRecognitionSession(
+          (res) => {
+            liveTranscriptRef.current = res.transcript;
+          },
+          (err) => {
+            console.warn('Web Speech fallback notice:', err);
+          },
+        );
+        if (speechSession.isAvailable()) {
+          speechSession.start();
+          speechSessionRef.current = speechSession;
+        }
+
+        mediaRecorder.start(250); // Slice every 250ms for reliable chunks
+        setIsHandsFree(handsFreeMode);
+        setSecondsElapsed(0);
+        setRecorderState('recording');
+
+        // 60-second timer
+        timerIntervalRef.current = setInterval(() => {
+          setSecondsElapsed((prev) => {
+            if (prev + 1 >= MAX_DURATION_SEC) {
+              handleFinishRecording();
+              return MAX_DURATION_SEC;
+            }
+            return prev + 1;
+          });
+        }, 1000);
+      } catch (err: any) {
+        console.warn('Microphone permission or hardware error:', err);
+        setRecorderState('permission_blocked');
+      }
+    },
+    [handleFinishRecording, deviceId],
+  );
 
   // Cancel/Discard mid-recording
   const handleCancelRecording = useCallback(() => {
@@ -344,6 +337,7 @@ export function VoiceRecorderSheet({
         audio: recordedAudioBlob,
         duration: secondsElapsed,
         transcript: transcript.trim(),
+        words: words.length ? words : undefined,
         language: detectedLanguage,
         lat,
         lng,
@@ -377,8 +371,8 @@ export function VoiceRecorderSheet({
             {recorderState === 'review'
               ? 'Field Voice Note'
               : recorderState === 'recording'
-              ? 'Recording Voice Note'
-              : 'Voice Journal'}
+                ? 'Recording Voice Note'
+                : 'Voice Journal'}
           </SheetTitle>
         </SheetHeader>
 
@@ -393,14 +387,11 @@ export function VoiceRecorderSheet({
                 Microphone access required
               </h3>
               <p className="text-sm text-muted-foreground max-w-xs">
-                Please grant microphone permissions in your browser settings to record hands-free voice notes.
+                Please grant microphone permissions in your browser settings to record hands-free
+                voice notes.
               </p>
             </div>
-            <Button
-              variant="outline"
-              onClick={() => setRecorderState('idle')}
-              className="mt-2"
-            >
+            <Button variant="outline" onClick={() => setRecorderState('idle')} className="mt-2">
               Try Again
             </Button>
           </div>
@@ -409,19 +400,31 @@ export function VoiceRecorderSheet({
         {/* 2. Idle & Active Recording States */}
         {(recorderState === 'idle' || recorderState === 'recording') && (
           <div className="flex flex-col items-center justify-center space-y-6 py-2">
-            {/* Waveform Visualization */}
-            <div className="flex items-center justify-center w-full min-h-[54px] px-4 py-2 rounded-2xl bg-muted/40 border border-border/40">
-              <VoiceWaveform
-                analyser={analyserSetupRef.current?.analyser}
-                isRecording={recorderState === 'recording'}
+            {/* Input device picker (only before recording starts) */}
+            {recorderState === 'idle' && (
+              <MicSelector value={deviceId} onValueChange={setDeviceId} className="self-center" />
+            )}
+
+            {/* Live waveform while recording */}
+            <div className="flex w-full items-center justify-center rounded-2xl border border-border/40 bg-muted/40 px-4 py-2">
+              <LiveWaveform
+                active={recorderState === 'recording'}
+                deviceId={deviceId || undefined}
+                mode="scrolling"
+                height={54}
+                barWidth={3}
+                barGap={2}
+                className="w-full text-primary"
               />
             </div>
 
             {/* Timer and Guidance */}
             <div className="flex items-center gap-3">
-              <span className={`text-base font-mono font-semibold ${isNearLimit ? 'text-amber-500' : 'text-foreground'}`}>
-                {Math.floor(secondsElapsed / 60)}:
-                {String(secondsElapsed % 60).padStart(2, '0')} / 01:00
+              <span
+                className={`text-base font-mono font-semibold ${isNearLimit ? 'text-amber-500' : 'text-foreground'}`}
+              >
+                {Math.floor(secondsElapsed / 60)}:{String(secondsElapsed % 60).padStart(2, '0')} /
+                01:00
               </span>
               {isNearLimit && (
                 <Badge variant="outline" className="text-amber-500 border-amber-500/40 text-xs">
@@ -451,7 +454,7 @@ export function VoiceRecorderSheet({
                     cy="32"
                     r={radius}
                     className={`transition-all duration-300 ${
-                      isNearLimit ? 'text-amber-500' : 'text-[#F35C2B]'
+                      isNearLimit ? 'text-amber-500' : 'text-primary'
                     }`}
                     strokeWidth="4"
                     strokeDasharray={circumference}
@@ -478,11 +481,13 @@ export function VoiceRecorderSheet({
                 }}
                 className={`relative z-10 flex items-center justify-center w-16 h-16 rounded-full transition-transform active:scale-95 shadow-xl cursor-pointer ${
                   recorderState === 'recording'
-                    ? 'bg-[#F35C2B] text-white scale-105'
+                    ? 'bg-primary text-primary-foreground scale-105'
                     : 'bg-muted/80 hover:bg-muted text-foreground border border-border/80'
                 }`}
               >
-                <Mic className={`w-7 h-7 ${recorderState === 'recording' ? 'animate-pulse text-white' : 'text-[#F35C2B]'}`} />
+                <Mic
+                  className={`w-7 h-7 ${recorderState === 'recording' ? 'animate-pulse text-white' : 'text-primary'}`}
+                />
               </button>
             </div>
 
@@ -524,10 +529,8 @@ export function VoiceRecorderSheet({
         {/* 3. Transcribing Skeleton State */}
         {recorderState === 'transcribing' && (
           <div className="flex flex-col items-center justify-center py-10 space-y-4">
-            <Loader2 className="w-10 h-10 animate-spin text-[#F35C2B]" />
-            <p className="text-sm font-medium text-foreground">
-              Transcribing field audio...
-            </p>
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="text-sm font-medium text-foreground">Transcribing field audio...</p>
           </div>
         )}
 

@@ -277,7 +277,7 @@ export async function generateObsidianVaultZip(
   for (const walk of walks) {
     const dateStr = formatDateKey(walk.startedAt);
     const walkTitle = `walk-${dateStr}-${walk.id.slice(0, 6)}`;
-    const walkEntries = entries.filter((e) => e.walkId === walk.id && e.status === 'confirmed');
+    const walkEntries = entries.filter((e) => e.walkId === walk.id && (e.status === 'confirmed' || e.status === 'identified') && e.confirmed);
     const walkNotesList = notes.filter((n) => n.walkId === walk.id);
 
     const speciesLinks = walkEntries.map((e) => {

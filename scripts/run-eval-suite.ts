@@ -67,7 +67,7 @@ async function evaluateFixture(
   if (apiKey) {
     try {
       const google = createGoogleGenerativeAI({ apiKey });
-      const model = google(process.env.FACTS_MODEL_ID || 'gemma-2-9b-it');
+      const model = google(process.env.FACTS_MODEL_ID || 'gemma-4-26b-a4b-it');
 
       const { object } = await generateObject({
         model,

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Sparkles, Check, ChevronDown } from 'lucide-react';
+import { Sparkles, Check, ChevronDown, Compass } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -26,11 +26,11 @@ export function DailyHuntHudPill({ progress, className }: DailyHuntHudPillProps)
           'pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-md shadow-md transition-all cursor-pointer',
           completed
             ? 'bg-amber-500/15 border border-amber-500/50 text-amber-600 dark:text-amber-400'
-            : 'bg-background/90 border border-[#F35C2B]/40 text-foreground hover:bg-background',
+            : 'bg-background/90 border border-primary/40 text-foreground hover:bg-background',
           className
         )}
       >
-        <Sparkles className={cn('w-3.5 h-3.5', completed ? 'text-amber-500 fill-amber-500' : 'text-[#F35C2B]')} />
+        <Sparkles className={cn('w-3.5 h-3.5', completed ? 'text-amber-500 fill-amber-500' : 'text-primary')} />
         <span>Hunt: {totalCompleted}/{totalRequired}</span>
         <ChevronDown className="w-3 h-3 opacity-60" />
       </PopoverTrigger>
@@ -41,11 +41,18 @@ export function DailyHuntHudPill({ progress, className }: DailyHuntHudPillProps)
       >
         <div className="flex items-center justify-between border-b border-border/50 pb-2">
           <div>
-            <p className="text-xs font-semibold font-sans text-foreground">
-              {hunt.title}
-            </p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-xs font-semibold font-sans text-foreground">
+                {hunt.title}
+              </p>
+              {hunt.season && (
+                <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary font-mono capitalize">
+                  {hunt.season}
+                </span>
+              )}
+            </div>
             <p className="text-[10px] text-muted-foreground">
-              Daily Species Challenge &bull; {hunt.date}
+              {hunt.difficulty ? `${hunt.difficulty} Challenge` : 'Field Challenge'} &bull; {hunt.date}
             </p>
           </div>
           {completed ? (
@@ -59,9 +66,19 @@ export function DailyHuntHudPill({ progress, className }: DailyHuntHudPillProps)
           )}
         </div>
 
-        <p className="font-serif text-[11px] text-muted-foreground leading-normal">
+        <p className="font-sans text-[11px] text-muted-foreground leading-normal">
           {hunt.description}
         </p>
+
+        {hunt.fieldTip && (
+          <div className="flex items-start gap-1.5 rounded-md bg-muted/40 p-2 text-[10px] text-muted-foreground">
+            <Compass className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+            <p className="leading-snug">
+              <span className="font-semibold text-foreground">Tip: </span>
+              {hunt.fieldTip}
+            </p>
+          </div>
+        )}
 
         <div className="space-y-1 pt-1">
           {targetProgress.map((tp) => (
